@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1771520704726,
+  "timestamp": 1771520741977,
   "index": "expense-tracker-pwa/index.html",
   "assetGroups": [
     {
@@ -75,7 +75,7 @@
     "expense-tracker-pwa/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
     "expense-tracker-pwa/index.html": "109e8355b9cf06e4fd1d7452f5424ec035da4bf3",
     "expense-tracker-pwa/main-NBZFNDBC.js": "10c2b75f7792abee8376bbcf37d7d7e382e163ca",
-    "expense-tracker-pwa/manifest.webmanifest": "e87396d917ac006d5f40511e2ec0f66d49464a03",
+    "expense-tracker-pwa/manifest.webmanifest": "905b3dbf84d60073e3a0f7a2ce815c14287e1442",
     "expense-tracker-pwa/styles-EMUERODY.css": "8ab2023af215c7e654e378ae2ea0649687708930"
   },
   "navigationUrls": [
