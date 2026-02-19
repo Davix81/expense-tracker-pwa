@@ -5,9 +5,9 @@ export const environment = {
     password: 'CHANGE_ME'
   },
   github: {
-    token: 'GITHUB_TOKEN_HERE',
-    owner: 'your-username',
-    repo: 'expense-data',
+    token: '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',
+    owner: 'Davix81',
+    repo: 'expenses-data',
     branch: 'main',
     filePath: 'data/expenses.json',
     settingsFilePath: 'data/settings.json'
