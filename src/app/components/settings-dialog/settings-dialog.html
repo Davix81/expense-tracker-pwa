@@ -1,0 +1,42 @@
+<div class="dialog-header">
+  <h2 mat-dialog-title>
+    <mat-icon>{{ getIcon() }}</mat-icon>
+    {{ getTitle() }}
+  </h2>
+</div>
+
+<mat-dialog-content>
+  <form [formGroup]="settingsForm" class="settings-form">
+    <mat-form-field appearance="outline">
+      <mat-label>{{ data.type === 'category' ? 'Categoria' : 'Etiqueta' }}</mat-label>
+      <input 
+        matInput 
+        formControlName="value" 
+        [placeholder]="getPlaceholder()" 
+        required
+        autofocus>
+      <mat-icon matPrefix>{{ data.type === 'category' ? 'category' : 'local_offer' }}</mat-icon>
+      <mat-error *ngIf="settingsForm.get('value')?.hasError('required')">
+        Aquest camp és obligatori
+      </mat-error>
+      <mat-error *ngIf="settingsForm.get('value')?.hasError('minLength')">
+        El nom no pot estar buit
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="onCancel()">
+    <mat-icon>close</mat-icon>
+    <span class="button-text">Cancel·la</span>
+  </button>
+  <button 
+    mat-raised-button 
+    color="primary" 
+    (click)="onSubmit()" 
+    [disabled]="settingsForm.invalid">
+    <mat-icon>{{ data.mode === 'add' ? 'add' : 'save' }}</mat-icon>
+    <span class="button-text">{{ data.mode === 'add' ? 'Afegir' : 'Guardar' }}</span>
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,215 @@
+<div class="page-container">
+  <div class="page-header">
+    <div class="dashboard-header">
+      <h1>Tauler de Despeses</h1>
+      <div class="header-controls">
+        <mat-form-field class="year-selector" appearance="outline">
+          <mat-label>Año Fiscal</mat-label>
+          <mat-select [value]="selectedYear()" (selectionChange)="onYearChange($event.value)">
+            <mat-option *ngFor="let year of availableYears()" [value]="year">
+              {{ year }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-raised-button color="primary" class="desktop-button" (click)="goToExpenses()">
+          <mat-icon>list</mat-icon>
+          <span>Ver Lista Completa</span>
+        </button>
+        <button mat-raised-button color="accent" class="desktop-button" routerLink="/settings">
+          <mat-icon>settings</mat-icon>
+          <span>Configuració</span>
+        </button>
+        <button mat-mini-fab color="primary" class="mobile-button" (click)="goToExpenses()" aria-label="Ver lista">
+          <mat-icon>list</mat-icon>
+        </button>
+        <button mat-mini-fab color="accent" class="mobile-button" routerLink="/settings" aria-label="Configuració">
+          <mat-icon>settings</mat-icon>
+        </button>
+        <button mat-icon-button (click)="logout()" aria-label="Tanca sessió">
+          <mat-icon>logout</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-content">
+    <!-- Cards principales lado a lado -->
+    <div class="main-cards-grid">
+      <!-- Próxim Pagament -->
+      <mat-card class="next-payment-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>schedule</mat-icon>
+            Proper Pagament
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          @if (nextPayment()) {
+            <div class="next-payment-info">
+              <div class="payment-name">{{ nextPayment()!.name }}</div>
+              <div class="payment-amount">{{ nextPayment()!.approximateAmount | currency:'EUR':'symbol':'1.2-2':'es' }}</div>
+              <div class="payment-date">
+                {{ nextPayment()!.scheduledPaymentDate | date:'dd/MM/yyyy' }}
+              </div>
+              <div class="payment-countdown">
+                <span class="countdown-number">{{ daysUntilNextPayment() }}</span>
+                <span class="countdown-label">días restantes</span>
+              </div>
+            </div>
+          } @else {
+            <div class="no-payments">
+              <mat-icon>check_circle</mat-icon>
+              <p>No hi ha pagaments pendents propers</p>
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Total Pagat Aquest Any -->
+      <mat-card class="year-total-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>calendar_today</mat-icon>
+            Total Pagat {{ selectedYear() }}
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="year-total-info">
+            <div class="year-total-amount">{{ totalPaidThisYear() | currency:'EUR':'symbol':'1.2-2':'es' }}</div>
+            <div class="year-total-subtitle">
+              <mat-icon>check_circle</mat-icon>
+              <span>{{ paidPaymentsCount() }} pagos realizados</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Filtro de Tags -->
+    @if (availableTags().length > 0) {
+      <mat-card class="tags-filter-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>label</mat-icon>
+            Filtrar por Etiquetas
+          </mat-card-title>
+          @if (selectedTags().size > 0) {
+            <button mat-icon-button (click)="clearTagFilters()" matTooltip="Limpiar filtros">
+              <mat-icon>clear</mat-icon>
+            </button>
+          }
+        </mat-card-header>
+        <mat-card-content>
+          <mat-chip-set class="tags-chip-set">
+            @for (tag of availableTags(); track tag) {
+              <mat-chip 
+                [class.selected]="isTagSelected(tag)"
+                (click)="toggleTag(tag)"
+                [highlighted]="isTagSelected(tag)">
+                {{ tag }}
+                @if (isTagSelected(tag)) {
+                  <mat-icon matChipTrailingIcon>check</mat-icon>
+                }
+              </mat-chip>
+            }
+          </mat-chip-set>
+        </mat-card-content>
+      </mat-card>
+    }
+
+    <!-- Tarjetas de Estadísticas -->
+    <div class="stats-grid">
+      <!-- Total Pagat Aquest Mes -->
+      <mat-card class="stat-card stat-card-blue">
+        <mat-card-content>
+          <div class="stat-icon">
+            <mat-icon>payments</mat-icon>
+          </div>
+          <div class="stat-info">
+            <div class="stat-label">Pagat Aquest Mes</div>
+            <div class="stat-value">{{ totalPaidThisMonth() | currency:'EUR':'symbol':'1.2-2':'es' }}</div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Total Pendent -->
+      <mat-card class="stat-card stat-card-orange">
+        <mat-card-content>
+          <div class="stat-icon">
+            <mat-icon>pending_actions</mat-icon>
+          </div>
+          <div class="stat-info">
+            <div class="stat-label">Total Pendent</div>
+            <div class="stat-value">{{ totalPendingPayments() | currency:'EUR':'symbol':'1.2-2':'es' }}</div>
+            <div class="stat-subtitle">{{ pendingPaymentsCount() }} pagaments</div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Promig Mensual -->
+      <mat-card class="stat-card stat-card-green">
+        <mat-card-content>
+          <div class="stat-icon">
+            <mat-icon>trending_up</mat-icon>
+          </div>
+          <div class="stat-info">
+            <div class="stat-label">Promig Mensual</div>
+            <div class="stat-value">{{ averageMonthlyExpense() | currency:'EUR':'symbol':'1.2-2':'es' }}</div>
+            <div class="stat-subtitle">Últims 6 mesos</div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Categoría Más Cara -->
+      <mat-card class="stat-card stat-card-purple">
+        <mat-card-content>
+          <div class="stat-icon">
+            <mat-icon>category</mat-icon>
+          </div>
+          <div class="stat-info">
+            <div class="stat-label">Categoría Top</div>
+            <div class="stat-value-text">{{ mostExpensiveCategory() }}</div>
+            <div class="stat-subtitle">Mayor gasto total</div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="charts-grid">
+      <!-- Gráfico Mensual (año fiscal) -->
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>Gastos Mensuales {{ selectedYear() }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="chart-container">
+            <canvas
+              baseChart
+              [data]="monthlyChartData()"
+              [options]="barChartOptions"
+              type="bar">
+            </canvas>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Gráfico por Categoría -->
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>Distribución por Categoría</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="chart-container">
+            <canvas
+              baseChart
+              [data]="categoryChartData()"
+              [options]="doughnutChartOptions"
+              type="doughnut">
+            </canvas>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

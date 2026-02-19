@@ -1,0 +1,537 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+@use '../../../styles/typography' as *;
+
+// Dashboard uses page-container layout (no scrolling on desktop/tablet)
+.page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.page-header {
+  flex-shrink: 0;
+  @include responsive-spacing('padding', $spacing-base, $spacing-lg, $spacing-xl);
+  border-bottom: 1px solid $gray-300;
+  background: white;
+  z-index: $z-index-sticky;
+}
+
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  @include responsive-spacing('padding', $spacing-base, $spacing-lg, $spacing-xl);
+  @include custom-scrollbar();
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $spacing-base;
+
+  h1 {
+    margin: 0;
+    @include responsive-font-size($font-size-xl, $font-size-3xl);
+    font-weight: $font-weight-medium;
+  }
+
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+
+    .year-selector {
+      width: 140px;
+      margin: 0;
+
+      ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+        display: none;
+      }
+    }
+
+    .desktop-button {
+      display: inline-flex;
+      align-items: center;
+      gap: $spacing-sm;
+    }
+
+    .mobile-button {
+      display: none;
+    }
+  }
+}
+
+// Grid para cards principales (Próximo Pago y Total Año)
+.main-cards-grid {
+  @include responsive-grid(1, 2, 2, $spacing-xl);
+  margin-bottom: $spacing-xl;
+}
+
+.next-payment-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+
+  mat-card-header {
+    mat-card-title {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      color: white;
+      font-size: $font-size-lg;
+    }
+  }
+
+  .next-payment-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $spacing-lg 0;
+
+    .payment-name {
+      @include responsive-font-size($font-size-lg, $font-size-xl);
+      font-weight: $font-weight-medium;
+      margin-bottom: $spacing-sm;
+    }
+
+    .payment-amount {
+      @include responsive-font-size($font-size-3xl, $font-size-4xl);
+      font-weight: $font-weight-bold;
+      margin-bottom: $spacing-sm;
+    }
+
+    .payment-date {
+      @include responsive-font-size($font-size-base, $font-size-lg);
+      opacity: 0.9;
+      margin-bottom: $spacing-base;
+    }
+
+    .payment-countdown {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: $spacing-base $spacing-2xl;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: $border-radius-lg;
+      backdrop-filter: blur(10px);
+
+      .countdown-number {
+        @include responsive-font-size($font-size-4xl, $font-size-5xl);
+        font-weight: $font-weight-bold;
+        line-height: 1;
+      }
+
+      .countdown-label {
+        font-size: $font-size-sm;
+        opacity: 0.9;
+        margin-top: $spacing-xs;
+      }
+    }
+  }
+
+  .no-payments {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $spacing-2xl;
+    opacity: 0.9;
+
+    mat-icon {
+      font-size: 64px;
+      width: 64px;
+      height: 64px;
+      margin-bottom: $spacing-base;
+    }
+
+    p {
+      margin: 0;
+      font-size: $font-size-lg;
+    }
+  }
+}
+
+.year-total-card {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  color: white;
+
+  mat-card-header {
+    mat-card-title {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      color: white;
+      font-size: $font-size-lg;
+    }
+  }
+
+  .year-total-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $spacing-lg 0;
+
+    .year-total-amount {
+      @include responsive-font-size($font-size-3xl, $font-size-5xl);
+      font-weight: $font-weight-bold;
+      margin-bottom: $spacing-base;
+    }
+
+    .year-total-subtitle {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      font-size: $font-size-base;
+      opacity: 0.95;
+      padding: $spacing-md $spacing-xl;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: $border-radius-full;
+      backdrop-filter: blur(10px);
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+}
+
+// Tarjeta de Filtro de Tags
+.tags-filter-card {
+  margin-bottom: $spacing-xl;
+
+  mat-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    mat-card-title {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      font-size: $font-size-lg;
+      font-weight: $font-weight-medium;
+    }
+  }
+
+  .tags-chip-set {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+
+    mat-chip {
+      cursor: pointer;
+      transition: all $transition-fast;
+      background-color: $gray-300;
+      color: rgba(0, 0, 0, 0.87);
+
+      &:hover {
+        background-color: $gray-400;
+        transform: translateY(-2px);
+        box-shadow: $shadow-md;
+      }
+
+      &.selected {
+        background-color: $primary;
+        color: white;
+
+        mat-icon {
+          color: white;
+        }
+      }
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+}
+
+// Tarjetas de Estadísticas
+.stats-grid {
+  @include responsive-grid(1, 2, 4, $spacing-lg);
+  margin-bottom: $spacing-xl;
+}
+
+.stat-card {
+  transition: transform $transition-fast, box-shadow $transition-fast;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-lg;
+  }
+
+  mat-card-content {
+    display: flex;
+    align-items: center;
+    gap: $spacing-base;
+    padding: $spacing-lg !important;
+  }
+
+  .stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: $border-radius-lg;
+    background: rgba(255, 255, 255, 0.2);
+
+    mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+      color: white;
+    }
+  }
+
+  .stat-info {
+    flex: 1;
+  }
+
+  .stat-label {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    opacity: 0.9;
+    margin-bottom: $spacing-xs;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .stat-value {
+    @include responsive-font-size($font-size-2xl, $font-size-3xl);
+    font-weight: $font-weight-bold;
+    line-height: 1.2;
+  }
+
+  .stat-value-text {
+    @include responsive-font-size($font-size-lg, $font-size-xl);
+    font-weight: $font-weight-semibold;
+    line-height: 1.2;
+    text-transform: capitalize;
+  }
+
+  .stat-subtitle {
+    font-size: $font-size-xs;
+    opacity: 0.8;
+    margin-top: $spacing-xs;
+  }
+
+  &.stat-card-blue {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+
+  &.stat-card-orange {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+  }
+
+  &.stat-card-green {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+  }
+
+  &.stat-card-purple {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    color: #333;
+  }
+}
+
+.charts-grid {
+  @include responsive-grid(1, 1, 2, $spacing-xl);
+}
+
+.chart-card {
+  mat-card-header {
+    margin-bottom: $spacing-base;
+
+    mat-card-title {
+      font-size: $font-size-lg;
+      font-weight: $font-weight-medium;
+    }
+  }
+
+  .chart-container {
+    height: 300px;
+    position: relative;
+  }
+}
+
+// Mobile styles (< 768px)
+@include respond-to-max('md') {
+  .page-header {
+    padding: $spacing-base;
+  }
+
+  .page-content {
+    padding: $spacing-base;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: $spacing-md;
+
+    h1 {
+      font-size: $font-size-lg;
+    }
+
+    .header-controls {
+      flex-direction: column;
+      gap: $spacing-sm;
+      width: 100%;
+
+      .year-selector {
+        width: 100%;
+      }
+
+      .desktop-button {
+        display: none;
+      }
+
+      .mobile-button {
+        display: inline-flex;
+        align-self: flex-end;
+      }
+    }
+  }
+
+  .main-cards-grid {
+    grid-template-columns: 1fr;
+    gap: $spacing-base;
+    margin-bottom: $spacing-base;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+    margin-bottom: $spacing-base;
+  }
+
+  .charts-grid {
+    grid-template-columns: 1fr;
+    gap: $spacing-base;
+  }
+
+  .chart-card {
+    .chart-container {
+      height: 250px;
+    }
+  }
+
+  .stat-card {
+    mat-card-content {
+      padding: $spacing-base !important;
+    }
+
+    .stat-icon {
+      width: 50px;
+      height: 50px;
+
+      mat-icon {
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+      }
+    }
+  }
+}
+
+// Tablet styles (768px - 1024px)
+@include respond-to('md') {
+  .page-header {
+    padding: $spacing-lg;
+  }
+
+  .page-content {
+    padding: $spacing-lg;
+  }
+
+  .dashboard-header {
+    h1 {
+      font-size: $font-size-2xl;
+    }
+
+    .header-controls {
+      flex-direction: row;
+      width: auto;
+
+      .year-selector {
+        width: 140px;
+      }
+
+      .desktop-button {
+        display: inline-flex;
+      }
+
+      .mobile-button {
+        display: none;
+      }
+    }
+  }
+
+  .main-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-lg;
+    margin-bottom: $spacing-lg;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-base;
+    margin-bottom: $spacing-lg;
+  }
+
+  .charts-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-lg;
+  }
+
+  .chart-card {
+    .chart-container {
+      height: 280px;
+    }
+  }
+}
+
+// Desktop styles (> 1024px)
+@include respond-to('lg') {
+  .page-header {
+    padding: $spacing-xl;
+  }
+
+  .page-content {
+    padding: $spacing-xl;
+  }
+
+  .dashboard-header {
+    h1 {
+      font-size: $font-size-3xl;
+    }
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .chart-card {
+    .chart-container {
+      height: 300px;
+    }
+  }
+}
+
+// Large desktop (> 1440px)
+@include respond-to('xl') {
+  .chart-card {
+    .chart-container {
+      height: 350px;
+    }
+  }
+}

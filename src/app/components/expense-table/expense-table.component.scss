@@ -1,0 +1,730 @@
+.expense-table-container {
+  width: 100%;
+  padding: 20px;
+  background: linear-gradient(to bottom, #fafafa 0%, #ffffff 100%);
+  border-radius: 12px;
+}
+
+.filter-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.filter-field {
+  flex: 1;
+  min-width: 250px;
+  margin: 0;
+
+  ::ng-deep .mat-mdc-text-field-wrapper {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+
+  mat-icon {
+    color: #5f6368;
+  }
+}
+
+.year-selector {
+  width: 160px;
+  margin: 0;
+
+  ::ng-deep .mat-mdc-text-field-wrapper {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+
+  ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+}
+
+.month-selector {
+  width: 180px;
+  margin: 0;
+
+  ::ng-deep .mat-mdc-text-field-wrapper {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+
+  ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+}
+
+// Tags Filter Section
+.tags-filter-section {
+  margin-bottom: 20px;
+  padding: 16px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  .tags-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+
+    .tags-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 15px;
+      color: #202124;
+
+      mat-icon {
+        font-size: 22px;
+        width: 22px;
+        height: 22px;
+        color: #5f6368;
+      }
+    }
+
+    .clear-tags-btn {
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 6px;
+
+      mat-icon {
+        margin-right: 4px;
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
+  .tags-chip-set {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    mat-chip {
+      cursor: pointer;
+      background-color: #ffffff;
+      color: #3c4043;
+      border: 1.5px solid #dadce0;
+      font-weight: 500;
+      font-size: 13px;
+      padding: 8px 14px;
+      border-radius: 20px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+      &.selected {
+        background: linear-gradient(135deg, #5e72e4 0%, #3f51b5 100%);
+        color: white;
+        border-color: #3f51b5;
+        box-shadow: 0 2px 8px rgba(63, 81, 181, 0.3);
+
+        mat-icon {
+          color: white;
+        }
+      }
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+}
+
+// Mobile Card View (hidden on desktop)
+.mobile-card-view {
+  display: none;
+}
+
+// Desktop Table View (visible by default)
+.table-wrapper {
+  display: block;
+  overflow-x: auto;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e8eaed;
+}
+
+.expense-table {
+  width: 100%;
+  min-width: 1200px;
+  border-collapse: separate;
+  border-spacing: 0;
+  
+  th {
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: linear-gradient(to bottom, #f8f9fa 0%, #f1f3f4 100%);
+    color: #5f6368;
+    border-bottom: 2px solid #e8eaed;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  
+  td, th {
+    padding: 14px 18px;
+  }
+
+  td {
+    font-size: 14px;
+    color: #3c4043;
+    border-bottom: 1px solid #f1f3f4;
+  }
+  
+  tr {
+    &:last-child td {
+      border-bottom: none;
+    }
+  }
+}
+
+// Payment status badge styling
+mat-chip {
+  font-size: 12px;
+  font-weight: 600;
+  min-height: 26px;
+  padding: 5px 14px;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  border: none !important;
+  
+  &.status-paid {
+    background: linear-gradient(135deg, #34a853 0%, #2e7d32 100%) !important;
+    color: white !important;
+    border: none !important;
+  }
+  
+  &.status-pending {
+    background: linear-gradient(135deg, #fbbc04 0%, #f57c00 100%) !important;
+    color: white !important;
+    border: none !important;
+  }
+  
+  &.status-failed {
+    background: linear-gradient(135deg, #ea4335 0%, #c62828 100%) !important;
+    color: white !important;
+    border: none !important;
+  }
+
+  // Sobrescribir estilos internos de Material
+  ::ng-deep .mat-mdc-chip-action-label {
+    border: none !important;
+  }
+
+  ::ng-deep .mdc-evolution-chip__cell,
+  ::ng-deep .mdc-evolution-chip__action {
+    border: none !important;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px 32px !important;
+  color: #5f6368;
+  font-style: normal;
+  font-size: 15px;
+  background: linear-gradient(to bottom, #fafafa 0%, #ffffff 100%);
+}
+
+// Mobile Card Styles
+.expense-card {
+  margin-bottom: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e8eaed;
+  overflow: hidden;
+
+  mat-card-header {
+    margin-bottom: 16px;
+    padding: 16px 16px 0 16px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+
+    mat-card-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #202124;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .title-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        color: #5e72e4;
+      }
+    }
+
+    mat-card-subtitle {
+      font-size: 14px;
+      color: #5f6368;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      .subtitle-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+        color: #5f6368;
+      }
+    }
+  }
+
+  mat-card-content {
+    padding: 16px;
+    padding-top: 8px;
+  }
+
+  mat-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 12px 16px;
+    background-color: #fafafa;
+    border-top: 1px solid #e8eaed;
+    margin: 0;
+
+    button {
+      font-weight: 500;
+      border-radius: 8px;
+
+      mat-icon {
+        margin-right: 4px;
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
+  .card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f3f4;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &.highlight-row {
+      background-color: #f8f9fa;
+      padding: 12px 10px;
+      margin: 8px -10px;
+      border-radius: 8px;
+      border-bottom: none;
+    }
+
+    .label {
+      font-weight: 600;
+      color: #5f6368;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      flex-shrink: 0;
+      margin-right: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+        color: #5f6368;
+      }
+    }
+
+    .value {
+      text-align: right;
+      color: #3c4043;
+      font-size: 14px;
+      word-break: break-word;
+      font-weight: 500;
+
+      &.amount {
+        font-weight: 700;
+        color: #1967d2;
+        font-size: 17px;
+      }
+    }
+
+    &.status-row {
+      padding-top: 14px;
+      border-top: 2px solid #e8eaed;
+      margin-top: 10px;
+    }
+  }
+}
+
+.mobile-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  text-align: center;
+  background: linear-gradient(to bottom, #fafafa 0%, #ffffff 100%);
+  border-radius: 12px;
+  border: 2px dashed #dadce0;
+
+  mat-icon {
+    font-size: 72px;
+    width: 72px;
+    height: 72px;
+    color: #dadce0;
+    margin-bottom: 20px;
+  }
+
+  p {
+    margin: 0;
+    color: #5f6368;
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
+
+// ============================================
+// RESPONSIVE BREAKPOINTS
+// ============================================
+
+// Mobile styles (< 768px) - Show cards, hide table
+@media (max-width: 767px) {
+  .expense-table-container {
+    padding: 12px;
+    background: transparent;
+  }
+
+  .filter-row {
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .filter-field {
+    width: 100%;
+    min-width: unset;
+    font-size: 14px;
+  }
+
+  .year-selector {
+    width: 100%;
+  }
+
+  .month-selector {
+    width: 100%;
+  }
+
+  .tags-filter-section {
+    padding: 12px;
+    margin-bottom: 16px;
+
+    .tags-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+
+      .tags-label {
+        font-size: 14px;
+
+        mat-icon {
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      .clear-tags-btn {
+        align-self: flex-end;
+        font-size: 12px;
+      }
+    }
+
+    .tags-chip-set {
+      gap: 8px;
+
+      mat-chip {
+        font-size: 12px;
+        padding: 6px 12px;
+      }
+    }
+  }
+
+  // Hide table on mobile
+  .table-wrapper {
+    display: none;
+  }
+
+  // Show cards on mobile
+  .mobile-card-view {
+    display: block;
+  }
+
+  .expense-card {
+    margin-bottom: 14px;
+    border-radius: 10px;
+
+    mat-card-header {
+      padding: 14px 14px 0 14px;
+
+      mat-card-title {
+        font-size: 16px;
+
+        .title-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
+      }
+
+      mat-card-subtitle {
+        font-size: 13px;
+
+        .subtitle-icon {
+          font-size: 14px;
+          width: 14px;
+          height: 14px;
+        }
+      }
+    }
+
+    mat-card-content {
+      padding: 14px;
+    }
+
+    mat-card-actions {
+      padding: 10px 14px;
+    }
+
+    .card-row {
+      padding: 8px 0;
+
+      &.highlight-row {
+        padding: 10px 8px;
+        margin: 6px -8px;
+      }
+
+      .label {
+        font-size: 11px;
+        gap: 4px;
+
+        mat-icon {
+          font-size: 14px;
+          width: 14px;
+          height: 14px;
+        }
+      }
+
+      .value {
+        font-size: 13px;
+
+        &.amount {
+          font-size: 15px;
+        }
+      }
+    }
+  }
+
+  mat-chip {
+    font-size: 11px;
+    min-height: 24px;
+    padding: 4px 11px;
+  }
+
+  .mobile-empty-state {
+    padding: 48px 20px;
+
+    mat-icon {
+      font-size: 56px;
+      width: 56px;
+      height: 56px;
+    }
+
+    p {
+      font-size: 14px;
+    }
+  }
+}
+
+// Action buttons styling
+.actions-cell {
+  white-space: nowrap;
+}
+
+.action-button {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  margin: 0 4px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) !important;
+  transition: all 0.2s ease !important;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+// Mobile card action buttons
+.expense-card {
+  mat-card-actions {
+    .action-button {
+      width: 40px !important;
+      height: 40px !important;
+      min-width: 40px !important;
+    }
+  }
+}
+
+// Tablet styles (768px - 1024px) - Show table with horizontal scroll
+@media (min-width: 768px) and (max-width: 1023px) {
+  .expense-table-container {
+    padding: 16px;
+  }
+
+  .filter-row {
+    margin-bottom: 16px;
+    gap: 12px;
+  }
+
+  .filter-field {
+    min-width: 200px;
+  }
+
+  .year-selector {
+    width: 150px;
+  }
+
+  .tags-filter-section {
+    padding: 14px;
+
+    .tags-header {
+      .tags-label {
+        font-size: 14px;
+      }
+    }
+
+    .tags-chip-set {
+      gap: 8px;
+
+      mat-chip {
+        font-size: 12px;
+        padding: 7px 13px;
+      }
+    }
+  }
+
+  // Hide cards on tablet
+  .mobile-card-view {
+    display: none;
+  }
+
+  // Show table on tablet
+  .table-wrapper {
+    display: block;
+    border-radius: 10px;
+  }
+
+  .expense-table {
+    min-width: 1100px;
+    
+    td, th {
+      padding: 12px 14px;
+      font-size: 13px;
+    }
+
+    th {
+      font-size: 12px;
+    }
+  }
+
+  mat-chip {
+    font-size: 11px;
+    min-height: 24px;
+    padding: 4px 11px;
+  }
+
+  .empty-state {
+    padding: 36px 24px !important;
+    font-size: 14px;
+  }
+}
+
+// Desktop styles (> 1024px) - Show full table
+@media (min-width: 1024px) {
+  .expense-table-container {
+    padding: 20px;
+  }
+
+  .filter-row {
+    margin-bottom: 20px;
+  }
+
+  .tags-filter-section {
+    margin-bottom: 20px;
+  }
+
+  // Hide cards on desktop
+  .mobile-card-view {
+    display: none;
+  }
+
+  // Show table on desktop
+  .table-wrapper {
+    display: block;
+  }
+
+  .expense-table {
+    min-width: 1200px;
+    
+    td, th {
+      padding: 14px 18px;
+      font-size: 14px;
+    }
+
+    th {
+      font-size: 13px;
+    }
+  }
+
+  mat-chip {
+    font-size: 12px;
+    min-height: 26px;
+    padding: 5px 14px;
+  }
+
+  .empty-state {
+    padding: 48px 32px !important;
+    font-size: 15px;
+  }
+}

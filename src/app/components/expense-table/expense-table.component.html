@@ -1,0 +1,273 @@
+<div class="expense-table-container">
+  <!-- Filter and Year/Month Selector Row -->
+  <div class="filter-row">
+    <mat-form-field class="filter-field">
+      <mat-label>Filtra despeses</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Cerca per qualsevol camp..." #input>
+      <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field class="year-selector" appearance="outline">
+      <mat-label>Any Fiscal</mat-label>
+      <mat-select [value]="selectedYear" (selectionChange)="onYearChange($event.value)">
+        <mat-option *ngFor="let year of availableYears" [value]="year">
+          {{ year }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="month-selector" appearance="outline">
+      <mat-label>Mes</mat-label>
+      <mat-select [value]="selectedMonth" (selectionChange)="onMonthChange($event.value)">
+        <mat-option [value]="0">Tots els mesos</mat-option>
+        <mat-option *ngFor="let month of availableMonths" [value]="month">
+          {{ getMonthName(month) }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- Tags Filter -->
+  @if (availableTags.length > 0) {
+    <div class="tags-filter-section">
+      <div class="tags-header">
+        <span class="tags-label">
+          <mat-icon>label</mat-icon>
+          Filtrar por Etiquetas:
+        </span>
+        @if (selectedTags.size > 0) {
+          <button mat-button color="primary" (click)="clearTagFilters()" class="clear-tags-btn">
+            <mat-icon>clear</mat-icon>
+            Limpiar
+          </button>
+        }
+      </div>
+      <mat-chip-set class="tags-chip-set">
+        @for (tag of availableTags; track tag) {
+          <mat-chip 
+            [class.selected]="isTagSelected(tag)"
+            (click)="toggleTag(tag)"
+            [highlighted]="isTagSelected(tag)">
+            {{ tag }}
+            @if (isTagSelected(tag)) {
+              <mat-icon matChipTrailingIcon>check</mat-icon>
+            }
+          </mat-chip>
+        }
+      </mat-chip-set>
+    </div>
+  }
+
+  <!-- Mobile Card View -->
+  <div class="mobile-card-view">
+    <mat-card *ngFor="let expense of filteredExpenses" class="expense-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon class="title-icon">receipt</mat-icon>
+          {{ expense.name }}
+        </mat-card-title>
+        <mat-card-subtitle>
+          <mat-icon class="subtitle-icon">category</mat-icon>
+          {{ expense.category }}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="card-row">
+          <span class="label">
+            <mat-icon>description</mat-icon>
+            Descripció
+          </span>
+          <span class="value">{{ expense.description }}</span>
+        </div>
+        <div class="card-row">
+          <span class="label">
+            <mat-icon>business</mat-icon>
+            Emissor
+          </span>
+          <span class="value">{{ expense.issuer }}</span>
+        </div>
+        <div class="card-row">
+          <span class="label">
+            <mat-icon>label</mat-icon>
+            Etiqueta
+          </span>
+          <span class="value">{{ expense.tag }}</span>
+        </div>
+        <div class="card-row highlight-row">
+          <span class="label">
+            <mat-icon>euro</mat-icon>
+            Import aproximat
+          </span>
+          <span class="value amount">{{ expense.approximateAmount | currency:'EUR':'symbol':'1.2-2':'es' }}</span>
+        </div>
+        <div class="card-row">
+          <span class="label">
+            <mat-icon>event</mat-icon>
+            Data prevista
+          </span>
+          <span class="value">{{ expense.scheduledPaymentDate | date:'dd/MM/yyyy' }}</span>
+        </div>
+        <div class="card-row">
+          <span class="label">
+            <mat-icon>event_repeat</mat-icon>
+            Periodicitat
+          </span>
+          <span class="value">{{ getPeriodicityLabel(expense.periodicity) }}</span>
+        </div>
+        <div class="card-row" *ngIf="expense.actualPaymentDate">
+          <span class="label">
+            <mat-icon>event_available</mat-icon>
+            Data real
+          </span>
+          <span class="value">{{ expense.actualPaymentDate | date:'dd/MM/yyyy' }}</span>
+        </div>
+        <div class="card-row highlight-row" *ngIf="expense.actualAmount !== null">
+          <span class="label">
+            <mat-icon>paid</mat-icon>
+            Import real
+          </span>
+          <span class="value amount">{{ expense.actualAmount | currency:'EUR':'symbol':'1.2-2':'es' }}</span>
+        </div>
+        <div class="card-row">
+          <span class="label">
+            <mat-icon>account_balance</mat-icon>
+            Banc
+          </span>
+          <span class="value">{{ expense.bank }}</span>
+        </div>
+        <div class="card-row status-row">
+          <span class="label">
+            <mat-icon>info</mat-icon>
+            Estat
+          </span>
+          <mat-chip [ngClass]="getStatusClass(expense.paymentStatus)">
+            {{ expense.paymentStatus }}
+          </mat-chip>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-mini-fab color="primary" (click)="onEdit(expense)" aria-label="Editar" class="action-button">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-mini-fab color="warn" (click)="onDelete(expense)" aria-label="Eliminar" class="action-button">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+    
+    <!-- Empty state for mobile -->
+    <div *ngIf="filteredExpenses.length === 0" class="mobile-empty-state">
+      <mat-icon>receipt_long</mat-icon>
+      <p>Cap despesa coincideix amb el filtre</p>
+    </div>
+  </div>
+
+  <!-- Desktop Table View -->
+  <div class="table-wrapper">
+    <table mat-table [dataSource]="dataSource" matSort class="expense-table">
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
+        <td mat-cell *matCellDef="let expense">{{ expense.name }}</td>
+      </ng-container>
+
+      <!-- Description Column -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripció</th>
+        <td mat-cell *matCellDef="let expense">{{ expense.description }}</td>
+      </ng-container>
+
+      <!-- Issuer Column -->
+      <ng-container matColumnDef="issuer">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Emissor</th>
+        <td mat-cell *matCellDef="let expense">{{ expense.issuer }}</td>
+      </ng-container>
+
+      <!-- Tag Column -->
+      <ng-container matColumnDef="tag">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Etiqueta</th>
+        <td mat-cell *matCellDef="let expense">{{ expense.tag }}</td>
+      </ng-container>
+
+      <!-- Category Column -->
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Categoria</th>
+        <td mat-cell *matCellDef="let expense">{{ expense.category }}</td>
+      </ng-container>
+
+      <!-- Approximate Amount Column -->
+      <ng-container matColumnDef="approximateAmount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Import aproximat</th>
+        <td mat-cell *matCellDef="let expense">{{ expense.approximateAmount | currency:'EUR':'symbol':'1.2-2':'es' }}</td>
+      </ng-container>
+
+      <!-- Scheduled Payment Date Column -->
+      <ng-container matColumnDef="scheduledPaymentDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Data prevista</th>
+        <td mat-cell *matCellDef="let expense">{{ expense.scheduledPaymentDate | date:'dd/MM/yyyy' }}</td>
+      </ng-container>
+
+      <!-- Periodicity Column -->
+      <ng-container matColumnDef="periodicity">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Periodicitat</th>
+        <td mat-cell *matCellDef="let expense">{{ getPeriodicityLabel(expense.periodicity) }}</td>
+      </ng-container>
+
+      <!-- Actual Payment Date Column -->
+      <ng-container matColumnDef="actualPaymentDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Data real</th>
+        <td mat-cell *matCellDef="let expense">
+          {{ expense.actualPaymentDate ? (expense.actualPaymentDate | date:'dd/MM/yyyy') : '-' }}
+        </td>
+      </ng-container>
+
+      <!-- Actual Amount Column -->
+      <ng-container matColumnDef="actualAmount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Import real</th>
+        <td mat-cell *matCellDef="let expense">
+          {{ expense.actualAmount !== null ? (expense.actualAmount | currency:'EUR':'symbol':'1.2-2':'es') : '-' }}
+        </td>
+      </ng-container>
+
+      <!-- Payment Status Column -->
+      <ng-container matColumnDef="paymentStatus">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Estat</th>
+        <td mat-cell *matCellDef="let expense">
+          <mat-chip [ngClass]="getStatusClass(expense.paymentStatus)">
+            {{ expense.paymentStatus }}
+          </mat-chip>
+        </td>
+      </ng-container>
+
+      <!-- Bank Column -->
+      <ng-container matColumnDef="bank">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Banc</th>
+        <td mat-cell *matCellDef="let expense">{{ expense.bank }}</td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Accions</th>
+        <td mat-cell *matCellDef="let expense" class="actions-cell">
+          <button mat-mini-fab color="primary" (click)="onEdit(expense)" aria-label="Editar" class="action-button">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-mini-fab color="warn" (click)="onDelete(expense)" aria-label="Eliminar" class="action-button">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <!-- Empty state -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell empty-state" [attr.colspan]="displayedColumns.length">
+          Cap despesa coincideix amb el filtre.
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

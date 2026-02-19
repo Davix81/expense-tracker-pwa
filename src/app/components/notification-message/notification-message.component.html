@@ -1,0 +1,6 @@
+@if (show && message) {
+  <div class="notification-message" [class]="type">
+    <mat-icon>{{ getIcon() }}</mat-icon>
+    <span>{{ message }}</span>
+  </div>
+}

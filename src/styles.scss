@@ -1,0 +1,243 @@
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+
+// ============================================================================
+// Import Custom SCSS Architecture
+// ============================================================================
+@use 'styles/variables' as *;
+@use 'styles/mixins' as *;
+@use 'styles/typography' as *;
+@use 'styles/layout';
+@use 'styles/utilities';
+
+// ============================================================================
+// Material Theme Configuration
+// ============================================================================
+// Using Indigo-Pink theme with Material 3 design system
+html {
+  height: 100%;
+  @include mat.theme((
+    color: (
+      primary: mat.$azure-palette,
+      tertiary: mat.$rose-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+body {
+  // Default the application to a light color theme
+  color-scheme: light;
+
+  // Set default background, font and text colors using Material system variables
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  // Reset the user agent margin
+  margin: 0;
+  height: 100%;
+}
+
+// ============================================================================
+// Responsive Breakpoints
+// ============================================================================
+// Custom breakpoints aligned with task requirements
+$breakpoint-mobile: 768px;    // Mobile devices (< 768px)
+$breakpoint-tablet: 1024px;   // Tablet devices (768px - 1024px)
+$breakpoint-desktop: 1024px;  // Desktop devices (> 1024px)
+$breakpoint-large: 1920px;    // Large desktop screens
+
+// ============================================================================
+// Global Typography Styles
+// ============================================================================
+// Typography scale following Material Design guidelines
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: 400;
+}
+
+h1 {
+  font: var(--mat-sys-headline-large);
+  margin-bottom: 16px;
+}
+
+h2 {
+  font: var(--mat-sys-headline-medium);
+  margin-bottom: 14px;
+}
+
+h3 {
+  font: var(--mat-sys-headline-small);
+  margin-bottom: 12px;
+}
+
+h4 {
+  font: var(--mat-sys-title-large);
+  margin-bottom: 10px;
+}
+
+h5 {
+  font: var(--mat-sys-title-medium);
+  margin-bottom: 8px;
+}
+
+h6 {
+  font: var(--mat-sys-title-small);
+  margin-bottom: 8px;
+}
+
+p {
+  font: var(--mat-sys-body-medium);
+  margin: 0 0 12px 0;
+}
+
+.mat-body-strong {
+  font: var(--mat-sys-body-large);
+}
+
+.mat-small {
+  font: var(--mat-sys-body-small);
+}
+
+// ============================================================================
+// Global Utility Classes
+// ============================================================================
+// Container with responsive padding
+.container {
+  width: 100%;
+  padding: 16px;
+  margin: 0 auto;
+  box-sizing: border-box;
+
+  @media (min-width: $breakpoint-tablet) {
+    padding: 24px;
+    max-width: 1200px;
+  }
+
+  @media (min-width: $breakpoint-desktop) {
+    padding: 32px;
+    max-width: 1400px;
+  }
+}
+
+// Responsive spacing utilities
+.spacing-mobile {
+  padding: 8px;
+  
+  @media (min-width: $breakpoint-tablet) {
+    padding: 16px;
+  }
+  
+  @media (min-width: $breakpoint-desktop) {
+    padding: 24px;
+  }
+}
+
+// ============================================================================
+// Material Component Overrides
+// ============================================================================
+// Ensure Material components are responsive
+
+// Mobile styles (< 768px)
+@media (max-width: $breakpoint-mobile - 1px) {
+  .mat-mdc-dialog-container {
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  .mat-mdc-table {
+    font-size: 12px;
+  }
+
+  .mat-mdc-button, .mat-mdc-raised-button, .mat-mdc-flat-button {
+    min-width: 48px;
+    padding: 0 12px;
+  }
+
+  .mat-mdc-form-field {
+    font-size: 14px;
+  }
+
+  .mat-toolbar {
+    height: 56px;
+    
+    .mat-toolbar-row {
+      height: 56px;
+      padding: 0 8px;
+    }
+  }
+}
+
+// Tablet styles (768px - 1024px)
+@media (min-width: $breakpoint-mobile) and (max-width: $breakpoint-tablet - 1px) {
+  .mat-mdc-dialog-container {
+    max-width: 90vw !important;
+    margin: 16px;
+  }
+
+  .mat-mdc-table {
+    font-size: 13px;
+  }
+
+  .mat-toolbar {
+    height: 64px;
+    
+    .mat-toolbar-row {
+      height: 64px;
+      padding: 0 16px;
+    }
+  }
+}
+
+// Desktop styles (> 1024px)
+@media (min-width: $breakpoint-desktop) {
+  .mat-mdc-dialog-container {
+    max-width: 80vw;
+  }
+
+  .mat-mdc-table {
+    font-size: 14px;
+  }
+
+  .mat-toolbar {
+    height: 64px;
+    
+    .mat-toolbar-row {
+      height: 64px;
+      padding: 0 24px;
+    }
+  }
+}
+
+// ============================================================================
+// Accessibility
+// ============================================================================
+// Focus visible styles for keyboard navigation
+*:focus-visible {
+  outline: 2px solid var(--mat-sys-primary);
+  outline-offset: 2px;
+}
+
+// ============================================================================
+// Global Styles
+// ============================================================================
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: var(--mat-sys-primary);
+  text-decoration: none;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
