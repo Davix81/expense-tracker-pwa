@@ -2,7 +2,7 @@ export const environment = {
   production: true,
   auth: {
     username: 'admin',
-    password: 'CHANGE_ME'
+    password: '123'
   },
   github: {
     token: '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',
