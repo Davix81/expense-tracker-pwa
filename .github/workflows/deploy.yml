@@ -20,6 +20,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Replace GitHub Token
+        run: |
+          sed -i "s/__GITHUB_TOKEN__/${{ secrets.GITHUB_DATA_TOKEN }}/g" src/environments/environment.prod.ts
+        shell: bash
+
       - name: Build
         run: npm run build -- --configuration production --base-href expense-tracker-pwa
 

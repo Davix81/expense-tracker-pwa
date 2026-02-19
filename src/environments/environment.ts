@@ -4,12 +4,12 @@ export const environment = {
     username: 'admin',
     password: '123'
   },
-  github: {
-    token: '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',
-    owner: 'feb123t',
-    repo: '5ZKnn9F1GlxD',
+ github: {
+    token: '__GITHUB_TOKEN__',
+    owner: 'Davix81',
+    repo: 'expenses-data',
     branch: 'main',
-    filePath: 'expenses.json',
-    settingsFilePath: 'settings.json'
+    filePath: 'data/expenses.json',
+    settingsFilePath: 'data/settings.json'
   }
 };
