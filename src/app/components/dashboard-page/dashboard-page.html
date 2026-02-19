@@ -1,31 +1,25 @@
 <div class="page-container">
   <div class="page-header">
     <div class="dashboard-header">
-      <h1>Tauler de Despeses</h1>
-      <div class="header-controls">
+      <div class="header-title">
+        <h1>Tauler</h1>
         <mat-form-field class="year-selector" appearance="outline">
-          <mat-label>Año Fiscal</mat-label>
+          <mat-label>Any</mat-label>
           <mat-select [value]="selectedYear()" (selectionChange)="onYearChange($event.value)">
             <mat-option *ngFor="let year of availableYears()" [value]="year">
               {{ year }}
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <button mat-raised-button color="primary" class="desktop-button" (click)="goToExpenses()">
-          <mat-icon>list</mat-icon>
-          <span>Ver Lista Completa</span>
-        </button>
-        <button mat-raised-button color="accent" class="desktop-button" routerLink="/settings">
-          <mat-icon>settings</mat-icon>
-          <span>Configuració</span>
-        </button>
-        <button mat-mini-fab color="primary" class="mobile-button" (click)="goToExpenses()" aria-label="Ver lista">
+      </div>
+      <div class="header-actions">
+        <button mat-icon-button (click)="goToExpenses()" matTooltip="Llista" aria-label="Ver lista">
           <mat-icon>list</mat-icon>
         </button>
-        <button mat-mini-fab color="accent" class="mobile-button" routerLink="/settings" aria-label="Configuració">
+        <button mat-icon-button routerLink="/settings" matTooltip="Configuració" aria-label="Configuració">
           <mat-icon>settings</mat-icon>
         </button>
-        <button mat-icon-button (click)="logout()" aria-label="Tanca sessió">
+        <button mat-icon-button (click)="logout()" matTooltip="Tancar sessió" aria-label="Tanca sessió">
           <mat-icon>logout</mat-icon>
         </button>
       </div>

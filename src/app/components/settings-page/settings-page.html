@@ -2,22 +2,14 @@
   <div class="page-header">
     <div class="dashboard-header">
       <h1>Configuració</h1>
-      <div class="header-controls">
-        <button mat-raised-button color="primary" class="desktop-button" routerLink="/dashboard">
-          <mat-icon>dashboard</mat-icon>
-          <span>Tauler</span>
-        </button>
-        <button mat-raised-button color="accent" class="desktop-button" routerLink="/expenses">
-          <mat-icon>list</mat-icon>
-          <span>Llista de Despeses</span>
-        </button>
-        <button mat-mini-fab color="primary" class="mobile-button" routerLink="/dashboard" aria-label="Tauler">
+      <div class="header-actions">
+        <button mat-icon-button routerLink="/dashboard" matTooltip="Tauler" aria-label="Tauler">
           <mat-icon>dashboard</mat-icon>
         </button>
-        <button mat-mini-fab color="accent" class="mobile-button" routerLink="/expenses" aria-label="Llista de despeses">
+        <button mat-icon-button routerLink="/expenses" matTooltip="Llista" aria-label="Llista de despeses">
           <mat-icon>list</mat-icon>
         </button>
-        <button mat-icon-button (click)="logout()" aria-label="Tanca sessió">
+        <button mat-icon-button (click)="logout()" matTooltip="Tancar sessió" aria-label="Tanca sessió">
           <mat-icon>logout</mat-icon>
         </button>
       </div>
@@ -138,7 +130,7 @@
       </mat-card-header>
       <mat-card-content>
         <p class="section-description">Descarrega els arxius JSON tal com estan emmagatzemats a GitHub.</p>
-        <div class="export-buttons">
+        <div class="action-buttons">
           <button mat-raised-button color="primary" (click)="downloadExpensesJson()">
             <mat-icon>receipt_long</mat-icon>
             <span>Descarregar Expenses.json</span>
@@ -166,8 +158,8 @@
       </mat-card-header>
       <mat-card-content>
         <p class="section-description">Puja arxius JSON per actualitzar les dades a GitHub.</p>
-        <div class="import-section">
-          <div class="import-item">
+        <div class="action-buttons">
+          <div class="file-select-wrapper">
             <input #expensesFileInput type="file" accept=".json" (change)="onExpensesFileSelected($event)" style="display: none">
             <button mat-raised-button color="primary" (click)="expensesFileInput.click()">
               <mat-icon>receipt_long</mat-icon>
@@ -177,7 +169,7 @@
               <span class="file-name">{{ selectedExpensesFile.name }}</span>
             }
           </div>
-          <div class="import-item">
+          <div class="file-select-wrapper">
             <input #settingsFileInput type="file" accept=".json" (change)="onSettingsFileSelected($event)" style="display: none">
             <button mat-raised-button color="accent" (click)="settingsFileInput.click()">
               <mat-icon>settings</mat-icon>
@@ -188,7 +180,7 @@
             }
           </div>
         </div>
-        <div class="import-actions">
+        <div class="upload-action">
           <button mat-raised-button color="primary" (click)="uploadFiles()" [disabled]="!selectedExpensesFile && !selectedSettingsFile">
             <mat-icon>cloud_upload</mat-icon>
             <span>Pujar Arxius</span>

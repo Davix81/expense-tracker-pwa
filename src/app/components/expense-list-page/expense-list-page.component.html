@@ -1,17 +1,15 @@
 <div class="page-container">
   <div class="page-header">
     <div class="dashboard-header">
-      <h1>Llista de Despeses</h1>
-      <div class="header-controls">
-        <button mat-raised-button color="primary" class="desktop-button" (click)="goToDashboard()">
+      <h1>Llista</h1>
+      <div class="header-actions">
+        <button mat-icon-button (click)="goToDashboard()" matTooltip="Tauler" aria-label="Tauler">
           <mat-icon>dashboard</mat-icon>
-          <span>Tauler</span>
         </button>
-        <button mat-raised-button color="accent" class="desktop-button" routerLink="/settings">
+        <button mat-icon-button routerLink="/settings" matTooltip="Configuració" aria-label="Configuració">
           <mat-icon>settings</mat-icon>
-          <span>Configuració</span>
         </button>
-        <button mat-icon-button (click)="logout()" aria-label="Tanca sessió">
+        <button mat-icon-button (click)="logout()" matTooltip="Tancar sessió" aria-label="Tanca sessió">
           <mat-icon>logout</mat-icon>
         </button>
       </div>

@@ -30,37 +30,56 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
   gap: $spacing-base;
 
-  h1 {
-    margin: 0;
-    @include responsive-font-size($font-size-xl, $font-size-3xl);
-    font-weight: $font-weight-medium;
-  }
-
-  .header-controls {
+  .header-title {
     display: flex;
     align-items: center;
     gap: $spacing-md;
+    flex: 1;
+    min-width: 0;
+
+    h1 {
+      margin: 0;
+      @include responsive-font-size($font-size-lg, $font-size-2xl);
+      font-weight: $font-weight-medium;
+      white-space: nowrap;
+    }
 
     .year-selector {
-      width: 140px;
+      width: 100px;
       margin: 0;
 
       ::ng-deep .mat-mdc-form-field-subscript-wrapper {
         display: none;
       }
-    }
 
-    .desktop-button {
-      display: inline-flex;
-      align-items: center;
-      gap: $spacing-sm;
-    }
+      ::ng-deep .mat-mdc-text-field-wrapper {
+        padding: 0;
+      }
 
-    .mobile-button {
-      display: none;
+      ::ng-deep .mdc-text-field {
+        padding: 8px 12px;
+      }
+    }
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    flex-shrink: 0;
+
+    button {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
     }
   }
 }
@@ -366,7 +385,7 @@
 // Mobile styles (< 768px)
 @include respond-to-max('md') {
   .page-header {
-    padding: $spacing-base;
+    padding: $spacing-sm $spacing-base;
   }
 
   .page-content {
@@ -374,30 +393,41 @@
   }
 
   .dashboard-header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: $spacing-md;
+    gap: $spacing-sm;
 
-    h1 {
-      font-size: $font-size-lg;
-    }
-
-    .header-controls {
-      flex-direction: column;
+    .header-title {
       gap: $spacing-sm;
-      width: 100%;
+
+      h1 {
+        font-size: $font-size-base;
+      }
 
       .year-selector {
-        width: 100%;
-      }
+        width: 80px;
 
-      .desktop-button {
-        display: none;
-      }
+        ::ng-deep .mdc-text-field {
+          padding: 6px 8px;
+        }
 
-      .mobile-button {
-        display: inline-flex;
-        align-self: flex-end;
+        ::ng-deep .mat-mdc-form-field-infix {
+          min-height: 32px;
+          padding: 4px 0;
+        }
+      }
+    }
+
+    .header-actions {
+      gap: 0;
+
+      button {
+        width: 36px;
+        height: 36px;
+
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
       }
     }
   }
@@ -446,7 +476,7 @@
 // Tablet styles (768px - 1024px)
 @include respond-to('md') {
   .page-header {
-    padding: $spacing-lg;
+    padding: $spacing-base $spacing-lg;
   }
 
   .page-content {
@@ -454,24 +484,13 @@
   }
 
   .dashboard-header {
-    h1 {
-      font-size: $font-size-2xl;
-    }
-
-    .header-controls {
-      flex-direction: row;
-      width: auto;
+    .header-title {
+      h1 {
+        font-size: $font-size-xl;
+      }
 
       .year-selector {
-        width: 140px;
-      }
-
-      .desktop-button {
-        display: inline-flex;
-      }
-
-      .mobile-button {
-        display: none;
+        width: 110px;
       }
     }
   }
@@ -503,7 +522,7 @@
 // Desktop styles (> 1024px)
 @include respond-to('lg') {
   .page-header {
-    padding: $spacing-xl;
+    padding: $spacing-lg $spacing-xl;
   }
 
   .page-content {
@@ -511,8 +530,18 @@
   }
 
   .dashboard-header {
-    h1 {
-      font-size: $font-size-3xl;
+    .header-title {
+      h1 {
+        font-size: $font-size-2xl;
+      }
+
+      .year-selector {
+        width: 120px;
+      }
+    }
+
+    .header-actions {
+      gap: $spacing-sm;
     }
   }
 

@@ -30,28 +30,31 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
   gap: $spacing-base;
 
   h1 {
     margin: 0;
-    @include responsive-font-size($font-size-xl, $font-size-3xl);
+    @include responsive-font-size($font-size-lg, $font-size-2xl);
     font-weight: $font-weight-medium;
+    white-space: nowrap;
   }
 
-  .header-controls {
+  .header-actions {
     display: flex;
     align-items: center;
-    gap: $spacing-md;
+    gap: $spacing-xs;
+    flex-shrink: 0;
 
-    .desktop-button {
-      display: inline-flex;
-      align-items: center;
-      gap: $spacing-sm;
-    }
+    button {
+      width: 40px;
+      height: 40px;
+      padding: 0;
 
-    .mobile-button {
-      display: none;
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
     }
   }
 }
@@ -213,7 +216,8 @@
   font-style: italic;
 }
 
-.export-buttons {
+// Common action buttons style (export and import)
+.action-buttons {
   display: flex;
   gap: $spacing-lg;
   flex-wrap: wrap;
@@ -232,31 +236,16 @@
       height: 20px;
     }
   }
-}
 
-.import-section {
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-base;
-  margin-bottom: $spacing-base;
-
-  .import-item {
+  .file-select-wrapper {
     display: flex;
-    align-items: center;
-    gap: $spacing-base;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: $spacing-xs;
+    flex: 1;
+    min-width: 200px;
 
     button {
-      display: flex;
-      align-items: center;
-      gap: $spacing-sm;
-      min-width: 200px;
-
-      mat-icon {
-        font-size: 20px;
-        width: 20px;
-        height: 20px;
-      }
+      width: 100%;
     }
 
     .file-name {
@@ -264,11 +253,12 @@
       font-size: $font-size-sm;
       font-style: italic;
       word-break: break-all;
+      padding: 0 $spacing-xs;
     }
   }
 }
 
-.import-actions {
+.upload-action {
   display: flex;
   justify-content: center;
   margin-bottom: $spacing-base;
@@ -290,7 +280,7 @@
 // Mobile styles (< 768px)
 @include respond-to-max('md') {
   .page-header {
-    padding: $spacing-base;
+    padding: $spacing-sm $spacing-base;
   }
 
   .page-content {
@@ -298,26 +288,24 @@
   }
 
   .dashboard-header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: $spacing-md;
+    gap: $spacing-sm;
 
     h1 {
-      font-size: $font-size-lg;
+      font-size: $font-size-base;
     }
 
-    .header-controls {
-      flex-direction: column;
-      gap: $spacing-sm;
-      width: 100%;
+    .header-actions {
+      gap: 0;
 
-      .desktop-button {
-        display: none;
-      }
+      button {
+        width: 36px;
+        height: 36px;
 
-      .mobile-button {
-        display: inline-flex;
-        align-self: flex-end;
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
       }
     }
   }
@@ -413,7 +401,7 @@
     margin-bottom: $spacing-sm;
   }
 
-  .export-buttons {
+  .action-buttons {
     flex-direction: column;
     gap: $spacing-sm;
 
@@ -428,26 +416,13 @@
         height: 18px;
       }
     }
-  }
 
-  .import-section {
-    gap: $spacing-sm;
-
-    .import-item {
-      flex-direction: column;
-      align-items: stretch;
-      gap: $spacing-sm;
+    .file-select-wrapper {
+      width: 100%;
+      min-width: unset;
 
       button {
         width: 100%;
-        min-width: unset;
-        font-size: $font-size-sm;
-
-        mat-icon {
-          font-size: 18px;
-          width: 18px;
-          height: 18px;
-        }
       }
 
       .file-name {
@@ -457,7 +432,7 @@
     }
   }
 
-  .import-actions {
+  .upload-action {
     button {
       width: 100%;
       min-width: unset;
@@ -604,8 +579,9 @@
     margin-bottom: $spacing-lg;
   }
 
-  .export-buttons {
-    button {
+  .action-buttons {
+    button,
+    .file-select-wrapper {
       min-width: 220px;
     }
   }
@@ -680,8 +656,9 @@
     }
   }
 
-  .export-buttons {
-    button {
+  .action-buttons {
+    button,
+    .file-select-wrapper {
       min-width: 250px;
     }
   }
