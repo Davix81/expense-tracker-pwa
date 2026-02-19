@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1771537290142,
+  "timestamp": 1771537780035,
   "index": "expense-tracker-pwa/index.html",
   "assetGroups": [
     {
@@ -17,7 +17,7 @@
         "expense-tracker-pwa/chunk-ULYIJNJZ.js",
         "expense-tracker-pwa/favicon.ico",
         "expense-tracker-pwa/index.html",
-        "expense-tracker-pwa/main-NETLXVK2.js",
+        "expense-tracker-pwa/main-WMRB3MT7.js",
         "expense-tracker-pwa/manifest.webmanifest",
         "expense-tracker-pwa/styles-EMUERODY.css"
       ],
@@ -73,8 +73,8 @@
     "expense-tracker-pwa/icons/icon-512x512.png": "1de182f76f7329dfa8f9fcdd1fdcdd695bea6a99",
     "expense-tracker-pwa/icons/icon-72x72.png": "aa88a6096bd973be7f6d7a5489bfa6bc2463f8c4",
     "expense-tracker-pwa/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
-    "expense-tracker-pwa/index.html": "28106495277e3d2380c1a25674ddac914fcd188e",
-    "expense-tracker-pwa/main-NETLXVK2.js": "ea0d600d2d474869477ac6088e9ae56367945b6d",
+    "expense-tracker-pwa/index.html": "47a2755c5ef1cfdda3f9a4689b1373be4956675a",
+    "expense-tracker-pwa/main-WMRB3MT7.js": "095ad99471d5145a075e2bf9eb5d71cdc851f89a",
     "expense-tracker-pwa/manifest.webmanifest": "905b3dbf84d60073e3a0f7a2ce815c14287e1442",
     "expense-tracker-pwa/styles-EMUERODY.css": "8ab2023af215c7e654e378ae2ea0649687708930"
   },
