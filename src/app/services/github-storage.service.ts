@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
 
 /**
  * Service responsible for persisting expense data to GitHub repository
- * 
+ *
  * Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.9
  */
 @Injectable({
@@ -22,7 +22,7 @@ export class GitHubStorageService {
 
   /**
    * Default settings to use when settings file doesn't exist
-   * 
+   *
    * Requirements: 9.6
    */
   private readonly defaultSettings: Settings = {
@@ -49,14 +49,14 @@ export class GitHubStorageService {
 
   /**
    * Reads expenses from GitHub repository
-   * 
+   *
    * Requirements: 5.1, 5.2
-   * 
+   *
    * @returns Observable of expense array
    */
   readExpenses(): Observable<Expense[]> {
     const url = `${this.baseUrl}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.filePath}`;
-    
+
     return this.http.get<GitHubFileResponse>(url, { headers: this.buildHeaders() }).pipe(
       map(response => this.decodeContent(response.content)),
       map(data => this.transformDates(data)),
@@ -73,14 +73,14 @@ export class GitHubStorageService {
 
   /**
    * Reads settings from GitHub repository
-   * 
+   *
    * Requirements: 9.1, 9.2, 9.6
-   * 
+   *
    * @returns Observable of Settings object
    */
   readSettings(): Observable<Settings> {
     const url = `${this.baseUrl}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.settingsFilePath}`;
-    
+
     return this.http.get<GitHubFileResponse>(url, { headers: this.buildHeaders() }).pipe(
       map(response => this.decodeContent(response.content)),
       map(data => this.transformSettingsDates(data)),
@@ -122,9 +122,9 @@ export class GitHubStorageService {
 
   /**
    * Writes expenses to GitHub repository
-   * 
+   *
    * Requirements: 5.3, 5.4, 5.5
-   * 
+   *
    * @param expenses Array of expenses to persist
    * @returns Observable that completes when write is successful
    */
@@ -142,14 +142,14 @@ export class GitHubStorageService {
 
   /**
    * Retrieves the current file SHA for updates
-   * 
+   *
    * Requirements: 5.4
-   * 
+   *
    * @returns Observable of file SHA string
    */
   private getFileSha(): Observable<string> {
     const url = `${this.baseUrl}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.filePath}`;
-    
+
     return this.http.get<GitHubFileResponse>(url, { headers: this.buildHeaders() }).pipe(
       map(response => response.sha),
       catchError(error => {
@@ -164,14 +164,14 @@ export class GitHubStorageService {
 
   /**
    * Retrieves the current settings file SHA for updates
-   * 
+   *
    * Requirements: 9.4
-   * 
+   *
    * @returns Observable of file SHA string
    */
   private getSettingsFileSha(): Observable<string> {
     const url = `${this.baseUrl}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.settingsFilePath}`;
-    
+
     return this.http.get<GitHubFileResponse>(url, { headers: this.buildHeaders() }).pipe(
       map(response => response.sha),
       catchError(error => {
@@ -186,7 +186,7 @@ export class GitHubStorageService {
 
   /**
    * Commits expenses to GitHub with the provided SHA
-   * 
+   *
    * @param expenses Expenses to commit
    * @param sha Current file SHA (empty string for new file)
    * @returns Observable that completes when commit is successful
@@ -194,7 +194,7 @@ export class GitHubStorageService {
   private commitExpenses(expenses: Expense[], sha: string): Observable<void> {
     const url = `${this.baseUrl}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.filePath}`;
     const content = this.encodeContent(expenses);
-    
+
     const body: any = {
       message: `Update expenses - ${new Date().toISOString()}`,
       content: content,
@@ -214,9 +214,9 @@ export class GitHubStorageService {
 
   /**
    * Commits settings to GitHub with the provided SHA
-   * 
+   *
    * Requirements: 9.1, 9.4
-   * 
+   *
    * @param settings Settings to commit
    * @param sha Current file SHA (empty string for new file)
    * @returns Observable that completes when commit is successful
@@ -224,7 +224,7 @@ export class GitHubStorageService {
   private commitSettings(settings: Settings, sha: string): Observable<void> {
     const url = `${this.baseUrl}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.settingsFilePath}`;
     const content = this.encodeContent(settings);
-    
+
     const body: any = {
       message: `Update settings - ${new Date().toISOString()}`,
       content: content,
@@ -244,9 +244,9 @@ export class GitHubStorageService {
 
   /**
    * Encodes expense data as Base64 JSON
-   * 
+   *
    * Requirements: 5.3
-   * 
+   *
    * @param data Data to encode
    * @returns Base64 encoded string
    */
@@ -258,9 +258,9 @@ export class GitHubStorageService {
 
   /**
    * Decodes Base64 JSON content
-   * 
+   *
    * Requirements: 5.2
-   * 
+   *
    * @param content Base64 encoded content
    * @returns Parsed JSON data
    */
@@ -274,14 +274,14 @@ export class GitHubStorageService {
 
   /**
    * Builds HTTP headers for GitHub API requests
-   * 
+   *
    * Requirements: 5.7
-   * 
+   *
    * @returns HttpHeaders with authentication and content type
    */
   private buildHeaders(): HttpHeaders {
-    console.log(this.config.token);
-    
+    console.log("token",this.config.token);
+
     return new HttpHeaders({
       'Authorization': `token ${this.config.token}`,
       'Accept': 'application/vnd.github.v3+json',
@@ -291,9 +291,9 @@ export class GitHubStorageService {
 
   /**
    * Handles conflict errors with retry logic
-   * 
+   *
    * Requirements: 5.5
-   * 
+   *
    * @param expenses Expenses to write
    * @param attempt Current attempt number
    * @returns Observable that retries the write operation
@@ -317,9 +317,9 @@ export class GitHubStorageService {
 
   /**
    * Handles conflict errors with retry logic for settings
-   * 
+   *
    * Requirements: 9.4
-   * 
+   *
    * @param settings Settings to write
    * @param attempt Current attempt number
    * @returns Observable that retries the write operation
@@ -343,7 +343,7 @@ export class GitHubStorageService {
 
   /**
    * Transforms date strings to Date objects
-   * 
+   *
    * @param expenses Array of expense data with date strings
    * @returns Array of expenses with Date objects
    */
@@ -358,9 +358,9 @@ export class GitHubStorageService {
 
   /**
    * Transforms lastUpdated date string to Date object in Settings
-   * 
+   *
    * Requirements: 9.2
-   * 
+   *
    * @param settings Settings data with lastUpdated as string
    * @returns Settings with lastUpdated as Date object
    */
@@ -373,9 +373,9 @@ export class GitHubStorageService {
 
   /**
    * Handles HTTP errors and returns descriptive error messages
-   * 
+   *
    * Requirements: 5.6, 5.9
-   * 
+   *
    * @param error HTTP error response
    * @returns Observable that throws descriptive error
    */
