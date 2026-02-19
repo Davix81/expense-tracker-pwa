@@ -45,6 +45,7 @@
     "@angular/compiler-cli": "^21.1.0",
     "@angular/material": "^21.1.4",
     "@types/uuid": "^10.0.0",
+    "angular-cli-ghpages": "^3.0.2",
     "fast-check": "^4.5.3",
     "jsdom": "^27.1.0",
     "typescript": "~5.9.2",
