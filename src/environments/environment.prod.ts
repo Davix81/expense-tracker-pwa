@@ -5,7 +5,7 @@ export const environment = {
     password: 'CHANGE_ME'
   },
   github: {
-    token: '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',
+    token: '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',
     owner: 'Davix81',
     repo: 'expenses-data',
     branch: 'main',
