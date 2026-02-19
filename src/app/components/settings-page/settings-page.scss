@@ -1,0 +1,688 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+@use '../../../styles/typography' as *;
+
+// Settings uses page-container layout (same as dashboard)
+.page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.page-header {
+  flex-shrink: 0;
+  @include responsive-spacing('padding', $spacing-base, $spacing-lg, $spacing-xl);
+  border-bottom: 1px solid $gray-300;
+  background: white;
+  z-index: $z-index-sticky;
+}
+
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  @include responsive-spacing('padding', $spacing-base, $spacing-lg, $spacing-xl);
+  @include custom-scrollbar();
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $spacing-base;
+
+  h1 {
+    margin: 0;
+    @include responsive-font-size($font-size-xl, $font-size-3xl);
+    font-weight: $font-weight-medium;
+  }
+
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+
+    .desktop-button {
+      display: inline-flex;
+      align-items: center;
+      gap: $spacing-sm;
+    }
+
+    .mobile-button {
+      display: none;
+    }
+  }
+}
+
+.settings-section {
+  margin-bottom: $spacing-lg;
+  box-shadow: $shadow-md;
+
+  mat-card-header {
+    padding: $spacing-base;
+    background-color: $gray-50;
+    border-bottom: 1px solid $gray-200;
+
+    mat-card-title {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      margin: 0;
+      @include responsive-font-size($font-size-lg, $font-size-xl);
+      font-weight: $font-weight-medium;
+      color: $gray-900;
+
+      mat-icon {
+        color: $primary;
+      }
+    }
+  }
+
+  mat-card-content {
+    padding: $spacing-base;
+  }
+
+  .add-button {
+    width: 100%;
+    margin-bottom: $spacing-base;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-sm;
+  }
+
+  .empty-message {
+    text-align: center;
+    color: $gray-600;
+    padding: $spacing-xl;
+    margin: 0;
+    font-style: italic;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e8eaed;
+  }
+
+  .settings-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+
+    th {
+      font-weight: 600;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: linear-gradient(to bottom, #f8f9fa 0%, #f1f3f4 100%);
+      color: #5f6368;
+      border-bottom: 2px solid #e8eaed;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    td, th {
+      padding: 14px 18px;
+    }
+
+    td {
+      font-size: 14px;
+      color: #3c4043;
+      border-bottom: 1px solid #f1f3f4;
+    }
+
+    tr {
+      &:last-child td {
+        border-bottom: none;
+      }
+
+      &:hover {
+        background-color: #f8f9fa;
+      }
+    }
+
+    .actions-cell {
+      white-space: nowrap;
+      text-align: right;
+      width: 140px;
+    }
+
+    .action-button {
+      width: 36px !important;
+      height: 36px !important;
+      min-width: 36px !important;
+      margin: 0 4px !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) !important;
+      transition: all 0.2s ease !important;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+}
+
+.error-card {
+  margin-bottom: $spacing-lg;
+  background-color: lighten($warn, 40%);
+  border-left: 4px solid $warn;
+  box-shadow: $shadow-md;
+
+  mat-card-content {
+    padding: $spacing-base;
+
+    .error-content {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+
+      mat-icon {
+        flex-shrink: 0;
+      }
+
+      span {
+        color: darken($warn, 10%);
+        font-size: $font-size-sm;
+      }
+    }
+  }
+}
+
+.section-description {
+  color: $gray-600;
+  font-size: $font-size-sm;
+  margin-bottom: $spacing-base;
+  font-style: italic;
+}
+
+.export-buttons {
+  display: flex;
+  gap: $spacing-lg;
+  flex-wrap: wrap;
+  margin-bottom: $spacing-base;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    flex: 1;
+    min-width: 200px;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+.import-section {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-base;
+  margin-bottom: $spacing-base;
+
+  .import-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-base;
+    flex-wrap: wrap;
+
+    button {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      min-width: 200px;
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .file-name {
+      color: $gray-700;
+      font-size: $font-size-sm;
+      font-style: italic;
+      word-break: break-all;
+    }
+  }
+}
+
+.import-actions {
+  display: flex;
+  justify-content: center;
+  margin-bottom: $spacing-base;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    min-width: 200px;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+// Mobile styles (< 768px)
+@include respond-to-max('md') {
+  .page-header {
+    padding: $spacing-base;
+  }
+
+  .page-content {
+    padding: $spacing-base;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: $spacing-md;
+
+    h1 {
+      font-size: $font-size-lg;
+    }
+
+    .header-controls {
+      flex-direction: column;
+      gap: $spacing-sm;
+      width: 100%;
+
+      .desktop-button {
+        display: none;
+      }
+
+      .mobile-button {
+        display: inline-flex;
+        align-self: flex-end;
+      }
+    }
+  }
+
+  .settings-section {
+    margin-bottom: $spacing-base;
+
+    mat-card-header {
+      padding: $spacing-sm;
+
+      mat-card-title {
+        font-size: $font-size-base;
+
+        mat-icon {
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+
+    mat-card-content {
+      padding: $spacing-sm;
+    }
+
+    .add-button {
+      font-size: $font-size-sm;
+      padding: $spacing-sm;
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .empty-message {
+      padding: $spacing-base;
+      font-size: $font-size-sm;
+    }
+
+    .settings-table {
+      td, th {
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+
+      th {
+        font-size: 11px;
+      }
+
+      .actions-cell {
+        width: 100px;
+      }
+
+      .action-button {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        margin: 0 2px !important;
+
+        mat-icon {
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+  }
+
+  .error-card {
+    margin-bottom: $spacing-base;
+
+    mat-card-content {
+      padding: $spacing-sm;
+
+      .error-content {
+        span {
+          font-size: $font-size-xs;
+        }
+
+        mat-icon {
+          font-size: 20px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
+
+  .section-description {
+    font-size: $font-size-xs;
+    margin-bottom: $spacing-sm;
+  }
+
+  .export-buttons {
+    flex-direction: column;
+    gap: $spacing-sm;
+
+    button {
+      width: 100%;
+      min-width: unset;
+      font-size: $font-size-sm;
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
+  .import-section {
+    gap: $spacing-sm;
+
+    .import-item {
+      flex-direction: column;
+      align-items: stretch;
+      gap: $spacing-sm;
+
+      button {
+        width: 100%;
+        min-width: unset;
+        font-size: $font-size-sm;
+
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
+      }
+
+      .file-name {
+        font-size: $font-size-xs;
+        text-align: center;
+      }
+    }
+  }
+
+  .import-actions {
+    button {
+      width: 100%;
+      min-width: unset;
+      font-size: $font-size-sm;
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+}
+
+// Small mobile (< 480px)
+@include respond-to-max('sm') {
+  .page-header {
+    padding: $spacing-sm;
+  }
+
+  .page-content {
+    padding: $spacing-sm;
+  }
+
+  .dashboard-header {
+    gap: $spacing-sm;
+
+    h1 {
+      font-size: $font-size-base;
+    }
+  }
+
+  .settings-section {
+    mat-list {
+      mat-list-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: $spacing-sm;
+
+        .item-name {
+          width: 100%;
+        }
+
+        .item-actions {
+          width: 100%;
+          justify-content: flex-end;
+        }
+      }
+    }
+
+    .settings-table {
+      td, th {
+        padding: 8px 10px;
+        font-size: 12px;
+      }
+
+      th {
+        font-size: 10px;
+      }
+
+      .actions-cell {
+        width: 90px;
+      }
+
+      .action-button {
+        width: 30px !important;
+        height: 30px !important;
+        min-width: 30px !important;
+
+        mat-icon {
+          font-size: 14px;
+          width: 14px;
+          height: 14px;
+        }
+      }
+    }
+  }
+}
+
+// Tablet styles (768px - 1024px)
+@include respond-to('md') {
+  .page-header {
+    padding: $spacing-lg;
+  }
+
+  .page-content {
+    padding: $spacing-lg;
+  }
+
+  .dashboard-header {
+    h1 {
+      font-size: $font-size-2xl;
+    }
+
+    .header-controls {
+      flex-direction: row;
+      width: auto;
+
+      .desktop-button {
+        display: inline-flex;
+      }
+
+      .mobile-button {
+        display: none;
+      }
+    }
+  }
+
+  .settings-section {
+    margin-bottom: $spacing-lg;
+
+    mat-card-header {
+      padding: $spacing-base;
+
+      mat-card-title {
+        font-size: $font-size-lg;
+      }
+    }
+
+    mat-card-content {
+      padding: $spacing-base;
+    }
+
+    .add-button {
+      max-width: 300px;
+    }
+
+    .empty-message {
+      padding: $spacing-xl;
+    }
+
+    .settings-table {
+      td, th {
+        padding: 12px 16px;
+      }
+
+      .actions-cell {
+        width: 120px;
+      }
+    }
+  }
+
+  .error-card {
+    margin-bottom: $spacing-lg;
+  }
+
+  .export-buttons {
+    button {
+      min-width: 220px;
+    }
+  }
+}
+
+// Desktop styles (> 1024px)
+@include respond-to('lg') {
+  .page-header {
+    padding: $spacing-xl;
+  }
+
+  .page-content {
+    padding: $spacing-xl;
+  }
+
+  .dashboard-header {
+    h1 {
+      font-size: $font-size-3xl;
+    }
+  }
+
+  .settings-section {
+    margin-bottom: $spacing-xl;
+
+    mat-card-header {
+      padding: $spacing-lg;
+
+      mat-card-title {
+        font-size: $font-size-xl;
+      }
+    }
+
+    mat-card-content {
+      padding: $spacing-lg;
+    }
+
+    .add-button {
+      max-width: 300px;
+    }
+
+    .empty-message {
+      padding: $spacing-2xl;
+    }
+
+    .settings-table {
+      td, th {
+        padding: 14px 18px;
+      }
+
+      .actions-cell {
+        width: 140px;
+      }
+
+      .action-button {
+        width: 36px !important;
+        height: 36px !important;
+
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
+  }
+
+  .error-card {
+    margin-bottom: $spacing-xl;
+
+    mat-card-content {
+      padding: $spacing-lg;
+    }
+  }
+
+  .export-buttons {
+    button {
+      min-width: 250px;
+    }
+  }
+}

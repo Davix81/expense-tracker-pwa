@@ -1,0 +1,386 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+@use '../../../styles/typography' as *;
+
+// Expense list uses page-container layout
+.page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $spacing-base;
+
+  h1 {
+    margin: 0;
+    @include responsive-font-size($font-size-xl, $font-size-3xl);
+    font-weight: $font-weight-medium;
+  }
+
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+
+    .year-selector {
+      width: 140px;
+      margin: 0;
+
+      ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+        display: none;
+      }
+    }
+
+    .desktop-button {
+      display: inline-flex;
+      align-items: center;
+      gap: $spacing-sm;
+    }
+
+    .mobile-button {
+      display: none;
+    }
+  }
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+// Toolbar styles
+.app-toolbar {
+  flex-shrink: 0;
+  z-index: $z-index-sticky;
+  box-shadow: $shadow-md;
+
+  .app-title {
+    @include responsive-font-size($font-size-base, $font-size-lg);
+    font-weight: $font-weight-medium;
+  }
+
+  .toolbar-buttons {
+    display: flex;
+    gap: $spacing-sm;
+
+    .toolbar-button {
+      mat-icon {
+        margin-right: $spacing-sm;
+      }
+    }
+  }
+
+  .mobile-toolbar-buttons {
+    display: none;
+  }
+}
+
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  @include responsive-spacing('padding', $spacing-base, $spacing-lg, $spacing-xl);
+  @include custom-scrollbar();
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-4xl;
+  
+  p {
+    margin-top: $spacing-base;
+    color: $gray-600;
+  }
+}
+
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-4xl;
+  text-align: center;
+  
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: $spacing-base;
+  }
+  
+  p {
+    margin-bottom: $spacing-base;
+    color: $gray-900;
+  }
+}
+
+.error-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: $spacing-base;
+  
+  button {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-4xl;
+  text-align: center;
+  
+  mat-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: $gray-400;
+    margin-bottom: $spacing-base;
+  }
+  
+  h2 {
+    margin: 0 0 $spacing-sm 0;
+    color: $gray-900;
+  }
+  
+  p {
+    margin: 0;
+    color: $gray-600;
+  }
+}
+
+.table-container {
+  margin-top: $spacing-base;
+}
+
+.fab-button {
+  position: fixed;
+  bottom: $spacing-xl;
+  right: $spacing-xl;
+  z-index: $z-index-fixed;
+  box-shadow: $shadow-lg;
+  transition: transform $transition-fast, box-shadow $transition-fast;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: $shadow-xl;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+// Mobile styles (< 768px)
+@include respond-to-max('md') {
+  .app-toolbar {
+    padding: 0 $spacing-sm;
+
+    .app-title {
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+    }
+
+    // Hide text buttons on mobile
+    .toolbar-buttons {
+      display: none;
+    }
+
+    // Show icon-only buttons on mobile
+    .mobile-toolbar-buttons {
+      display: flex;
+      gap: $spacing-xs;
+    }
+  }
+
+  .page-content {
+    padding: $spacing-base $spacing-sm;
+  }
+  
+  .fab-button {
+    bottom: $spacing-base;
+    right: $spacing-base;
+    
+    ::ng-deep .mat-mdc-fab {
+      width: 56px;
+      height: 56px;
+    }
+
+    ::ng-deep .mat-icon {
+      font-size: 24px;
+    }
+  }
+
+  .loading-container,
+  .error-container,
+  .empty-state {
+    padding: $spacing-xl $spacing-base;
+    
+    mat-icon {
+      font-size: 40px;
+      width: 40px;
+      height: 40px;
+    }
+    
+    h2 {
+      font-size: $font-size-lg;
+    }
+    
+    p {
+      font-size: $font-size-sm;
+    }
+  }
+
+  .table-container {
+    margin-top: $spacing-sm;
+  }
+}
+
+// Small mobile (< 480px)
+@include respond-to-max('sm') {
+  .app-toolbar {
+    .app-title {
+      font-size: $font-size-sm;
+      max-width: 150px;
+      @include truncate;
+    }
+
+    .mobile-toolbar-buttons {
+      gap: 0;
+
+      button {
+        padding: 0 $spacing-sm;
+      }
+    }
+  }
+
+  .page-content {
+    padding: $spacing-sm $spacing-xs;
+  }
+
+  .fab-button {
+    bottom: $spacing-md;
+    right: $spacing-md;
+
+    ::ng-deep .mat-mdc-fab {
+      width: 48px;
+      height: 48px;
+    }
+
+    ::ng-deep .mat-icon {
+      font-size: 20px;
+    }
+  }
+}
+
+// Tablet styles (768px - 1024px)
+@include respond-to('md') {
+  .app-toolbar {
+    .app-title {
+      font-size: $font-size-lg;
+    }
+
+    .toolbar-buttons {
+      display: flex;
+
+      .toolbar-button {
+        font-size: $font-size-sm;
+
+        mat-icon {
+          margin-right: $spacing-sm;
+        }
+      }
+    }
+
+    .mobile-toolbar-buttons {
+      display: none;
+    }
+  }
+
+  .page-content {
+    padding: $spacing-lg;
+  }
+  
+  .fab-button {
+    bottom: $spacing-lg;
+    right: $spacing-lg;
+  }
+
+  .loading-container,
+  .error-container,
+  .empty-state {
+    padding: $spacing-3xl;
+    
+    mat-icon {
+      font-size: 56px;
+      width: 56px;
+      height: 56px;
+    }
+  }
+
+  .table-container {
+    margin-top: $spacing-md;
+  }
+}
+
+// Desktop styles (> 1024px)
+@include respond-to('lg') {
+  .app-toolbar {
+    .app-title {
+      font-size: $font-size-lg;
+    }
+
+    .toolbar-buttons {
+      display: flex;
+
+      .toolbar-button {
+        font-size: $font-size-sm;
+
+        mat-icon {
+          margin-right: $spacing-sm;
+        }
+      }
+    }
+
+    .mobile-toolbar-buttons {
+      display: none;
+    }
+  }
+
+  .page-content {
+    padding: $spacing-xl;
+  }
+  
+  .fab-button {
+    bottom: $spacing-xl;
+    right: $spacing-xl;
+  }
+
+  .loading-container,
+  .error-container,
+  .empty-state {
+    padding: $spacing-4xl;
+    
+    mat-icon {
+      font-size: 64px;
+      width: 64px;
+      height: 64px;
+    }
+  }
+
+  .table-container {
+    margin-top: $spacing-base;
+  }
+}

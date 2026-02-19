@@ -1,0 +1,72 @@
+<div class="page-container">
+  <div class="page-header">
+    <div class="dashboard-header">
+      <h1>Llista de Despeses</h1>
+      <div class="header-controls">
+        <button mat-raised-button color="primary" class="desktop-button" (click)="goToDashboard()">
+          <mat-icon>dashboard</mat-icon>
+          <span>Tauler</span>
+        </button>
+        <button mat-raised-button color="accent" class="desktop-button" routerLink="/settings">
+          <mat-icon>settings</mat-icon>
+          <span>Configuració</span>
+        </button>
+        <button mat-icon-button (click)="logout()" aria-label="Tanca sessió">
+          <mat-icon>logout</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="page-content">
+    <!-- Loading Spinner -->
+    <div *ngIf="isLoading" class="loading-container">
+      <mat-spinner></mat-spinner>
+      <p>Carregant despeses...</p>
+    </div>
+
+    <!-- Error Message Display -->
+    <app-notification-message 
+      *ngIf="!isLoading"
+      [message]="errorMessage" 
+      type="error" 
+      [show]="showErrorMessage">
+    </app-notification-message>
+
+    <div *ngIf="showErrorMessage && !isLoading" class="error-actions">
+      <button mat-raised-button color="primary" (click)="loadExpenses()">
+        <mat-icon>refresh</mat-icon>
+        <span>Reintenta</span>
+      </button>
+    </div>
+
+    <!-- Empty State Message -->
+    <div *ngIf="!isLoading && !showErrorMessage && expenses.length === 0" class="empty-state">
+      <mat-icon>receipt_long</mat-icon>
+      <h2>Encara no hi ha despeses</h2>
+      <p>Prem el botó "Afegeix despesa" per començar</p>
+    </div>
+
+    <!-- Expense Table -->
+    <div *ngIf="!isLoading && !showErrorMessage && expenses.length > 0" class="table-container">
+      <app-expense-table 
+        [expenses]="expenses"
+        [selectedYear]="selectedYear"
+        (edit)="openEditDialog($event)"
+        (delete)="confirmDelete($event)"
+        (yearChange)="onYearChange($event)">
+      </app-expense-table>
+    </div>
+  </div>
+
+  <!-- Floating Action Button for Add Expense -->
+  <button
+    mat-fab
+    color="primary"
+    class="fab-button"
+    (click)="openAddDialog()"
+    aria-label="Afegeix despesa">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

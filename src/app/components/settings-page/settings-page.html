@@ -1,0 +1,205 @@
+<div class="page-container">
+  <div class="page-header">
+    <div class="dashboard-header">
+      <h1>Configuració</h1>
+      <div class="header-controls">
+        <button mat-raised-button color="primary" class="desktop-button" routerLink="/dashboard">
+          <mat-icon>dashboard</mat-icon>
+          <span>Tauler</span>
+        </button>
+        <button mat-raised-button color="accent" class="desktop-button" routerLink="/expenses">
+          <mat-icon>list</mat-icon>
+          <span>Llista de Despeses</span>
+        </button>
+        <button mat-mini-fab color="primary" class="mobile-button" routerLink="/dashboard" aria-label="Tauler">
+          <mat-icon>dashboard</mat-icon>
+        </button>
+        <button mat-mini-fab color="accent" class="mobile-button" routerLink="/expenses" aria-label="Llista de despeses">
+          <mat-icon>list</mat-icon>
+        </button>
+        <button mat-icon-button (click)="logout()" aria-label="Tanca sessió">
+          <mat-icon>logout</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-content">
+    <!-- Categories Section -->
+    <mat-card class="settings-section">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>category</mat-icon>
+          Categories
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <button mat-raised-button color="primary" class="add-button" (click)="onAddCategory()">
+          <mat-icon>add</mat-icon>
+          Afegir Categoria
+        </button>
+
+        @if ((categories$ | async)?.length === 0) {
+          <p class="empty-message">No hi ha categories. Afegeix-ne una per començar.</p>
+        } @else {
+          <div class="table-wrapper">
+            <table mat-table [dataSource]="(categories$ | async) ?? []" class="settings-table">
+              <!-- Name Column -->
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Nom</th>
+                <td mat-cell *matCellDef="let category">{{ category }}</td>
+              </ng-container>
+
+              <!-- Actions Column -->
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Accions</th>
+                <td mat-cell *matCellDef="let category" class="actions-cell">
+                  <button mat-mini-fab color="primary" (click)="onEditCategory(category)" matTooltip="Editar" class="action-button">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-mini-fab color="warn" (click)="onDeleteCategory(category)" matTooltip="Eliminar" class="action-button">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Tags Section -->
+    <mat-card class="settings-section">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>label</mat-icon>
+          Etiquetes
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <button mat-raised-button color="primary" class="add-button" (click)="onAddTag()">
+          <mat-icon>add</mat-icon>
+          Afegir Etiqueta
+        </button>
+
+        @if ((tags$ | async)?.length === 0) {
+          <p class="empty-message">No hi ha etiquetes. Afegeix-ne una per començar.</p>
+        } @else {
+          <div class="table-wrapper">
+            <table mat-table [dataSource]="(tags$ | async) ?? []" class="settings-table">
+              <!-- Name Column -->
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Nom</th>
+                <td mat-cell *matCellDef="let tag">{{ tag }}</td>
+              </ng-container>
+
+              <!-- Actions Column -->
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Accions</th>
+                <td mat-cell *matCellDef="let tag" class="actions-cell">
+                  <button mat-mini-fab color="primary" (click)="onEditTag(tag)" matTooltip="Editar" class="action-button">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-mini-fab color="warn" (click)="onDeleteTag(tag)" matTooltip="Eliminar" class="action-button">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    @if (errorMessage) {
+      <mat-card class="error-card">
+        <mat-card-content>
+          <div class="error-content">
+            <mat-icon color="warn">error</mat-icon>
+            <span>{{ errorMessage }}</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+
+    <!-- Export Data Section -->
+    <mat-card class="settings-section">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>download</mat-icon>
+          Exportar Dades
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="section-description">Descarrega els arxius JSON tal com estan emmagatzemats a GitHub.</p>
+        <div class="export-buttons">
+          <button mat-raised-button color="primary" (click)="downloadExpensesJson()">
+            <mat-icon>receipt_long</mat-icon>
+            <span>Descarregar Expenses.json</span>
+          </button>
+          <button mat-raised-button color="accent" (click)="downloadSettingsJson()">
+            <mat-icon>settings</mat-icon>
+            <span>Descarregar Settings.json</span>
+          </button>
+        </div>
+        <app-notification-message 
+          [message]="downloadMessage" 
+          [type]="downloadType" 
+          [show]="showDownloadMessage">
+        </app-notification-message>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Import Data Section -->
+    <mat-card class="settings-section">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>upload</mat-icon>
+          Importar Dades
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="section-description">Puja arxius JSON per actualitzar les dades a GitHub.</p>
+        <div class="import-section">
+          <div class="import-item">
+            <input #expensesFileInput type="file" accept=".json" (change)="onExpensesFileSelected($event)" style="display: none">
+            <button mat-raised-button color="primary" (click)="expensesFileInput.click()">
+              <mat-icon>receipt_long</mat-icon>
+              <span>Seleccionar Expenses.json</span>
+            </button>
+            @if (selectedExpensesFile) {
+              <span class="file-name">{{ selectedExpensesFile.name }}</span>
+            }
+          </div>
+          <div class="import-item">
+            <input #settingsFileInput type="file" accept=".json" (change)="onSettingsFileSelected($event)" style="display: none">
+            <button mat-raised-button color="accent" (click)="settingsFileInput.click()">
+              <mat-icon>settings</mat-icon>
+              <span>Seleccionar Settings.json</span>
+            </button>
+            @if (selectedSettingsFile) {
+              <span class="file-name">{{ selectedSettingsFile.name }}</span>
+            }
+          </div>
+        </div>
+        <div class="import-actions">
+          <button mat-raised-button color="primary" (click)="uploadFiles()" [disabled]="!selectedExpensesFile && !selectedSettingsFile">
+            <mat-icon>cloud_upload</mat-icon>
+            <span>Pujar Arxius</span>
+          </button>
+        </div>
+        <app-notification-message 
+          [message]="uploadMessage" 
+          [type]="uploadType" 
+          [show]="showUploadMessage">
+        </app-notification-message>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
