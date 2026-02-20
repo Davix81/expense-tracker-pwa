@@ -318,8 +318,30 @@ All platforms support HTTPS and custom domains, which are required for PWA funct
 
 **401/403 Authentication Failed**
 - Verify your GitHub token is correct
-- Ensure the token has `repo` scope
+- Ensure the token has `repo` scope (full control of private repositories)
 - Check that the token hasn't expired
+- **Test your token**: Run `EXPENSES_DATA_TOKEN=your_token node scripts/test-token.js`
+- For GitHub Actions deployment, verify the secret `EXPENSES_DATA_TOKEN` is set correctly
+
+**Testing Token Locally**
+```bash
+# Windows (CMD)
+set EXPENSES_DATA_TOKEN=your_token_here
+node scripts/test-token.js
+
+# Windows (PowerShell)
+$env:EXPENSES_DATA_TOKEN="your_token_here"
+node scripts/test-token.js
+
+# Linux/Mac
+EXPENSES_DATA_TOKEN=your_token_here node scripts/test-token.js
+```
+
+**GitHub Actions Deployment Issues**
+- Check workflow logs for "Token injected successfully" message
+- Verify `EXPENSES_DATA_TOKEN` secret exists in repository Settings > Secrets
+- Ensure the token has access to the `expenses-data` repository
+- See `TOKEN-SETUP.md` for detailed token configuration guide
 
 **404 Not Found**
 - Verify the repository owner, name, and branch are correct

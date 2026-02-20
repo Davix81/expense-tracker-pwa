@@ -25,6 +25,16 @@ jobs:
           EXPENSES_DATA_TOKEN: ${{ secrets.EXPENSES_DATA_TOKEN }}
         run: node scripts/inject-token.js
 
+      - name: Verify Token Injection
+        run: |
+          echo "Checking if token was injected..."
+          if grep -q "__GITHUB_TOKEN__" src/environments/environment.prod.ts; then
+            echo "ERROR: Token placeholder still exists!"
+            exit 1
+          else
+            echo "✅ Token placeholder replaced successfully"
+          fi
+
       - name: Build
         run: npm run build -- --configuration production --base-href /expense-tracker-pwa/
 
