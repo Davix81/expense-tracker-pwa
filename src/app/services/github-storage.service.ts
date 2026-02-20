@@ -280,8 +280,6 @@ export class GitHubStorageService {
    * @returns HttpHeaders with authentication and content type
    */
   private buildHeaders(): HttpHeaders {
-    console.log("token",this.config.token);
-
     return new HttpHeaders({
       'Authorization': `token ${this.config.token}`,
       'Accept': 'application/vnd.github.v3+json',
