@@ -223,6 +223,10 @@
   flex-wrap: wrap;
   margin-bottom: $spacing-base;
 
+  input[type="file"] {
+    display: none;
+  }
+
   button {
     display: flex;
     align-items: center;
@@ -236,24 +240,35 @@
       height: 20px;
     }
   }
+}
 
-  .file-select-wrapper {
+.selected-files {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-base;
+  padding: $spacing-base;
+  background-color: $gray-50;
+  border-radius: $border-radius-base;
+  border: 1px solid $gray-200;
+
+  .file-info {
     display: flex;
-    flex-direction: column;
-    gap: $spacing-xs;
-    flex: 1;
-    min-width: 200px;
+    align-items: center;
+    gap: $spacing-sm;
+    color: $gray-700;
 
-    button {
-      width: 100%;
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      color: $primary;
     }
 
     .file-name {
-      color: $gray-700;
       font-size: $font-size-sm;
-      font-style: italic;
+      font-weight: $font-weight-medium;
       word-break: break-all;
-      padding: 0 $spacing-xs;
     }
   }
 }
@@ -416,18 +431,20 @@
         height: 18px;
       }
     }
+  }
 
-    .file-select-wrapper {
-      width: 100%;
-      min-width: unset;
+  .selected-files {
+    padding: $spacing-sm;
 
-      button {
-        width: 100%;
+    .file-info {
+      mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
       }
 
       .file-name {
         font-size: $font-size-xs;
-        text-align: center;
       }
     }
   }
@@ -580,8 +597,7 @@
   }
 
   .action-buttons {
-    button,
-    .file-select-wrapper {
+    button {
       min-width: 220px;
     }
   }
@@ -657,8 +673,7 @@
   }
 
   .action-buttons {
-    button,
-    .file-select-wrapper {
+    button {
       min-width: 250px;
     }
   }

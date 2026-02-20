@@ -159,27 +159,33 @@
       <mat-card-content>
         <p class="section-description">Puja arxius JSON per actualitzar les dades a GitHub.</p>
         <div class="action-buttons">
-          <div class="file-select-wrapper">
-            <input #expensesFileInput type="file" accept=".json" (change)="onExpensesFileSelected($event)" style="display: none">
-            <button mat-raised-button color="primary" (click)="expensesFileInput.click()">
-              <mat-icon>receipt_long</mat-icon>
-              <span>Seleccionar Expenses.json</span>
-            </button>
-            @if (selectedExpensesFile) {
-              <span class="file-name">{{ selectedExpensesFile.name }}</span>
-            }
-          </div>
-          <div class="file-select-wrapper">
-            <input #settingsFileInput type="file" accept=".json" (change)="onSettingsFileSelected($event)" style="display: none">
-            <button mat-raised-button color="accent" (click)="settingsFileInput.click()">
-              <mat-icon>settings</mat-icon>
-              <span>Seleccionar Settings.json</span>
-            </button>
-            @if (selectedSettingsFile) {
-              <span class="file-name">{{ selectedSettingsFile.name }}</span>
-            }
-          </div>
+          <input #expensesFileInput type="file" accept=".json" (change)="onExpensesFileSelected($event)" style="display: none">
+          <button mat-raised-button color="primary" (click)="expensesFileInput.click()">
+            <mat-icon>receipt_long</mat-icon>
+            <span>Seleccionar Expenses.json</span>
+          </button>
+          <input #settingsFileInput type="file" accept=".json" (change)="onSettingsFileSelected($event)" style="display: none">
+          <button mat-raised-button color="accent" (click)="settingsFileInput.click()">
+            <mat-icon>settings</mat-icon>
+            <span>Seleccionar Settings.json</span>
+          </button>
         </div>
+        @if (selectedExpensesFile || selectedSettingsFile) {
+          <div class="selected-files">
+            @if (selectedExpensesFile) {
+              <div class="file-info">
+                <mat-icon>receipt_long</mat-icon>
+                <span class="file-name">{{ selectedExpensesFile.name }}</span>
+              </div>
+            }
+            @if (selectedSettingsFile) {
+              <div class="file-info">
+                <mat-icon>settings</mat-icon>
+                <span class="file-name">{{ selectedSettingsFile.name }}</span>
+              </div>
+            }
+          </div>
+        }
         <div class="upload-action">
           <button mat-raised-button color="primary" (click)="uploadFiles()" [disabled]="!selectedExpensesFile && !selectedSettingsFile">
             <mat-icon>cloud_upload</mat-icon>
