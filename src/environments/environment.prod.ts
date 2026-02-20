@@ -5,7 +5,7 @@ export const environment = {
     password: '123'
   },
   github: {
-    token: '__GITHUB_TOKEN__', // Placeholder reemplazado en build time
+    token: 'PLACEHOLDER_GH_ACCESS_KEY', // Placeholder reemplazado en build time
     owner: 'Davix81',
     repo: 'expenses-data',
     branch: 'main',

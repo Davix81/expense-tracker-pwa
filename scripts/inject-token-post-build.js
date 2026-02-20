@@ -60,17 +60,17 @@ jsFiles.forEach(file => {
   const originalContent = content;
 
   // Contar ocurrencias antes del reemplazo
-  const matches = content.match(/__GITHUB_TOKEN__/g);
+  const matches = content.match(/PLACEHOLDER_GH_ACCESS_KEY/g);
 
   if (matches && matches.length > 0) {
     console.log(`📝 Processing: ${path.basename(file)}`);
-    console.log(`   Found ${matches.length} occurrence(s) of __GITHUB_TOKEN__`);
+    console.log(`   Found ${matches.length} occurrence(s) of PLACEHOLDER_GH_ACCESS_KEY`);
 
     // Reemplazar todas las ocurrencias
-    content = content.replace(/__GITHUB_TOKEN__/g, token);
+    content = content.replace(/PLACEHOLDER_GH_ACCESS_KEY/g, token);
 
     // Verificar que el reemplazo funcionó
-    if (content.includes('__GITHUB_TOKEN__')) {
+    if (content.includes('PLACEHOLDER_GH_ACCESS_KEY')) {
       console.error(`   ❌ ERROR: Replacement failed in ${file}`);
       process.exit(1);
     }
@@ -108,7 +108,7 @@ let stillContainsPlaceholder = false;
 
 verification.forEach(file => {
   const content = fs.readFileSync(file, 'utf8');
-  if (content.includes('__GITHUB_TOKEN__')) {
+  if (content.includes('PLACEHOLDER_GH_ACCESS_KEY')) {
     console.error(`❌ ERROR: Placeholder still found in ${path.basename(file)}`);
     stillContainsPlaceholder = true;
   }

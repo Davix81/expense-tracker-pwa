@@ -13,22 +13,22 @@ console.log('Reading environment.prod.ts...');
 let content = fs.readFileSync(envPath, 'utf8');
 
 // Verificar que el placeholder existe
-if (!content.includes('__GITHUB_TOKEN__')) {
-  console.error('ERROR: Placeholder __GITHUB_TOKEN__ not found in environment.prod.ts!');
+if (!content.includes('PLACEHOLDER_GH_ACCESS_KEY')) {
+  console.error('ERROR: Placeholder PLACEHOLDER_GH_ACCESS_KEY not found in environment.prod.ts!');
   process.exit(1);
 }
 
 console.log('Replacing token placeholder...');
-content = content.replace(/'__GITHUB_TOKEN__'/g, `'${token}'`);
-content = content.replace(/"__GITHUB_TOKEN__"/g, `"${token}"`);
-content = content.replace(/__GITHUB_TOKEN__/g, token);
+content = content.replace(/'PLACEHOLDER_GH_ACCESS_KEY'/g, `'${token}'`);
+content = content.replace(/"PLACEHOLDER_GH_ACCESS_KEY"/g, `"${token}"`);
+content = content.replace(/PLACEHOLDER_GH_ACCESS_KEY/g, token);
 
 console.log('Writing updated environment.prod.ts...');
 fs.writeFileSync(envPath, content, 'utf8');
 
 // Verificar que el reemplazo funcionó
 const verifyContent = fs.readFileSync(envPath, 'utf8');
-if (verifyContent.includes('__GITHUB_TOKEN__')) {
+if (verifyContent.includes('PLACEHOLDER_GH_ACCESS_KEY')) {
   console.error('ERROR: Token replacement failed! Placeholder still exists.');
   process.exit(1);
 }
