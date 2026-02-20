@@ -20,24 +20,24 @@ console.log('Build directory:', buildDir);
 // Función recursiva para encontrar todos los archivos .js
 function findJsFiles(dir) {
   let results = [];
-  
+
   if (!fs.existsSync(dir)) {
     return results;
   }
-  
+
   const files = fs.readdirSync(dir);
-  
+
   for (const file of files) {
     const filePath = path.join(dir, file);
     const stat = fs.statSync(filePath);
-    
+
     if (stat.isDirectory()) {
       results = results.concat(findJsFiles(filePath));
     } else if (file.endsWith('.js')) {
       results.push(filePath);
     }
   }
-  
+
   return results;
 }
 
@@ -58,26 +58,26 @@ let occurrencesReplaced = 0;
 jsFiles.forEach(file => {
   let content = fs.readFileSync(file, 'utf8');
   const originalContent = content;
-  
+
   // Contar ocurrencias antes del reemplazo
   const matches = content.match(/__GITHUB_TOKEN__/g);
-  
+
   if (matches && matches.length > 0) {
     console.log(`📝 Processing: ${path.basename(file)}`);
     console.log(`   Found ${matches.length} occurrence(s) of __GITHUB_TOKEN__`);
-    
+
     // Reemplazar todas las ocurrencias
     content = content.replace(/__GITHUB_TOKEN__/g, token);
-    
+
     // Verificar que el reemplazo funcionó
     if (content.includes('__GITHUB_TOKEN__')) {
       console.error(`   ❌ ERROR: Replacement failed in ${file}`);
       process.exit(1);
     }
-    
+
     // Escribir el archivo modificado
     fs.writeFileSync(file, content, 'utf8');
-    
+
     filesModified++;
     occurrencesReplaced += matches.length;
     console.log(`   ✅ Replaced ${matches.length} occurrence(s)`);
@@ -123,5 +123,3 @@ if (stillContainsPlaceholder) {
 console.log('✅ Verification passed: No placeholders found in build');
 console.log('');
 console.log('✅ Token injection completed successfully!');
-console.log('Token preview:', token.substring(0, 10) + '...');
-console.log('Token length:', token.length);

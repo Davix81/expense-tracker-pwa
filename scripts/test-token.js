@@ -17,8 +17,6 @@ if (!token) {
 }
 
 console.log('🔍 Probando token de GitHub...');
-// console.log('Token preview:', token.substring(0, 10) + '...');
-// console.log('Token length:', token.length);
 console.log('');
 
 const options = {

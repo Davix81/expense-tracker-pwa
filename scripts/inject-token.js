@@ -12,8 +12,6 @@ if (!token) {
 console.log('Reading environment.prod.ts...');
 let content = fs.readFileSync(envPath, 'utf8');
 
-//console.log('Original content preview:', content.substring(0, 200));
-
 // Verificar que el placeholder existe
 if (!content.includes('__GITHUB_TOKEN__')) {
   console.error('ERROR: Placeholder __GITHUB_TOKEN__ not found in environment.prod.ts!');
@@ -36,5 +34,4 @@ if (verifyContent.includes('__GITHUB_TOKEN__')) {
 }
 
 console.log('✅ Token injected successfully!');
-//console.log('Token preview:', token.substring(0, 10) + '...');
-//console.log('Token length:', token.length);
+
