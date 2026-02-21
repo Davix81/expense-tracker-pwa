@@ -23,10 +23,10 @@ jobs:
       - name: Build
         run: npm run build -- --configuration production --base-href /expense-tracker-pwa/
 
-      - name: Inject GitHub Token into Build
+      - name: Inject Storage Configuration
         env:
-          EXPENSES_DATA_TOKEN: ${{ secrets.EXPENSES_DATA_TOKEN }}
-        run: node scripts/inject-token-post-build.js
+          STORAGE_CONFIG: ${{ secrets.STORAGE_CONFIG }}
+        run: node scripts/inject-storage-config.js
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4

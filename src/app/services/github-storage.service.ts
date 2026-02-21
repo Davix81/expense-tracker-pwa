@@ -1,13 +1,15 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError, of } from 'rxjs';
+import { Observable, throwError, of, from } from 'rxjs';
 import { catchError, map, retry, switchMap } from 'rxjs/operators';
 import { Expense, GitHubConfig, GitHubFileResponse } from '../models/expense.model';
 import { Settings } from '../models/settings.model';
 import { environment } from '../../environments/environment';
+import { EncryptionService } from './encryption.service';
 
 /**
  * Service responsible for persisting expense data to GitHub repository
+ * with encryption support
  *
  * Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.9
  */
@@ -16,7 +18,9 @@ import { environment } from '../../environments/environment';
 })
 export class GitHubStorageService {
   private readonly http = inject(HttpClient);
+  private readonly encryptionService = inject(EncryptionService);
   private readonly config: GitHubConfig = environment.github;
+  private readonly dataConfig: string = environment.storageConfig || '';
   private readonly baseUrl = 'https://api.github.com';
   private readonly maxRetries = 3;
 
@@ -48,7 +52,7 @@ export class GitHubStorageService {
   };
 
   /**
-   * Reads expenses from GitHub repository
+   * Reads expenses from GitHub repository and decrypts them
    *
    * Requirements: 5.1, 5.2
    *
@@ -58,7 +62,17 @@ export class GitHubStorageService {
     const url = `${this.baseUrl}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.filePath}`;
 
     return this.http.get<GitHubFileResponse>(url, { headers: this.buildHeaders() }).pipe(
-      map(response => this.decodeContent(response.content)),
+      switchMap(response => {
+        const content = this.decodeContent(response.content);
+        
+        // If encryption key is provided, decrypt the content
+        if (this.dataConfig) {
+          return from(this.encryptionService.decrypt(content, this.dataConfig));
+        }
+        
+        // Otherwise, parse as plain JSON
+        return of(JSON.parse(content));
+      }),
       map(data => this.transformDates(data)),
       catchError(error => {
         // If file doesn't exist (404), return empty array
@@ -72,7 +86,7 @@ export class GitHubStorageService {
   }
 
   /**
-   * Reads settings from GitHub repository
+   * Reads settings from GitHub repository and decrypts them
    *
    * Requirements: 9.1, 9.2, 9.6
    *
@@ -82,7 +96,17 @@ export class GitHubStorageService {
     const url = `${this.baseUrl}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.settingsFilePath}`;
 
     return this.http.get<GitHubFileResponse>(url, { headers: this.buildHeaders() }).pipe(
-      map(response => this.decodeContent(response.content)),
+      switchMap(response => {
+        const content = this.decodeContent(response.content);
+        
+        // If encryption key is provided, decrypt the content
+        if (this.dataConfig) {
+          return from(this.encryptionService.decrypt(content, this.dataConfig));
+        }
+        
+        // Otherwise, parse as plain JSON
+        return of(JSON.parse(content));
+      }),
       map(data => this.transformSettingsDates(data)),
       catchError(error => {
         // If file doesn't exist (404), return default settings
@@ -185,7 +209,7 @@ export class GitHubStorageService {
   }
 
   /**
-   * Commits expenses to GitHub with the provided SHA
+   * Commits expenses to GitHub with encryption
    *
    * @param expenses Expenses to commit
    * @param sha Current file SHA (empty string for new file)
@@ -193,27 +217,29 @@ export class GitHubStorageService {
    */
   private commitExpenses(expenses: Expense[], sha: string): Observable<void> {
     const url = `${this.baseUrl}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.filePath}`;
-    const content = this.encodeContent(expenses);
 
-    const body: any = {
-      message: `Update expenses - ${new Date().toISOString()}`,
-      content: content,
-      branch: this.config.branch
-    };
+    return from(this.prepareContent(expenses)).pipe(
+      switchMap(content => {
+        const body: any = {
+          message: `Update expenses - ${new Date().toISOString()}`,
+          content: content,
+          branch: this.config.branch
+        };
 
-    // Only include SHA if file exists
-    if (sha) {
-      body.sha = sha;
-    }
+        // Only include SHA if file exists
+        if (sha) {
+          body.sha = sha;
+        }
 
-    return this.http.put(url, body, { headers: this.buildHeaders() }).pipe(
+        return this.http.put(url, body, { headers: this.buildHeaders() });
+      }),
       map(() => void 0),
       catchError(error => throwError(() => error))
     );
   }
 
   /**
-   * Commits settings to GitHub with the provided SHA
+   * Commits settings to GitHub with encryption
    *
    * Requirements: 9.1, 9.4
    *
@@ -223,27 +249,50 @@ export class GitHubStorageService {
    */
   private commitSettings(settings: Settings, sha: string): Observable<void> {
     const url = `${this.baseUrl}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.settingsFilePath}`;
-    const content = this.encodeContent(settings);
 
-    const body: any = {
-      message: `Update settings - ${new Date().toISOString()}`,
-      content: content,
-      branch: this.config.branch
-    };
+    return from(this.prepareContent(settings)).pipe(
+      switchMap(content => {
+        const body: any = {
+          message: `Update settings - ${new Date().toISOString()}`,
+          content: content,
+          branch: this.config.branch
+        };
 
-    // Only include SHA if file exists
-    if (sha) {
-      body.sha = sha;
-    }
+        // Only include SHA if file exists
+        if (sha) {
+          body.sha = sha;
+        }
 
-    return this.http.put(url, body, { headers: this.buildHeaders() }).pipe(
+        return this.http.put(url, body, { headers: this.buildHeaders() });
+      }),
       map(() => void 0),
       catchError(error => throwError(() => error))
     );
   }
 
   /**
-   * Encodes expense data as Base64 JSON
+   * Prepares content for GitHub commit (encrypts if key is provided, then Base64 encodes)
+   *
+   * @param data Data to prepare
+   * @returns Promise<string> Base64 encoded content
+   */
+  private async prepareContent(data: any): Promise<string> {
+    let contentToEncode: string;
+    
+    if (this.dataConfig) {
+      // Encrypt the data first
+      contentToEncode = await this.encryptionService.encrypt(data, this.dataConfig);
+    } else {
+      // Use plain JSON
+      contentToEncode = JSON.stringify(data, null, 2);
+    }
+    
+    // Base64 encode for GitHub
+    return btoa(unescape(encodeURIComponent(contentToEncode)));
+  }
+
+  /**
+   * Encodes expense data as Base64 JSON (legacy method, kept for compatibility)
    *
    * Requirements: 5.3
    *
@@ -257,34 +306,40 @@ export class GitHubStorageService {
   }
 
   /**
-   * Decodes Base64 JSON content
+   * Decodes Base64 JSON content (returns string for further processing)
    *
    * Requirements: 5.2
    *
    * @param content Base64 encoded content
-   * @returns Parsed JSON data
+   * @returns Decoded string (may be encrypted or plain JSON)
    */
-  private decodeContent(content: string): any {
+  private decodeContent(content: string): string {
     // Remove whitespace and newlines from Base64 content
     const cleanContent = content.replace(/\s/g, '');
     // Use atob for Base64 decoding in browser
-    const decoded = decodeURIComponent(escape(atob(cleanContent)));
-    return JSON.parse(decoded);
+    return decodeURIComponent(escape(atob(cleanContent)));
   }
 
   /**
    * Builds HTTP headers for GitHub API requests
+   * Supports both authenticated and public repository access
    *
    * Requirements: 5.7
    *
-   * @returns HttpHeaders with authentication and content type
+   * @returns HttpHeaders with authentication (if token provided) and content type
    */
   private buildHeaders(): HttpHeaders {
-    return new HttpHeaders({
-      'Authorization': `token ${this.config.token}`,
+    const headers: any = {
       'Accept': 'application/vnd.github.v3+json',
       'Content-Type': 'application/json'
-    });
+    };
+    
+    // Only add Authorization header if token is provided
+    if (this.config.token) {
+      headers['Authorization'] = `token ${this.config.token}`;
+    }
+    
+    return new HttpHeaders(headers);
   }
 
   /**
