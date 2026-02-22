@@ -52,7 +52,7 @@ export class GitHubStorageService {
   };
 
   /**
-   * Reads expenses from GitHub repository and decrypts them
+   * Reads expenses from GitHub repository and decrypts them if needed
    *
    * Requirements: 5.1, 5.2
    *
@@ -65,13 +65,8 @@ export class GitHubStorageService {
       switchMap(response => {
         const content = this.decodeContent(response.content);
         
-        // If encryption key is provided, decrypt the content
-        if (this.dataConfig) {
-          return from(this.encryptionService.decrypt(content, this.dataConfig));
-        }
-        
-        // Otherwise, parse as plain JSON
-        return of(JSON.parse(content));
+        // Try to detect if content is encrypted or plain JSON
+        return from(this.parseContent(content));
       }),
       map(data => this.transformDates(data)),
       catchError(error => {
@@ -86,7 +81,7 @@ export class GitHubStorageService {
   }
 
   /**
-   * Reads settings from GitHub repository and decrypts them
+   * Reads settings from GitHub repository and decrypts them if needed
    *
    * Requirements: 9.1, 9.2, 9.6
    *
@@ -99,13 +94,8 @@ export class GitHubStorageService {
       switchMap(response => {
         const content = this.decodeContent(response.content);
         
-        // If encryption key is provided, decrypt the content
-        if (this.dataConfig) {
-          return from(this.encryptionService.decrypt(content, this.dataConfig));
-        }
-        
-        // Otherwise, parse as plain JSON
-        return of(JSON.parse(content));
+        // Try to detect if content is encrypted or plain JSON
+        return from(this.parseContent(content));
       }),
       map(data => this.transformSettingsDates(data)),
       catchError(error => {
@@ -318,6 +308,53 @@ export class GitHubStorageService {
     const cleanContent = content.replace(/\s/g, '');
     // Use atob for Base64 decoding in browser
     return decodeURIComponent(escape(atob(cleanContent)));
+  }
+
+  /**
+   * Parses content, automatically detecting if it's encrypted or plain JSON
+   *
+   * @param content Decoded content string
+   * @returns Promise<any> Parsed data
+   */
+  private async parseContent(content: string): Promise<any> {
+    // Try to detect if content is encrypted or plain JSON
+    // Encrypted content will be a long base64-like string without JSON structure
+    // Plain JSON will start with [ or {
+    
+    const trimmedContent = content.trim();
+    
+    // Check if it looks like JSON
+    if (trimmedContent.startsWith('[') || trimmedContent.startsWith('{')) {
+      // It's plain JSON
+      console.log('Detected plain JSON format');
+      try {
+        return JSON.parse(trimmedContent);
+      } catch (error) {
+        console.error('Failed to parse as JSON:', error);
+        throw new Error('Invalid JSON format');
+      }
+    }
+    
+    // It looks like encrypted data
+    if (this.dataConfig) {
+      console.log('Detected encrypted format, attempting to decrypt');
+      try {
+        return await this.encryptionService.decrypt(trimmedContent, this.dataConfig);
+      } catch (error) {
+        console.error('Failed to decrypt:', error);
+        // If decryption fails, try parsing as JSON as fallback
+        console.log('Attempting to parse as JSON fallback');
+        try {
+          return JSON.parse(trimmedContent);
+        } catch (jsonError) {
+          throw new Error('Failed to decrypt data. The storage configuration may be incorrect.');
+        }
+      }
+    } else {
+      // No config provided but data looks encrypted
+      console.warn('Data appears to be encrypted but no storage configuration provided');
+      throw new Error('Storage configuration is required to read encrypted data');
+    }
   }
 
   /**
