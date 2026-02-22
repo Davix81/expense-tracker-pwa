@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Settings, SettingsValidationResult } from '../models/settings.model';
-import { GitHubStorageService } from './github-storage.service';
+import { STORAGE_SERVICE, StorageService } from './storage.token';
 
 /**
  * Service responsible for managing application settings (categories and tags)
@@ -13,7 +13,7 @@ import { GitHubStorageService } from './github-storage.service';
   providedIn: 'root'
 })
 export class SettingsService {
-  private readonly githubStorage = inject(GitHubStorageService);
+  private readonly storage = inject(STORAGE_SERVICE);
   
   /**
    * BehaviorSubject to maintain the current state of settings
@@ -57,7 +57,7 @@ export class SettingsService {
     * @returns Observable<Settings> - The loaded settings
     */
    loadSettings(): Observable<Settings> {
-     return this.githubStorage.readSettings().pipe(
+     return this.storage.readSettings().pipe(
        map(settings => {
          // Update the BehaviorSubject with loaded data
          this.settingsSubject.next(settings);
@@ -170,7 +170,7 @@ export class SettingsService {
        this.settingsSubject.next(updatedSettings);
 
        // Persist to GitHub
-       return this.githubStorage.writeSettings(updatedSettings).pipe(
+       return this.storage.writeSettings(updatedSettings).pipe(
          map(() => category.trim())
        );
      }
@@ -218,7 +218,7 @@ export class SettingsService {
        this.settingsSubject.next(updatedSettings);
 
        // Persist to GitHub
-       return this.githubStorage.writeSettings(updatedSettings).pipe(
+       return this.storage.writeSettings(updatedSettings).pipe(
          map(() => newName.trim())
        );
      }
@@ -260,7 +260,7 @@ export class SettingsService {
        this.settingsSubject.next(updatedSettings);
 
        // Persist to GitHub
-       return this.githubStorage.writeSettings(updatedSettings).pipe(
+       return this.storage.writeSettings(updatedSettings).pipe(
          map(() => true)
        );
      }
@@ -295,7 +295,7 @@ export class SettingsService {
        this.settingsSubject.next(updatedSettings);
 
        // Persist to GitHub
-       return this.githubStorage.writeSettings(updatedSettings).pipe(
+       return this.storage.writeSettings(updatedSettings).pipe(
          map(() => tag.trim())
        );
      }
@@ -343,7 +343,7 @@ export class SettingsService {
        this.settingsSubject.next(updatedSettings);
 
        // Persist to GitHub
-       return this.githubStorage.writeSettings(updatedSettings).pipe(
+       return this.storage.writeSettings(updatedSettings).pipe(
          map(() => newName.trim())
        );
      }
@@ -385,7 +385,7 @@ export class SettingsService {
        this.settingsSubject.next(updatedSettings);
 
        // Persist to GitHub
-       return this.githubStorage.writeSettings(updatedSettings).pipe(
+       return this.storage.writeSettings(updatedSettings).pipe(
          map(() => true)
        );
      }

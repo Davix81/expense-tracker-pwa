@@ -11,7 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Observable } from 'rxjs';
 import { SettingsService } from '../../services/settings.service';
 import { ExpenseService } from '../../services/expense.service';
-import { GitHubStorageService } from '../../services/github-storage.service';
+import { STORAGE_SERVICE, StorageService } from '../../services/storage.token';
 import { AuthService } from '../../services/auth.service';
 import { NotificationMessageComponent, NotificationType } from '../notification-message/notification-message.component';
 
@@ -39,7 +39,7 @@ import { NotificationMessageComponent, NotificationType } from '../notification-
 export class SettingsPage implements OnInit {
   private settingsService = inject(SettingsService);
   private expenseService = inject(ExpenseService);
-  private githubStorage = inject(GitHubStorageService);
+  private storage = inject(STORAGE_SERVICE);
   private authService = inject(AuthService);
   private router = inject(Router);
   private dialog = inject(MatDialog);
@@ -218,7 +218,7 @@ export class SettingsPage implements OnInit {
   downloadExpensesJson(): void {
     this.showDownloadMessage = false;
 
-    this.githubStorage.readExpenses().subscribe({
+    this.storage.readExpenses().subscribe({
       next: (expenses) => {
         this.downloadJsonFile(expenses, 'expenses.json');
         this.downloadMessage = 'Arxiu expenses.json descarregat correctament';
@@ -248,7 +248,7 @@ export class SettingsPage implements OnInit {
   downloadSettingsJson(): void {
     this.showDownloadMessage = false;
 
-    this.githubStorage.readSettings().subscribe({
+    this.storage.readSettings().subscribe({
       next: (settings) => {
         this.downloadJsonFile(settings, 'settings.json');
         this.downloadMessage = 'Arxiu settings.json descarregat correctament';
@@ -392,7 +392,7 @@ export class SettingsPage implements OnInit {
             return;
           }
           
-          this.githubStorage.writeExpenses(expenses).subscribe({
+          this.storage.writeExpenses(expenses).subscribe({
             next: () => {
               this.selectedExpensesFile = null;
               resolve();
@@ -428,7 +428,7 @@ export class SettingsPage implements OnInit {
             return;
           }
           
-          this.githubStorage.writeSettings(settings).subscribe({
+          this.storage.writeSettings(settings).subscribe({
             next: () => {
               this.selectedSettingsFile = null;
               // Reload settings to update UI

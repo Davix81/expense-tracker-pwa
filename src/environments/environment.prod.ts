@@ -4,13 +4,9 @@ export const environment = {
     username: 'admin',
     password: '123'
   },
-  github: {
-    token: '', // Empty for public repositories
-    owner: 'Davix81',
-    repo: 'expenses-data',
-    branch: 'main',
-    filePath: 'data/expenses.json',
-    settingsFilePath: 'data/settings.json'
-  },
+  // API Backend (Vercel)
+  apiUrl: '__API_URL__', // Will be replaced during build
+  apiSecret: '__API_SECRET__', // Will be replaced during build
+  // Storage configuration for encryption
   storageConfig: '__STORAGE_CONFIG__' // Data format configuration
 };

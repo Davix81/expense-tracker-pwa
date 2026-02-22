@@ -26,6 +26,8 @@ jobs:
       - name: Inject Storage Configuration
         env:
           STORAGE_CONFIG: ${{ secrets.STORAGE_CONFIG }}
+          API_URL: ${{ secrets.API_URL }}
+          API_SECRET: ${{ secrets.API_SECRET }}
         run: node scripts/inject-storage-config.js
 
       - name: Deploy

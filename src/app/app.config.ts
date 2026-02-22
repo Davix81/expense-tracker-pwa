@@ -10,6 +10,9 @@ import localeEs from '@angular/common/locales/es';
 
 import { routes } from './app.routes';
 import { provideServiceWorker } from '@angular/service-worker';
+import { STORAGE_SERVICE } from './services/storage.token';
+import { ApiStorageService } from './services/api-storage.service';
+import { environment } from '../environments/environment';
 
 // Registrar locale español
 registerLocaleData(localeEs);
@@ -32,14 +35,10 @@ export const MY_DATE_FORMATS = {
  * 
  * Provides:
  * - Router with configured routes (including AuthGuard protection)
- * - HttpClient for GitHub API communication
+ * - HttpClient for API communication
  * - Animations for Material Design components
  * - Service Worker for PWA functionality
- * 
- * Services (AuthService, ExpenseService, GitHubStorageService) are provided
- * via @Injectable({ providedIn: 'root' }) in their respective files.
- * 
- * Components are standalone and import their own Material modules.
+ * - Storage service (API-based backend via Vercel)
  * 
  * Requirements: 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 10.7, 10.8
  */
@@ -53,6 +52,7 @@ export const appConfig: ApplicationConfig = {
     { provide: LOCALE_ID, useValue: 'es-ES' },
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+    { provide: STORAGE_SERVICE, useClass: ApiStorageService },
     provideCharts(withDefaultRegisterables()),
     provideServiceWorker('ngsw-worker.js', {
             enabled: !isDevMode(),

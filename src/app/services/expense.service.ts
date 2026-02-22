@@ -3,7 +3,7 @@ import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
 import { catchError, map, tap, switchMap } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { Expense } from '../models/expense.model';
-import { GitHubStorageService } from './github-storage.service';
+import { STORAGE_SERVICE, StorageService } from './storage.token';
 
 /**
  * Validation result interface
@@ -22,7 +22,7 @@ export interface ValidationResult {
   providedIn: 'root'
 })
 export class ExpenseService {
-  private readonly githubStorage = inject(GitHubStorageService);
+  private readonly storage = inject(STORAGE_SERVICE);
   
   // BehaviorSubject for expense list state management
   private expensesSubject = new BehaviorSubject<Expense[]>([]);
@@ -38,7 +38,7 @@ export class ExpenseService {
    * @returns Observable of expense array
    */
   getExpenses(): Observable<Expense[]> {
-    return this.githubStorage.readExpenses().pipe(
+    return this.storage.readExpenses().pipe(
       tap(expenses => this.expensesSubject.next(expenses)),
       catchError(error => {
         console.error('Error loading expenses:', error);
@@ -75,13 +75,13 @@ export class ExpenseService {
     const updatedExpenses = [...currentExpenses, newExpense];
 
     // Persist to GitHub and reload to ensure we have the latest SHA
-    return this.githubStorage.writeExpenses(updatedExpenses).pipe(
+    return this.storage.writeExpenses(updatedExpenses).pipe(
       tap(() => {
         // Update local state immediately for UI responsiveness
         this.expensesSubject.next(updatedExpenses);
       }),
       // Reload from GitHub to ensure we have the latest state and SHA
-      switchMap(() => this.githubStorage.readExpenses()),
+      switchMap(() => this.storage.readExpenses()),
       tap(reloadedExpenses => {
         // Update local state with reloaded data
         this.expensesSubject.next(reloadedExpenses);
@@ -124,13 +124,13 @@ export class ExpenseService {
     updatedExpenses[expenseIndex] = expense;
 
     // Persist to GitHub and reload to ensure we have the latest SHA
-    return this.githubStorage.writeExpenses(updatedExpenses).pipe(
+    return this.storage.writeExpenses(updatedExpenses).pipe(
       tap(() => {
         // Update local state immediately for UI responsiveness
         this.expensesSubject.next(updatedExpenses);
       }),
       // Reload from GitHub to ensure we have the latest state and SHA
-      switchMap(() => this.githubStorage.readExpenses()),
+      switchMap(() => this.storage.readExpenses()),
       tap(reloadedExpenses => {
         // Update local state with reloaded data
         this.expensesSubject.next(reloadedExpenses);
@@ -164,13 +164,13 @@ export class ExpenseService {
     const updatedExpenses = currentExpenses.filter(e => e.id !== expenseId);
 
     // Persist to GitHub and reload to ensure we have the latest SHA
-    return this.githubStorage.writeExpenses(updatedExpenses).pipe(
+    return this.storage.writeExpenses(updatedExpenses).pipe(
       tap(() => {
         // Update local state immediately for UI responsiveness
         this.expensesSubject.next(updatedExpenses);
       }),
       // Reload from GitHub to ensure we have the latest state and SHA
-      switchMap(() => this.githubStorage.readExpenses()),
+      switchMap(() => this.storage.readExpenses()),
       tap(reloadedExpenses => {
         // Update local state with reloaded data
         this.expensesSubject.next(reloadedExpenses);
