@@ -8,5 +8,14 @@ export const environment = {
   apiUrl: 'http://localhost:3000/api', // Local development
   apiSecret: '__API_SECRET__', // Will be replaced during build
   // Storage configuration for encryption
-  storageConfig: '__STORAGE_CONFIG__' // Data format configuration
+  storageConfig: '__STORAGE_CONFIG__', // Data format configuration
+  // GitHub configuration (legacy, kept for test compatibility)
+  github: {
+    owner: '',
+    repo: '',
+    branch: 'main',
+    filePath: 'expenses.json',
+    settingsFilePath: 'settings.json',
+    token: ''
+  }
 };
