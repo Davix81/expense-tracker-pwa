@@ -23,9 +23,8 @@ jobs:
       - name: Build
         run: npm run build -- --configuration production --base-href /expense-tracker-pwa/
 
-      - name: Inject Storage Configuration
+      - name: Inject API Configuration
         env:
-          STORAGE_CONFIG: ${{ secrets.STORAGE_CONFIG }}
           API_URL: ${{ secrets.API_URL }}
           API_SECRET: ${{ secrets.API_SECRET }}
         run: node scripts/inject-storage-config.js

@@ -6,6 +6,7 @@ import { Expense, GitHubConfig, GitHubFileResponse } from '../models/expense.mod
 import { Settings } from '../models/settings.model';
 import { environment } from '../../environments/environment';
 import { EncryptionService } from './encryption.service';
+import { AuthService } from './auth.service';
 
 /**
  * Service responsible for persisting expense data to GitHub repository
@@ -19,8 +20,8 @@ import { EncryptionService } from './encryption.service';
 export class GitHubStorageService {
   private readonly http = inject(HttpClient);
   private readonly encryptionService = inject(EncryptionService);
+  private readonly authService = inject(AuthService);
   private readonly config: GitHubConfig = environment.github;
-  private readonly dataConfig: string = environment.storageConfig || '';
   private readonly baseUrl = 'https://api.github.com';
   private readonly maxRetries = 3;
 
@@ -268,10 +269,11 @@ export class GitHubStorageService {
    */
   private async prepareContent(data: any): Promise<string> {
     let contentToEncode: string;
+    const dataConfig = this.authService.getEncryptionKey();
     
-    if (this.dataConfig) {
+    if (dataConfig) {
       // Encrypt the data first
-      contentToEncode = await this.encryptionService.encrypt(data, this.dataConfig);
+      contentToEncode = await this.encryptionService.encrypt(data, dataConfig);
     } else {
       // Use plain JSON
       contentToEncode = JSON.stringify(data, null, 2);
@@ -322,6 +324,7 @@ export class GitHubStorageService {
     // Plain JSON will start with [ or {
     
     const trimmedContent = content.trim();
+    const dataConfig = this.authService.getEncryptionKey();
     
     // Check if it looks like JSON
     if (trimmedContent.startsWith('[') || trimmedContent.startsWith('{')) {
@@ -336,10 +339,10 @@ export class GitHubStorageService {
     }
     
     // It looks like encrypted data
-    if (this.dataConfig) {
+    if (dataConfig) {
       console.log('Detected encrypted format, attempting to decrypt');
       try {
-        return await this.encryptionService.decrypt(trimmedContent, this.dataConfig);
+        return await this.encryptionService.decrypt(trimmedContent, dataConfig);
       } catch (error) {
         console.error('Failed to decrypt:', error);
         // If decryption fails, try parsing as JSON as fallback
@@ -347,13 +350,13 @@ export class GitHubStorageService {
         try {
           return JSON.parse(trimmedContent);
         } catch (jsonError) {
-          throw new Error('Failed to decrypt data. The storage configuration may be incorrect.');
+          throw new Error('Failed to decrypt data. The encryption key may be incorrect.');
         }
       }
     } else {
       // No config provided but data looks encrypted
-      console.warn('Data appears to be encrypted but no storage configuration provided');
-      throw new Error('Storage configuration is required to read encrypted data');
+      console.warn('Data appears to be encrypted but no encryption key provided');
+      throw new Error('Encryption key is required to read encrypted data');
     }
   }
 

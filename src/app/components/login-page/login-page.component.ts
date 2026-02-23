@@ -32,8 +32,8 @@ export class LoginPageComponent {
     private router: Router
   ) {
     this.loginForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
+      username: ['user'], // Not used, but kept for compatibility
+      password: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
 
@@ -45,7 +45,7 @@ export class LoginPageComponent {
           if (success) {
             this.router.navigate(['/dashboard']);
           } else {
-            this.errorMessage = "Nom d'usuari o contrasenya incorrectes";
+            this.errorMessage = "Clau d'encriptació invàlida (mínim 8 caràcters)";
             this.loginForm.patchValue({ password: '' });
           }
         },

@@ -2,35 +2,31 @@
   <mat-card class="login-card">
     <mat-card-header>
       <mat-card-title>Gestor de Despeses</mat-card-title>
-      <mat-card-subtitle>Inicia sessió per continuar</mat-card-subtitle>
+      <mat-card-subtitle>Introdueix la teva clau d'encriptació</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Usuari</mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="username"
-            autocomplete="username"
-            required>
-          @if (loginForm.get('username')?.invalid && loginForm.get('username')?.touched) {
-            <mat-error>El nom d'usuari és obligatori</mat-error>
-          }
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Contrasenya</mat-label>
+          <mat-label>Clau d'encriptació</mat-label>
           <input
             matInput
             type="password"
             formControlName="password"
             autocomplete="current-password"
+            placeholder="Mínim 8 caràcters"
             required>
           @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-            <mat-error>La contrasenya és obligatòria</mat-error>
+            <mat-error>
+              @if (loginForm.get('password')?.hasError('required')) {
+                La clau d'encriptació és obligatòria
+              }
+              @if (loginForm.get('password')?.hasError('minlength')) {
+                La clau ha de tenir mínim 8 caràcters
+              }
+            </mat-error>
           }
+          <mat-hint>Aquesta és la mateixa clau que vas generar amb el script</mat-hint>
         </mat-form-field>
 
         @if (errorMessage) {
@@ -45,7 +41,7 @@
           type="submit"
           class="full-width"
           [disabled]="loginForm.invalid">
-          Inicia sessió
+          Accedir
         </button>
       </form>
     </mat-card-content>

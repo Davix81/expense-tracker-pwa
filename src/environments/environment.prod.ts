@@ -1,14 +1,10 @@
 export const environment = {
   production: true,
-  auth: {
-    username: 'admin',
-    password: '123'
-  },
   // API Backend (Vercel)
   apiUrl: '__API_URL__', // Will be replaced during build
   apiSecret: '__API_SECRET__', // Will be replaced during build
-  // Storage configuration for encryption
-  storageConfig: '__STORAGE_CONFIG__', // Data format configuration
+  // Storage configuration is now provided by user at login
+  storageConfig: '', // Not used anymore - user provides encryption key at login
   // GitHub configuration (legacy, kept for test compatibility)
   github: {
     owner: '',

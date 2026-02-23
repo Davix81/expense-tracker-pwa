@@ -6,6 +6,7 @@ import { Expense } from '../models/expense.model';
 import { Settings } from '../models/settings.model';
 import { environment } from '../../environments/environment';
 import { EncryptionService } from './encryption.service';
+import { AuthService } from './auth.service';
 
 /**
  * Service for persisting expense data via Vercel API backend
@@ -19,9 +20,9 @@ import { EncryptionService } from './encryption.service';
 export class ApiStorageService {
   private readonly http = inject(HttpClient);
   private readonly encryptionService = inject(EncryptionService);
+  private readonly authService = inject(AuthService);
   private readonly apiUrl: string = environment.apiUrl;
   private readonly apiSecret: string = environment.apiSecret;
-  private readonly dataConfig: string = environment.storageConfig || '';
 
   /**
    * Default settings to use when settings file doesn't exist
@@ -136,9 +137,10 @@ export class ApiStorageService {
    * Prepares content for API (encrypts if config provided)
    */
   private async prepareContent(data: any): Promise<string> {
-    if (this.dataConfig) {
+    const dataConfig = this.authService.getEncryptionKey();
+    if (dataConfig) {
       // Encrypt the data
-      return await this.encryptionService.encrypt(data, this.dataConfig);
+      return await this.encryptionService.encrypt(data, dataConfig);
     } else {
       // Use plain JSON
       return JSON.stringify(data, null, 2);
@@ -150,6 +152,7 @@ export class ApiStorageService {
    */
   private async parseContent(content: string): Promise<any> {
     const trimmedContent = content.trim();
+    const dataConfig = this.authService.getEncryptionKey();
     
     // Check if it looks like JSON
     if (trimmedContent.startsWith('[') || trimmedContent.startsWith('{')) {
@@ -163,22 +166,22 @@ export class ApiStorageService {
     }
     
     // It looks like encrypted data
-    if (this.dataConfig) {
+    if (dataConfig) {
       console.log('Detected encrypted format, attempting to decrypt');
       try {
-        return await this.encryptionService.decrypt(trimmedContent, this.dataConfig);
+        return await this.encryptionService.decrypt(trimmedContent, dataConfig);
       } catch (error) {
         console.error('Failed to decrypt:', error);
         // Try parsing as JSON as fallback
         try {
           return JSON.parse(trimmedContent);
         } catch (jsonError) {
-          throw new Error('Failed to decrypt data. The storage configuration may be incorrect.');
+          throw new Error('Failed to decrypt data. The encryption key may be incorrect.');
         }
       }
     } else {
-      console.warn('Data appears to be encrypted but no storage configuration provided');
-      throw new Error('Storage configuration is required to read encrypted data');
+      console.warn('Data appears to be encrypted but no encryption key provided');
+      throw new Error('Encryption key is required to read encrypted data');
     }
   }
 

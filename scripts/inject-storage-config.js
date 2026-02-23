@@ -1,22 +1,18 @@
 /**
  * Script para inyectar configuraciones DESPUÉS del build
  * Reemplaza los placeholders en los archivos JavaScript compilados
+ * 
+ * NOTA: STORAGE_CONFIG ya no se inyecta - el usuario proporciona su clave de encriptación al iniciar sesión
  */
 
 const fs = require('fs');
 const path = require('path');
 
-const storageConfig = process.env.STORAGE_CONFIG;
 const apiUrl = process.env.API_URL;
 const apiSecret = process.env.API_SECRET;
 const buildDir = path.join(__dirname, '../dist/expense-tracker-pwa/browser');
 
 // Validar variables requeridas
-if (!storageConfig) {
-  console.error('❌ ERROR: STORAGE_CONFIG environment variable is not set!');
-  process.exit(1);
-}
-
 if (!apiUrl) {
   console.error('❌ ERROR: API_URL environment variable is not set!');
   process.exit(1);
@@ -72,22 +68,10 @@ jsFiles.forEach(file => {
   let content = fs.readFileSync(file, 'utf8');
   let modified = false;
   
-  // Reemplazar STORAGE_CONFIG
-  const storageMatches = content.match(/__STORAGE_CONFIG__/g);
-  if (storageMatches && storageMatches.length > 0) {
-    console.log(`📝 Processing: ${path.basename(file)}`);
-    console.log(`   Found ${storageMatches.length} occurrence(s) of __STORAGE_CONFIG__`);
-    content = content.replace(/__STORAGE_CONFIG__/g, storageConfig);
-    modified = true;
-    occurrencesReplaced += storageMatches.length;
-  }
-  
   // Reemplazar API_URL
   const apiUrlMatches = content.match(/__API_URL__/g);
   if (apiUrlMatches && apiUrlMatches.length > 0) {
-    if (!modified) {
-      console.log(`📝 Processing: ${path.basename(file)}`);
-    }
+    console.log(`📝 Processing: ${path.basename(file)}`);
     console.log(`   Found ${apiUrlMatches.length} occurrence(s) of __API_URL__`);
     content = content.replace(/__API_URL__/g, apiUrl);
     modified = true;
@@ -108,8 +92,7 @@ jsFiles.forEach(file => {
   
   if (modified) {
     // Verificar que los reemplazos funcionaron
-    if (content.includes('__STORAGE_CONFIG__') || 
-        content.includes('__API_URL__') || 
+    if (content.includes('__API_URL__') || 
         content.includes('__API_SECRET__')) {
       console.error(`   ❌ ERROR: Replacement failed in ${file}`);
       process.exit(1);
@@ -146,8 +129,7 @@ let stillContainsPlaceholder = false;
 
 verification.forEach(file => {
   const content = fs.readFileSync(file, 'utf8');
-  if (content.includes('__STORAGE_CONFIG__') || 
-      content.includes('__API_URL__') || 
+  if (content.includes('__API_URL__') || 
       content.includes('__API_SECRET__')) {
     console.error(`❌ ERROR: Placeholder still found in ${path.basename(file)}`);
     stillContainsPlaceholder = true;
@@ -163,6 +145,7 @@ if (stillContainsPlaceholder) {
 console.log('✅ Verification passed: No placeholders found in build');
 console.log('');
 console.log('✅ Configuration injection completed successfully!');
-console.log('Storage Config preview:', storageConfig.substring(0, 8) + '...');
 console.log('API URL:', apiUrl);
 console.log('API Secret preview:', apiSecret.substring(0, 8) + '...');
+console.log('');
+console.log('ℹ️  Note: Users will provide their encryption key at login');

@@ -13,13 +13,18 @@ export interface AuthCredentials {
 })
 export class AuthService {
   private readonly SESSION_KEY = 'expense_tracker_session';
+  private readonly ENCRYPTION_KEY = 'expense_tracker_encryption_key';
 
   constructor(private router: Router) {}
 
   login(credentials: AuthCredentials): Observable<boolean> {
-    if (this.validateCredentials(credentials)) {
+    // The "password" is actually the encryption key
+    // We store it temporarily to validate it can decrypt data
+    if (credentials.password && credentials.password.length >= 8) {
       const token = this.generateSessionToken();
       this.setSession(token);
+      // Store the encryption key for use by encryption service
+      this.setEncryptionKey(credentials.password);
       return of(true);
     }
     return of(false);
@@ -27,32 +32,42 @@ export class AuthService {
 
   logout(): void {
     this.clearSession();
+    this.clearEncryptionKey();
     this.router.navigate(['/login']);
   }
 
   isAuthenticated(): boolean {
     const session = this.getSession();
-    return session !== null;
+    const key = this.getEncryptionKey();
+    return session !== null && key !== null;
   }
 
   getSession(): string | null {
-    return localStorage.getItem(this.SESSION_KEY);
+    return sessionStorage.getItem(this.SESSION_KEY);
   }
 
-  private validateCredentials(credentials: AuthCredentials): boolean {
-    return credentials.username === environment.auth.username &&
-           credentials.password === environment.auth.password;
+  getEncryptionKey(): string | null {
+    return sessionStorage.getItem(this.ENCRYPTION_KEY);
   }
 
   private setSession(token: string): void {
-    localStorage.setItem(this.SESSION_KEY, token);
+    sessionStorage.setItem(this.SESSION_KEY, token);
+  }
+
+  private setEncryptionKey(key: string): void {
+    sessionStorage.setItem(this.ENCRYPTION_KEY, key);
   }
 
   private clearSession(): void {
-    localStorage.removeItem(this.SESSION_KEY);
+    sessionStorage.removeItem(this.SESSION_KEY);
+  }
+
+  private clearEncryptionKey(): void {
+    sessionStorage.removeItem(this.ENCRYPTION_KEY);
   }
 
   private generateSessionToken(): string {
     return `session_${Date.now()}_${Math.random().toString(36).substring(2)}`;
   }
 }
+
