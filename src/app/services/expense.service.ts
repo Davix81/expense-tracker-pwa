@@ -264,15 +264,6 @@ export class ExpenseService {
       errors.push('Fraction must be ÚNICA, PRIMERA, SEGONA, TERCERA, or QUARTA');
     }
 
-    // Business logic validation
-    if (expense.actualPaymentDate && expense.scheduledPaymentDate) {
-      if (expense.actualPaymentDate instanceof Date && 
-          expense.scheduledPaymentDate instanceof Date &&
-          expense.actualPaymentDate < expense.scheduledPaymentDate) {
-        errors.push('Actual payment date cannot be before scheduled payment date');
-      }
-    }
-
     return {
       valid: errors.length === 0,
       errors
