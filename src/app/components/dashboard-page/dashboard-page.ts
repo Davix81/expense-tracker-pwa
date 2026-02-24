@@ -68,14 +68,13 @@ export class DashboardPageComponent implements OnInit {
   nextPayment = signal<Expense | null>(null);
   daysUntilNextPayment = signal<number>(0);
   
-  // Estadísticas
+  // Estadísticas del mes actual
   totalPaidThisMonth = signal<number>(0);
+  totalPendingThisMonth = signal<number>(0);
+  
+  // Estadísticas del año actual
   totalPaidThisYear = signal<number>(0);
-  totalPendingPayments = signal<number>(0);
-  averageMonthlyExpense = signal<number>(0);
-  mostExpensiveCategory = signal<string>('');
-  pendingPaymentsCount = signal<number>(0);
-  paidPaymentsCount = signal<number>(0);
+  totalPendingThisYear = signal<number>(0);
   
   // Gráfico mensual (últimos 6 meses)
   monthlyChartData = signal<ChartData<'bar'>>({
@@ -251,6 +250,16 @@ export class DashboardPageComponent implements OnInit {
       .reduce((sum, e) => sum + (e.actualAmount || 0), 0);
     this.totalPaidThisMonth.set(paidThisMonth);
 
+    // Total pendiente este mes
+    const pendingThisMonth = expenses
+      .filter(e => {
+        if (e.paymentStatus !== 'PENDING') return false;
+        const date = new Date(e.scheduledPaymentDate);
+        return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
+      })
+      .reduce((sum, e) => sum + e.approximateAmount, 0);
+    this.totalPendingThisMonth.set(pendingThisMonth);
+
     // Total pagado este año
     const paidThisYear = expenses
       .filter(e => {
@@ -261,40 +270,15 @@ export class DashboardPageComponent implements OnInit {
       .reduce((sum, e) => sum + (e.actualAmount || 0), 0);
     this.totalPaidThisYear.set(paidThisYear);
 
-    // Total de pagos pendientes
-    const pendingTotal = expenses
-      .filter(e => e.paymentStatus === 'PENDING')
+    // Total pendiente este año
+    const pendingThisYear = expenses
+      .filter(e => {
+        if (e.paymentStatus !== 'PENDING') return false;
+        const date = new Date(e.scheduledPaymentDate);
+        return date.getFullYear() === currentYear;
+      })
       .reduce((sum, e) => sum + e.approximateAmount, 0);
-    this.totalPendingPayments.set(pendingTotal);
-
-    // Contadores de estado
-    this.pendingPaymentsCount.set(expenses.filter(e => e.paymentStatus === 'PENDING').length);
-    this.paidPaymentsCount.set(expenses.filter(e => e.paymentStatus === 'PAID').length);
-
-    // Promedio mensual (últimos 6 meses)
-    const monthlyData = this.getMonthlyExpenses(expenses, 6);
-    const totalLast6Months = monthlyData.reduce((sum, m) => sum + m.paid, 0);
-    const average = monthlyData.length > 0 ? totalLast6Months / monthlyData.length : 0;
-    this.averageMonthlyExpense.set(average);
-
-    // Categoría más cara
-    const categoryTotals = new Map<string, number>();
-    expenses
-      .filter(e => e.paymentStatus === 'PAID' && e.actualAmount)
-      .forEach(e => {
-        const current = categoryTotals.get(e.category) || 0;
-        categoryTotals.set(e.category, current + (e.actualAmount || 0));
-      });
-
-    let maxCategory = '';
-    let maxAmount = 0;
-    categoryTotals.forEach((amount, category) => {
-      if (amount > maxAmount) {
-        maxAmount = amount;
-        maxCategory = category;
-      }
-    });
-    this.mostExpensiveCategory.set(maxCategory || 'N/A');
+    this.totalPendingThisYear.set(pendingThisYear);
   }
 
   private calculateNextPayment(expenses: Expense[]): void {

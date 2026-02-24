@@ -27,7 +27,7 @@
   </div>
 
   <div class="page-content">
-    <!-- Cards principales lado a lado -->
+    <!-- Card principal: Próximo Pago -->
     <div class="main-cards-grid">
       <!-- Próxim Pagament -->
       <mat-card class="next-payment-card">
@@ -56,25 +56,6 @@
               <p>No hi ha pagaments pendents propers</p>
             </div>
           }
-        </mat-card-content>
-      </mat-card>
-
-      <!-- Total Pagat Aquest Any -->
-      <mat-card class="year-total-card">
-        <mat-card-header>
-          <mat-card-title>
-            <mat-icon>calendar_today</mat-icon>
-            Total Pagat {{ selectedYear() }}
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="year-total-info">
-            <div class="year-total-amount">{{ totalPaidThisYear() | currency:'EUR':'symbol':'1.2-2':'es' }}</div>
-            <div class="year-total-subtitle">
-              <mat-icon>check_circle</mat-icon>
-              <span>{{ paidPaymentsCount() }} pagos realizados</span>
-            </div>
-          </div>
         </mat-card-content>
       </mat-card>
     </div>
@@ -111,59 +92,48 @@
       </mat-card>
     }
 
-    <!-- Tarjetas de Estadísticas -->
+    <!-- Tarjetas de Estadísticas: Mes Actual y Año Actual -->
     <div class="stats-grid">
-      <!-- Total Pagat Aquest Mes -->
-      <mat-card class="stat-card stat-card-blue">
+      <!-- Mes Actual -->
+      <mat-card class="stat-card stat-card-month">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>today</mat-icon>
+            Mes Actual
+          </mat-card-title>
+        </mat-card-header>
         <mat-card-content>
-          <div class="stat-icon">
-            <mat-icon>payments</mat-icon>
-          </div>
-          <div class="stat-info">
-            <div class="stat-label">Pagat Aquest Mes</div>
-            <div class="stat-value">{{ totalPaidThisMonth() | currency:'EUR':'symbol':'1.2-2':'es' }}</div>
+          <div class="stat-row">
+            <div class="stat-item">
+              <div class="stat-label">Pagat</div>
+              <div class="stat-value stat-value-green">{{ totalPaidThisMonth() | currency:'EUR':'symbol':'1.2-2':'es' }}</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Pendent</div>
+              <div class="stat-value stat-value-orange">{{ totalPendingThisMonth() | currency:'EUR':'symbol':'1.2-2':'es' }}</div>
+            </div>
           </div>
         </mat-card-content>
       </mat-card>
 
-      <!-- Total Pendent -->
-      <mat-card class="stat-card stat-card-orange">
+      <!-- Año Actual -->
+      <mat-card class="stat-card stat-card-year">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>calendar_today</mat-icon>
+            Any Actual
+          </mat-card-title>
+        </mat-card-header>
         <mat-card-content>
-          <div class="stat-icon">
-            <mat-icon>pending_actions</mat-icon>
-          </div>
-          <div class="stat-info">
-            <div class="stat-label">Total Pendent</div>
-            <div class="stat-value">{{ totalPendingPayments() | currency:'EUR':'symbol':'1.2-2':'es' }}</div>
-            <div class="stat-subtitle">{{ pendingPaymentsCount() }} pagaments</div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-
-      <!-- Promig Mensual -->
-      <mat-card class="stat-card stat-card-green">
-        <mat-card-content>
-          <div class="stat-icon">
-            <mat-icon>trending_up</mat-icon>
-          </div>
-          <div class="stat-info">
-            <div class="stat-label">Promig Mensual</div>
-            <div class="stat-value">{{ averageMonthlyExpense() | currency:'EUR':'symbol':'1.2-2':'es' }}</div>
-            <div class="stat-subtitle">Últims 6 mesos</div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-
-      <!-- Categoría Más Cara -->
-      <mat-card class="stat-card stat-card-purple">
-        <mat-card-content>
-          <div class="stat-icon">
-            <mat-icon>category</mat-icon>
-          </div>
-          <div class="stat-info">
-            <div class="stat-label">Categoría Top</div>
-            <div class="stat-value-text">{{ mostExpensiveCategory() }}</div>
-            <div class="stat-subtitle">Mayor gasto total</div>
+          <div class="stat-row">
+            <div class="stat-item">
+              <div class="stat-label">Pagat</div>
+              <div class="stat-value stat-value-green">{{ totalPaidThisYear() | currency:'EUR':'symbol':'1.2-2':'es' }}</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Pendent</div>
+              <div class="stat-value stat-value-orange">{{ totalPendingThisYear() | currency:'EUR':'symbol':'1.2-2':'es' }}</div>
+            </div>
           </div>
         </mat-card-content>
       </mat-card>

@@ -84,9 +84,8 @@
   }
 }
 
-// Grid para cards principales (Próximo Pago y Total Año)
+// Grid para card principal (Próximo Pago)
 .main-cards-grid {
-  @include responsive-grid(1, 2, 2, $spacing-xl);
   margin-bottom: $spacing-xl;
 }
 
@@ -172,52 +171,6 @@
   }
 }
 
-.year-total-card {
-  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-  color: white;
-
-  mat-card-header {
-    mat-card-title {
-      display: flex;
-      align-items: center;
-      gap: $spacing-sm;
-      color: white;
-      font-size: $font-size-lg;
-    }
-  }
-
-  .year-total-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: $spacing-lg 0;
-
-    .year-total-amount {
-      @include responsive-font-size($font-size-3xl, $font-size-5xl);
-      font-weight: $font-weight-bold;
-      margin-bottom: $spacing-base;
-    }
-
-    .year-total-subtitle {
-      display: flex;
-      align-items: center;
-      gap: $spacing-sm;
-      font-size: $font-size-base;
-      opacity: 0.95;
-      padding: $spacing-md $spacing-xl;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: $border-radius-full;
-      backdrop-filter: blur(10px);
-
-      mat-icon {
-        font-size: 20px;
-        width: 20px;
-        height: 20px;
-      }
-    }
-  }
-}
-
 // Tarjeta de Filtro de Tags
 .tags-filter-card {
   margin-bottom: $spacing-xl;
@@ -273,7 +226,7 @@
 
 // Tarjetas de Estadísticas
 .stats-grid {
-  @include responsive-grid(1, 2, 4, $spacing-lg);
+  @include responsive-grid(1, 2, 2, $spacing-lg);
   margin-bottom: $spacing-xl;
 }
 
@@ -285,39 +238,38 @@
     box-shadow: $shadow-lg;
   }
 
-  mat-card-content {
-    display: flex;
-    align-items: center;
-    gap: $spacing-base;
-    padding: $spacing-lg !important;
-  }
-
-  .stat-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 60px;
-    height: 60px;
-    border-radius: $border-radius-lg;
-    background: rgba(255, 255, 255, 0.2);
-
-    mat-icon {
-      font-size: 32px;
-      width: 32px;
-      height: 32px;
-      color: white;
+  mat-card-header {
+    mat-card-title {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      font-size: $font-size-lg;
+      font-weight: $font-weight-medium;
     }
   }
 
-  .stat-info {
-    flex: 1;
+  mat-card-content {
+    padding: $spacing-lg !important;
+  }
+
+  .stat-row {
+    display: flex;
+    justify-content: space-around;
+    gap: $spacing-xl;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 
   .stat-label {
-    font-size: $font-size-xs;
+    font-size: $font-size-sm;
     font-weight: $font-weight-medium;
-    opacity: 0.9;
-    margin-bottom: $spacing-xs;
+    color: $gray-600;
+    margin-bottom: $spacing-sm;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
@@ -326,39 +278,22 @@
     @include responsive-font-size($font-size-2xl, $font-size-3xl);
     font-weight: $font-weight-bold;
     line-height: 1.2;
+
+    &.stat-value-green {
+      color: #2e7d32;
+    }
+
+    &.stat-value-orange {
+      color: #f57c00;
+    }
   }
 
-  .stat-value-text {
-    @include responsive-font-size($font-size-lg, $font-size-xl);
-    font-weight: $font-weight-semibold;
-    line-height: 1.2;
-    text-transform: capitalize;
+  &.stat-card-month {
+    border-left: 4px solid #667eea;
   }
 
-  .stat-subtitle {
-    font-size: $font-size-xs;
-    opacity: 0.8;
-    margin-top: $spacing-xs;
-  }
-
-  &.stat-card-blue {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-  }
-
-  &.stat-card-orange {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    color: white;
-  }
-
-  &.stat-card-green {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    color: white;
-  }
-
-  &.stat-card-purple {
-    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-    color: #333;
+  &.stat-card-year {
+    border-left: 4px solid #11998e;
   }
 }
 
@@ -433,8 +368,6 @@
   }
 
   .main-cards-grid {
-    grid-template-columns: 1fr;
-    gap: $spacing-base;
     margin-bottom: $spacing-base;
   }
 
@@ -442,6 +375,20 @@
     grid-template-columns: 1fr;
     gap: $spacing-md;
     margin-bottom: $spacing-base;
+  }
+
+  .stat-card {
+    mat-card-content {
+      padding: $spacing-base !important;
+    }
+
+    .stat-row {
+      gap: $spacing-lg;
+    }
+
+    .stat-value {
+      font-size: $font-size-xl;
+    }
   }
 
   .charts-grid {
@@ -452,23 +399,6 @@
   .chart-card {
     .chart-container {
       height: 250px;
-    }
-  }
-
-  .stat-card {
-    mat-card-content {
-      padding: $spacing-base !important;
-    }
-
-    .stat-icon {
-      width: 50px;
-      height: 50px;
-
-      mat-icon {
-        font-size: 28px;
-        width: 28px;
-        height: 28px;
-      }
     }
   }
 }
@@ -496,8 +426,6 @@
   }
 
   .main-cards-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: $spacing-lg;
     margin-bottom: $spacing-lg;
   }
 
@@ -546,7 +474,7 @@
   }
 
   .stats-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .chart-card {
