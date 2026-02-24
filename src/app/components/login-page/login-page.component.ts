@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../services/auth.service';
+import { SettingsService } from '../../services/settings.service';
 
 @Component({
   selector: 'app-login-page',
@@ -26,11 +27,12 @@ export class LoginPageComponent {
   loginForm: FormGroup;
   errorMessage: string = '';
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
-  ) {
+  private readonly fb = inject(FormBuilder);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly settingsService = inject(SettingsService);
+
+  constructor() {
     this.loginForm = this.fb.group({
       username: ['user'], // Not used, but kept for compatibility
       password: ['', [Validators.required, Validators.minLength(8)]]
@@ -43,7 +45,17 @@ export class LoginPageComponent {
       this.authService.login(this.loginForm.value).subscribe({
         next: (success) => {
           if (success) {
-            this.router.navigate(['/dashboard']);
+            // Load settings after successful login
+            this.settingsService.loadSettings().subscribe({
+              next: () => {
+                this.router.navigate(['/dashboard']);
+              },
+              error: (error) => {
+                console.error('Error loading settings after login:', error);
+                // Still navigate to dashboard, settings will use defaults
+                this.router.navigate(['/dashboard']);
+              }
+            });
           } else {
             this.errorMessage = "Clau d'encriptació invàlida (mínim 8 caràcters)";
             this.loginForm.patchValue({ password: '' });
