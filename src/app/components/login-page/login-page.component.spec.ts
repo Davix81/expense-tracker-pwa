@@ -148,4 +148,68 @@ describe('LoginPageComponent', () => {
 
     expect(component.errorMessage).toBe('');
   });
+
+  /**
+   * Test: Offline detection and messaging
+   * Requirement 4.3: Detect network connectivity status and display informative message
+   */
+  describe('Offline Detection', () => {
+    it('should detect offline status on initialization', () => {
+      // Mock navigator.onLine to return false
+      Object.defineProperty(navigator, 'onLine', {
+        writable: true,
+        value: false
+      });
+
+      // Create a new component instance
+      const offlineFixture = TestBed.createComponent(LoginPageComponent);
+      const offlineComponent = offlineFixture.componentInstance;
+      offlineFixture.detectChanges();
+
+      expect(offlineComponent.isOffline).toBe(true);
+    });
+
+    it('should detect online status on initialization', () => {
+      // Mock navigator.onLine to return true
+      Object.defineProperty(navigator, 'onLine', {
+        writable: true,
+        value: true
+      });
+
+      // Create a new component instance
+      const onlineFixture = TestBed.createComponent(LoginPageComponent);
+      const onlineComponent = onlineFixture.componentInstance;
+      onlineFixture.detectChanges();
+
+      expect(onlineComponent.isOffline).toBe(false);
+    });
+
+    it('should update offline status when online event fires', () => {
+      component.isOffline = true;
+
+      // Simulate online event
+      window.dispatchEvent(new Event('online'));
+
+      expect(component.isOffline).toBe(false);
+    });
+
+    it('should update offline status when offline event fires', () => {
+      component.isOffline = false;
+
+      // Simulate offline event
+      window.dispatchEvent(new Event('offline'));
+
+      expect(component.isOffline).toBe(true);
+    });
+
+    it('should clear offline-related error messages when coming back online', () => {
+      component.isOffline = true;
+      component.errorMessage = 'L\'autenticació biomètrica requereix connexió a internet';
+
+      // Simulate online event
+      window.dispatchEvent(new Event('online'));
+
+      expect(component.errorMessage).toBe('');
+    });
+  });
 });

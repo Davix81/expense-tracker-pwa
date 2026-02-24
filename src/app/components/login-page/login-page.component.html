@@ -6,6 +6,43 @@
     </mat-card-header>
 
     <mat-card-content>
+      <!-- Offline Warning Banner -->
+      <!-- Requirement 4.3: Display informative message when offline -->
+      @if (isOffline) {
+        <div class="offline-banner">
+          <mat-icon>cloud_off</mat-icon>
+          <span>Sense connexió a internet. L'autenticació biomètrica no està disponible.</span>
+        </div>
+      }
+
+      <!-- Biometric Login Button -->
+      <!-- Requirement 3.1: Display biometric login option when credentials exist -->
+      <!-- Requirement 3.5: Maintain password form as alternative authentication method -->
+      @if (showBiometricButton) {
+        <div class="biometric-section">
+          <button
+            mat-fab
+            extended
+            color="accent"
+            type="button"
+            class="biometric-button"
+            (click)="onBiometricLogin()"
+            [disabled]="biometricLoading || isOffline"
+            aria-label="Iniciar sessió amb biometria">
+            @if (biometricLoading) {
+              <mat-spinner diameter="24"></mat-spinner>
+            } @else {
+              <mat-icon>fingerprint</mat-icon>
+            }
+            <span>Accedir amb biometria</span>
+          </button>
+          
+          <div class="divider">
+            <span>o</span>
+          </div>
+        </div>
+      }
+
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Clau d'encriptació</mat-label>
@@ -31,7 +68,22 @@
 
         @if (errorMessage) {
           <div class="error-message">
-            {{ errorMessage }}
+            <div class="error-text">
+              {{ errorMessage }}
+            </div>
+            <!-- Requirement 3.4: Provide retry button for failed biometric attempts -->
+            @if (showBiometricButton && !biometricLoading && errorMessage.includes('biomètric')) {
+              <button
+                mat-stroked-button
+                color="accent"
+                type="button"
+                class="retry-button"
+                (click)="onBiometricLogin()"
+                aria-label="Tornar a intentar autenticació biomètrica">
+                <mat-icon>refresh</mat-icon>
+                Tornar a intentar
+              </button>
+            }
           </div>
         }
 

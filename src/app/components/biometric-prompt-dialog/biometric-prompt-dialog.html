@@ -1,0 +1,29 @@
+<div class="biometric-prompt-header">
+  <mat-icon class="biometric-icon">fingerprint</mat-icon>
+  <h2 mat-dialog-title>Habilitar autenticació biomètrica</h2>
+</div>
+
+<mat-dialog-content>
+  <p class="prompt-message">
+    Vols utilitzar la teva empremta digital o reconeixement facial per iniciar sessió més ràpidament en el futur?
+  </p>
+  <p class="prompt-details">
+    Podràs continuar utilitzant la teva contrasenya si ho prefereixes.
+  </p>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button 
+    mat-button 
+    (click)="onDecline()"
+    class="decline-button">
+    Ara no
+  </button>
+  <button 
+    mat-raised-button 
+    color="primary" 
+    (click)="onAccept()"
+    class="accept-button">
+    Habilitar
+  </button>
+</mat-dialog-actions>
