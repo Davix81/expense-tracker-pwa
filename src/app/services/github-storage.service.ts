@@ -65,7 +65,7 @@ export class GitHubStorageService {
     return this.http.get<GitHubFileResponse>(url, { headers: this.buildHeaders() }).pipe(
       switchMap(response => {
         const content = this.decodeContent(response.content);
-        
+
         // Try to detect if content is encrypted or plain JSON
         return from(this.parseContent(content));
       }),
@@ -76,6 +76,7 @@ export class GitHubStorageService {
           console.log('Expense file not found, returning empty array');
           return of([]);
         }
+
         return this.handleError(error);
       })
     );
@@ -94,7 +95,7 @@ export class GitHubStorageService {
     return this.http.get<GitHubFileResponse>(url, { headers: this.buildHeaders() }).pipe(
       switchMap(response => {
         const content = this.decodeContent(response.content);
-        
+
         // Try to detect if content is encrypted or plain JSON
         return from(this.parseContent(content));
       }),
@@ -270,7 +271,7 @@ export class GitHubStorageService {
   private async prepareContent(data: any): Promise<string> {
     let contentToEncode: string;
     const dataConfig = this.authService.getEncryptionKey();
-    
+
     if (dataConfig) {
       // Encrypt the data first
       contentToEncode = await this.encryptionService.encrypt(data, dataConfig);
@@ -278,7 +279,7 @@ export class GitHubStorageService {
       // Use plain JSON
       contentToEncode = JSON.stringify(data, null, 2);
     }
-    
+
     // Base64 encode for GitHub
     return btoa(unescape(encodeURIComponent(contentToEncode)));
   }
@@ -322,10 +323,10 @@ export class GitHubStorageService {
     // Try to detect if content is encrypted or plain JSON
     // Encrypted content will be a long base64-like string without JSON structure
     // Plain JSON will start with [ or {
-    
+
     const trimmedContent = content.trim();
     const dataConfig = this.authService.getEncryptionKey();
-    
+
     // Check if it looks like JSON
     if (trimmedContent.startsWith('[') || trimmedContent.startsWith('{')) {
       // It's plain JSON
@@ -337,7 +338,7 @@ export class GitHubStorageService {
         throw new Error('Invalid JSON format');
       }
     }
-    
+
     // It looks like encrypted data
     if (dataConfig) {
       console.log('Detected encrypted format, attempting to decrypt');
@@ -373,12 +374,12 @@ export class GitHubStorageService {
       'Accept': 'application/vnd.github.v3+json',
       'Content-Type': 'application/json'
     };
-    
+
     // Only add Authorization header if token is provided
     if (this.config.token) {
       headers['Authorization'] = `token ${this.config.token}`;
     }
-    
+
     return new HttpHeaders(headers);
   }
 
