@@ -223,13 +223,24 @@ mat-chip {
   }
 
   // Sobrescribir estilos internos de Material
-  ::ng-deep .mat-mdc-chip-action-label {
-    border: none !important;
-  }
+  ::ng-deep {
+    .mat-mdc-chip-action-label {
+      border: none !important;
+    }
 
-  ::ng-deep .mdc-evolution-chip__cell,
-  ::ng-deep .mdc-evolution-chip__action {
-    border: none !important;
+    .mdc-evolution-chip__cell,
+    .mdc-evolution-chip__action {
+      border: none !important;
+    }
+
+    .mdc-evolution-chip__outline {
+      border: none !important;
+      display: none !important;
+    }
+
+    .mat-mdc-chip-focus-overlay {
+      border: none !important;
+    }
   }
 }
 

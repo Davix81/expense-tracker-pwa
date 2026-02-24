@@ -24,6 +24,7 @@
   overflow-x: hidden;
   @include responsive-spacing('padding', $spacing-base, $spacing-lg, $spacing-xl);
   @include custom-scrollbar();
+  background: linear-gradient(180deg, #f8f9fc 0%, #f0f2f8 100%);
 }
 
 .dashboard-header {
@@ -174,19 +175,29 @@
 // Tarjeta de Filtro de Tags
 .tags-filter-card {
   margin-bottom: $spacing-xl;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 
   mat-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: linear-gradient(180deg, #fafbfd 0%, #f5f6fa 100%);
+    padding: $spacing-base $spacing-lg;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 
     mat-card-title {
       display: flex;
       align-items: center;
       gap: $spacing-sm;
-      font-size: $font-size-lg;
-      font-weight: $font-weight-medium;
+      font-size: $font-size-base;
+      font-weight: $font-weight-semibold;
+      color: $gray-700;
     }
+  }
+
+  mat-card-content {
+    padding: $spacing-lg;
   }
 
   .tags-chip-set {
@@ -232,24 +243,32 @@
 
 .stat-card {
   transition: transform $transition-fast, box-shadow $transition-fast;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: $shadow-lg;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   }
 
   mat-card-header {
+    background: linear-gradient(180deg, #fafbfd 0%, #f5f6fa 100%);
+    padding: $spacing-base $spacing-lg;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
     mat-card-title {
       display: flex;
       align-items: center;
       gap: $spacing-sm;
-      font-size: $font-size-lg;
-      font-weight: $font-weight-medium;
+      font-size: $font-size-base;
+      font-weight: $font-weight-semibold;
+      color: $gray-700;
     }
   }
 
   mat-card-content {
-    padding: $spacing-lg !important;
+    padding: $spacing-xl !important;
+    background: white;
   }
 
   .stat-row {
@@ -263,12 +282,16 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+    padding: $spacing-base;
+    border-radius: $border-radius-lg;
+    background: linear-gradient(180deg, #fafbfd 0%, #f5f6fa 100%);
+    min-width: 120px;
   }
 
   .stat-label {
-    font-size: $font-size-sm;
+    font-size: $font-size-xs;
     font-weight: $font-weight-medium;
-    color: $gray-600;
+    color: $gray-500;
     margin-bottom: $spacing-sm;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -284,7 +307,7 @@
     }
 
     &.stat-value-orange {
-      color: #f57c00;
+      color: #ef6c00;
     }
   }
 
@@ -302,13 +325,24 @@
 }
 
 .chart-card {
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
   mat-card-header {
     margin-bottom: $spacing-base;
+    padding: $spacing-base $spacing-lg;
+    background: linear-gradient(180deg, #fafbfd 0%, #f5f6fa 100%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 
     mat-card-title {
-      font-size: $font-size-lg;
-      font-weight: $font-weight-medium;
+      font-size: $font-size-base;
+      font-weight: $font-weight-semibold;
+      color: $gray-700;
     }
+  }
+
+  mat-card-content {
+    padding: $spacing-lg;
   }
 
   .chart-container {
@@ -378,12 +412,21 @@
   }
 
   .stat-card {
+    mat-card-header {
+      padding: $spacing-sm $spacing-base;
+    }
+
     mat-card-content {
       padding: $spacing-base !important;
     }
 
     .stat-row {
-      gap: $spacing-lg;
+      gap: $spacing-base;
+    }
+
+    .stat-item {
+      min-width: auto;
+      padding: $spacing-sm;
     }
 
     .stat-value {

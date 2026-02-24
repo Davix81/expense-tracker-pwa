@@ -2,17 +2,16 @@
 @use '../../../styles/mixins' as *;
 @use '../../../styles/typography' as *;
 
-// Dialog container - NO SCROLL
+// Dialog container
 :host ::ng-deep {
   .mat-mdc-dialog-container {
-    overflow: hidden !important;
     padding: 0 !important;
   }
 
   .mat-mdc-dialog-surface {
-    overflow: hidden !important;
     display: flex !important;
     flex-direction: column !important;
+    max-height: 100%;
   }
 }
 
@@ -39,12 +38,14 @@
   }
 }
 
-// Dialog content - NO SCROLL, fits content
+// Dialog content - scrollable
 mat-dialog-content {
-  flex: 0 1 auto !important;
-  overflow: hidden !important;
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
   @include responsive-spacing('padding', $spacing-base $spacing-lg, $spacing-lg $spacing-xl, $spacing-lg $spacing-xl);
-  max-height: none !important;
+  @include custom-scrollbar();
+  background: linear-gradient(180deg, #f8f9fc 0%, #f0f2f8 100%);
 }
 
 // Error message
@@ -119,6 +120,8 @@ mat-form-field {
   ::ng-deep {
     .mat-mdc-text-field-wrapper {
       background-color: white;
+      border-radius: $border-radius-base;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
     }
 
     .mat-mdc-form-field-icon-prefix {
@@ -196,6 +199,17 @@ mat-dialog-actions {
       border-radius: 0 !important;
       margin: 0 !important;
     }
+
+    .mat-mdc-dialog-surface {
+      height: 100% !important;
+    }
+  }
+
+  mat-dialog-content {
+    flex: 1 1 auto !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: $spacing-xl !important;
   }
 
   .dialog-header {
@@ -230,6 +244,7 @@ mat-dialog-actions {
   mat-dialog-actions {
     flex-direction: column-reverse;
     gap: $spacing-sm;
+    flex-shrink: 0;
 
     button {
       width: 100%;
