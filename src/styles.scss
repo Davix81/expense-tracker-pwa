@@ -17,13 +17,13 @@
 // ============================================================================
 // Material Theme Configuration
 // ============================================================================
-// Using Indigo-Pink theme with Material 3 design system
+// Using a vibrant, cheerful theme with Material 3 design system
 html {
   height: 100%;
   @include mat.theme((
     color: (
-      primary: mat.$azure-palette,
-      tertiary: mat.$rose-palette,
+      primary: mat.$violet-palette,
+      tertiary: mat.$magenta-palette,
     ),
     typography: Roboto,
     density: 0,

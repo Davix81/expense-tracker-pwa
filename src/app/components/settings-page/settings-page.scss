@@ -24,6 +24,7 @@
   overflow-x: hidden;
   @include responsive-spacing('padding', $spacing-base, $spacing-lg, $spacing-xl);
   @include custom-scrollbar();
+  background: linear-gradient(135deg, #faf5ff 0%, #f0f9ff 50%, #f0fdf4 100%);
 }
 
 .dashboard-header {
@@ -61,12 +62,15 @@
 
 .settings-section {
   margin-bottom: $spacing-lg;
-  box-shadow: $shadow-md;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.08);
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+  background: white;
 
   mat-card-header {
     padding: $spacing-base;
-    background-color: $gray-50;
-    border-bottom: 1px solid $gray-200;
+    background: linear-gradient(135deg, #faf5ff 0%, #f0f9ff 100%);
+    border-bottom: 1px solid rgba(139, 92, 246, 0.1);
 
     mat-card-title {
       display: flex;
@@ -74,11 +78,11 @@
       gap: $spacing-sm;
       margin: 0;
       @include responsive-font-size($font-size-lg, $font-size-xl);
-      font-weight: $font-weight-medium;
-      color: $gray-900;
+      font-weight: $font-weight-semibold;
+      color: #6366f1;
 
       mat-icon {
-        color: $primary;
+        color: #8b5cf6;
       }
     }
   }
@@ -109,8 +113,8 @@
     width: 100%;
     background-color: #ffffff;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e8eaed;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.08);
+    border: 1px solid rgba(139, 92, 246, 0.1);
   }
 
   .settings-table {
@@ -123,9 +127,9 @@
       font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      background: linear-gradient(to bottom, #f8f9fa 0%, #f1f3f4 100%);
-      color: #5f6368;
-      border-bottom: 2px solid #e8eaed;
+      background: linear-gradient(135deg, #faf5ff 0%, #f0f9ff 100%);
+      color: #6366f1;
+      border-bottom: 2px solid rgba(139, 92, 246, 0.15);
       position: sticky;
       top: 0;
       z-index: 10;

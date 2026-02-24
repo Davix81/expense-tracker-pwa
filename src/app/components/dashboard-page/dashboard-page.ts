@@ -45,37 +45,37 @@ export class DashboardPageComponent implements OnInit {
   availableYears = signal<number[]>([]);
   availableTags = signal<string[]>([]);
   selectedTags = signal<Set<string>>(new Set());
-  
+
   // Computed signal para gastos filtrados por año y tags
   filteredExpenses = computed(() => {
     const year = this.selectedYear();
     const tags = this.selectedTags();
-    
+
     return this.expenses().filter(expense => {
       const expenseYear = new Date(expense.scheduledPaymentDate).getFullYear();
       const yearMatch = expenseYear === year;
-      
+
       // Si no hay tags seleccionados, mostrar todos
       if (tags.size === 0) {
         return yearMatch;
       }
-      
+
       // Si hay tags seleccionados, el gasto debe tener al menos uno de ellos
       return yearMatch && expense.tag && tags.has(expense.tag);
     });
   });
-  
+
   nextPayment = signal<Expense | null>(null);
   daysUntilNextPayment = signal<number>(0);
-  
+
   // Estadísticas del mes actual
   totalPaidThisMonth = signal<number>(0);
   totalPendingThisMonth = signal<number>(0);
-  
+
   // Estadísticas del año actual
   totalPaidThisYear = signal<number>(0);
   totalPendingThisYear = signal<number>(0);
-  
+
   // Gráfico mensual (últimos 6 meses)
   monthlyChartData = signal<ChartData<'bar'>>({
     labels: [],
@@ -108,7 +108,7 @@ export class DashboardPageComponent implements OnInit {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { 
+      legend: {
         display: true,
         position: 'top'
       },
@@ -178,11 +178,11 @@ export class DashboardPageComponent implements OnInit {
       const year = new Date(expense.scheduledPaymentDate).getFullYear();
       years.add(year);
     });
-    
+
     // Ordenar años de más reciente a más antiguo
     const sortedYears = Array.from(years).sort((a, b) => b - a);
     this.availableYears.set(sortedYears);
-    
+
     // Si el año seleccionado no está en la lista, seleccionar el más reciente
     if (sortedYears.length > 0 && !sortedYears.includes(this.selectedYear())) {
       this.selectedYear.set(sortedYears[0]);
@@ -196,7 +196,7 @@ export class DashboardPageComponent implements OnInit {
         tags.add(expense.tag);
       }
     });
-    
+
     // Ordenar tags alfabéticamente
     const sortedTags = Array.from(tags).sort();
     this.availableTags.set(sortedTags);
@@ -304,20 +304,20 @@ export class DashboardPageComponent implements OnInit {
   private generateMonthlyChart(expenses: Expense[]): void {
     const selectedYear = this.selectedYear();
     const monthlyData = this.getMonthlyExpensesForYear(expenses, selectedYear);
-    
+
     this.monthlyChartData.set({
       labels: monthlyData.map(m => m.month),
       datasets: [
         {
           data: monthlyData.map(m => m.paid),
-          label: 'Pagado (€)',
+          label: 'Pagat (€)',
           backgroundColor: 'rgba(76, 175, 80, 0.7)',
           borderColor: 'rgba(76, 175, 80, 1)',
           borderWidth: 1
         },
         {
           data: monthlyData.map(m => m.pending),
-          label: 'Pendiente (€)',
+          label: 'Pendent (€)',
           backgroundColor: 'rgba(255, 152, 0, 0.7)',
           borderColor: 'rgba(255, 152, 0, 1)',
           borderWidth: 1
@@ -328,7 +328,7 @@ export class DashboardPageComponent implements OnInit {
 
   private generateCategoryChart(expenses: Expense[]): void {
     const categoryTotals = new Map<string, number>();
-    
+
     expenses
       .filter(e => e.paymentStatus === 'PAID' && e.actualAmount)
       .forEach(e => {
@@ -386,7 +386,7 @@ export class DashboardPageComponent implements OnInit {
 
       if (date) {
         const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-        
+
         if (monthlyMap.has(key)) {
           const current = monthlyMap.get(key)!;
           if (isPaid) {
@@ -404,7 +404,7 @@ export class DashboardPageComponent implements OnInit {
       const [year, month] = key.split('-');
       const date = new Date(parseInt(year), parseInt(month) - 1, 1);
       const label = date.toLocaleDateString('es-ES', { month: 'short', year: 'numeric' });
-      
+
       return {
         month: label,
         paid: value.paid,
@@ -443,11 +443,11 @@ export class DashboardPageComponent implements OnInit {
       if (date) {
         const expenseYear = date.getFullYear();
         const expenseMonth = date.getMonth();
-        
+
         // Solo procesar gastos del año seleccionado
         if (expenseYear === year) {
           const key = `${expenseYear}-${String(expenseMonth + 1).padStart(2, '0')}`;
-          
+
           if (monthlyMap.has(key)) {
             const current = monthlyMap.get(key)!;
             if (isPaid) {
@@ -468,7 +468,7 @@ export class DashboardPageComponent implements OnInit {
         const [yearStr, monthStr] = key.split('-');
         const date = new Date(parseInt(yearStr), parseInt(monthStr) - 1, 1);
         const label = date.toLocaleDateString('es-ES', { month: 'short' });
-        
+
         return {
           month: label,
           paid: value.paid,

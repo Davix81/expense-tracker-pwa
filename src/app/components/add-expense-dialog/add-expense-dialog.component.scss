@@ -18,7 +18,7 @@
 // Dialog header
 .dialog-header {
   flex-shrink: 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #3b82f6 100%);
   color: white;
   @include responsive-spacing('padding', $spacing-base $spacing-lg, $spacing-lg $spacing-xl, $spacing-lg $spacing-xl);
 
@@ -45,7 +45,7 @@ mat-dialog-content {
   overflow-x: hidden !important;
   @include responsive-spacing('padding', $spacing-base $spacing-lg, $spacing-lg $spacing-xl, $spacing-lg $spacing-xl);
   @include custom-scrollbar();
-  background: linear-gradient(180deg, #f8f9fc 0%, #f0f2f8 100%);
+  background: linear-gradient(135deg, #faf5ff 0%, #f0f9ff 50%, #f0fdf4 100%);
 }
 
 // Error message
@@ -102,14 +102,14 @@ mat-dialog-content {
     content: '';
     flex: 1;
     height: 1px;
-    background: $gray-300;
+    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), transparent);
   }
 
   span {
     padding: 0 $spacing-md;
     font-size: $font-size-xs;
     font-weight: $font-weight-medium;
-    color: $gray-600;
+    color: #8b5cf6;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
@@ -121,12 +121,12 @@ mat-form-field {
     .mat-mdc-text-field-wrapper {
       background-color: white;
       border-radius: $border-radius-base;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.08);
     }
 
     .mat-mdc-form-field-icon-prefix {
       padding-right: $spacing-sm;
-      color: $gray-600;
+      color: #8b5cf6;
 
       mat-icon {
         font-size: 20px;
@@ -166,8 +166,8 @@ mat-form-field {
 mat-dialog-actions {
   flex-shrink: 0;
   @include responsive-spacing('padding', $spacing-md $spacing-lg, $spacing-base $spacing-xl, $spacing-base $spacing-xl);
-  border-top: 1px solid $gray-300;
-  background-color: $gray-100;
+  border-top: 1px solid rgba(139, 92, 246, 0.1);
+  background: linear-gradient(135deg, #faf5ff 0%, #f0f9ff 100%);
   gap: $spacing-md;
   display: flex;
   justify-content: flex-end;
@@ -179,6 +179,7 @@ mat-dialog-actions {
     padding: 0 $spacing-lg;
     height: 40px;
     font-size: $font-size-sm;
+    border-radius: $border-radius-base;
 
     mat-icon {
       font-size: 20px;
