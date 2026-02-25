@@ -270,18 +270,18 @@ mat-chip {
   letter-spacing: 0.5px;
   
   &.status-paid {
-    background-color: #dcfce7 !important;
-    color: #166534 !important;
+    background-color: #22c55e !important;
+    color: white !important;
   }
   
   &.status-pending {
-    background-color: #fef3c7 !important;
-    color: #92400e !important;
+    background-color: #f59e0b !important;
+    color: white !important;
   }
   
   &.status-failed {
-    background-color: #fee2e2 !important;
-    color: #991b1b !important;
+    background-color: #ef4444 !important;
+    color: white !important;
   }
 
   ::ng-deep {
