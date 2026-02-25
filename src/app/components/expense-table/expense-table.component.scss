@@ -146,6 +146,65 @@
   display: none;
 }
 
+// Compact toggle button
+.compact-toggle {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+
+  .toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #5e72e4;
+    border-color: #5e72e4;
+    background-color: #ffffff;
+    box-shadow: 0 2px 8px rgba(94, 114, 228, 0.15);
+    transition: all 0.2s ease;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover {
+      background-color: #f0f4ff;
+      box-shadow: 0 4px 12px rgba(94, 114, 228, 0.25);
+    }
+  }
+}
+
+// Compact mode card styles
+.expense-card.compact {
+  mat-card-header {
+    padding-bottom: 8px;
+  }
+
+  mat-card-content {
+    padding-top: 4px;
+    padding-bottom: 8px;
+  }
+
+  .card-row {
+    padding: 6px 0;
+
+    &.highlight-row {
+      padding: 8px;
+      margin: 4px -8px;
+    }
+
+    &.status-row {
+      padding-top: 10px;
+      margin-top: 6px;
+    }
+  }
+}
+
 // Desktop Table View (visible by default)
 .table-wrapper {
   display: block;

@@ -51,6 +51,7 @@ export class ExpenseTableComponent implements OnInit, OnChanges {
   availableTags: string[] = [];
   selectedTags: Set<string> = new Set();
   selectedMonth: number = 0; // 0 = Todos los meses
+  compactMode: boolean = false; // Modo compacto para vista móvil
 
   // Define all table columns including actions
   displayedColumns: string[] = [
@@ -232,8 +233,17 @@ export class ExpenseTableComponent implements OnInit, OnChanges {
       'MENSUAL': 'Mensual',
       'BIMENSUAL': 'Bimensual',
       'TRIMESTRAL': 'Trimestral',
+      'CUATRIMESTRAL': 'Cuatrimestral',
+      'SEMESTRAL': 'Semestral',
       'ANUAL': 'Anual'
     };
     return labels[periodicity] || periodicity;
+  }
+
+  /**
+   * Toggle compact mode for mobile view
+   */
+  toggleCompactMode(): void {
+    this.compactMode = !this.compactMode;
   }
 }

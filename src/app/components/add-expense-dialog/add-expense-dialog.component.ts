@@ -61,7 +61,7 @@ export class AddExpenseDialogComponent {
   paymentStatuses: PaymentStatus[] = ['PENDING', 'PAID', 'FAILED'];
   
   // Periodicity options
-  periodicities: Periodicity[] = ['MENSUAL', 'BIMENSUAL', 'TRIMESTRAL', 'ANUAL'];
+  periodicities: Periodicity[] = ['MENSUAL', 'BIMENSUAL', 'TRIMESTRAL', 'CUATRIMESTRAL', 'SEMESTRAL', 'ANUAL'];
   
   // Fraction options
   fractions: Fraction[] = ['ÚNICA', 'PRIMERA', 'SEGONA', 'TERCERA', 'QUARTA'];
@@ -274,6 +274,8 @@ export class AddExpenseDialogComponent {
       'MENSUAL': 'Mensual',
       'BIMENSUAL': 'Bimensual',
       'TRIMESTRAL': 'Trimestral',
+      'CUATRIMESTRAL': 'Cuatrimestral',
+      'SEMESTRAL': 'Semestral',
       'ANUAL': 'Anual'
     };
     return labels[periodicity] || periodicity;

@@ -50,6 +50,7 @@ export class ExpenseService {
 
   /**
    * Adds a new expense with ID generation and timestamp
+   * Also generates periodic copies based on periodicity within the same year
    * 
    * Requirements: 2.2, 2.4, 2.5, 2.6
    * 
@@ -63,16 +64,19 @@ export class ExpenseService {
       return throwError(() => new Error(`Validation failed: ${validation.errors.join(', ')}`));
     }
 
-    // Generate ID and timestamp
+    // Generate ID and timestamp for base expense
     const newExpense: Expense = {
       ...expense,
       id: this.generateId(),
       createdAt: new Date()
     };
 
-    // Get current expenses and add new one
+    // Generate periodic copies based on periodicity (within same year)
+    const allExpenses = this.generatePeriodicExpenses(newExpense);
+
+    // Get current expenses and add all new ones
     const currentExpenses = this.expensesSubject.value;
-    const updatedExpenses = [...currentExpenses, newExpense];
+    const updatedExpenses = [...currentExpenses, ...allExpenses];
 
     // Persist to GitHub and reload to ensure we have the latest SHA
     return this.storage.writeExpenses(updatedExpenses).pipe(
@@ -98,6 +102,7 @@ export class ExpenseService {
 
   /**
    * Updates an existing expense
+   * Also generates periodic copies based on periodicity within the same year
    * 
    * Requirements: 2.2, 2.4, 2.5, 2.6
    * 
@@ -123,11 +128,19 @@ export class ExpenseService {
     const updatedExpenses = [...currentExpenses];
     updatedExpenses[expenseIndex] = expense;
 
+    // Generate periodic copies based on periodicity (within same year)
+    const periodicExpenses = this.generatePeriodicExpenses(expense);
+    // Remove the first one (the original) since it's already updated
+    const newPeriodicExpenses = periodicExpenses.slice(1);
+    
+    // Add new periodic expenses
+    const finalExpenses = [...updatedExpenses, ...newPeriodicExpenses];
+
     // Persist to GitHub and reload to ensure we have the latest SHA
-    return this.storage.writeExpenses(updatedExpenses).pipe(
+    return this.storage.writeExpenses(finalExpenses).pipe(
       tap(() => {
         // Update local state immediately for UI responsiveness
-        this.expensesSubject.next(updatedExpenses);
+        this.expensesSubject.next(finalExpenses);
       }),
       // Reload from GitHub to ensure we have the latest state and SHA
       switchMap(() => this.storage.readExpenses()),
@@ -253,8 +266,8 @@ export class ExpenseService {
     // Periodicity validation
     if (!expense.periodicity) {
       errors.push('Periodicity is required');
-    } else if (!['MENSUAL', 'BIMENSUAL', 'TRIMESTRAL', 'ANUAL'].includes(expense.periodicity)) {
-      errors.push('Periodicity must be MENSUAL, BIMENSUAL, TRIMESTRAL, or ANUAL');
+    } else if (!['MENSUAL', 'BIMENSUAL', 'TRIMESTRAL', 'CUATRIMESTRAL', 'SEMESTRAL', 'ANUAL'].includes(expense.periodicity)) {
+      errors.push('Periodicity must be MENSUAL, BIMENSUAL, TRIMESTRAL, CUATRIMESTRAL, SEMESTRAL, or ANUAL');
     }
 
     // Fraction validation
@@ -279,6 +292,70 @@ export class ExpenseService {
    */
   private generateId(): string {
     return uuidv4();
+  }
+
+  /**
+   * Calculates the month interval based on periodicity
+   * 
+   * @param periodicity The periodicity type
+   * @returns Number of months between occurrences
+   */
+  private getMonthInterval(periodicity: string): number {
+    switch (periodicity) {
+      case 'MENSUAL': return 1;
+      case 'BIMENSUAL': return 2;
+      case 'TRIMESTRAL': return 3;
+      case 'CUATRIMESTRAL': return 4;
+      case 'SEMESTRAL': return 6;
+      case 'ANUAL': return 12;
+      default: return 12;
+    }
+  }
+
+  /**
+   * Generates periodic expense copies based on periodicity within the same year
+   * 
+   * @param baseExpense The base expense to duplicate
+   * @returns Array of expenses including the original and periodic copies
+   */
+  private generatePeriodicExpenses(baseExpense: Expense): Expense[] {
+    const expenses: Expense[] = [baseExpense];
+    
+    // ANUAL means only one occurrence per year
+    if (baseExpense.periodicity === 'ANUAL') {
+      return expenses;
+    }
+
+    const baseDate = new Date(baseExpense.scheduledPaymentDate);
+    const baseYear = baseDate.getFullYear();
+    const baseMonth = baseDate.getMonth();
+    const baseDay = baseDate.getDate();
+    const monthInterval = this.getMonthInterval(baseExpense.periodicity);
+
+    // Generate copies for remaining months in the same year
+    let nextMonth = baseMonth + monthInterval;
+    
+    while (nextMonth <= 11) { // 11 = December (0-indexed)
+      const newDate = new Date(baseYear, nextMonth, baseDay);
+      
+      // Handle month overflow (e.g., Jan 31 -> Feb 28)
+      if (newDate.getMonth() !== nextMonth) {
+        // Set to last day of the target month
+        newDate.setDate(0);
+      }
+
+      const periodicExpense: Expense = {
+        ...baseExpense,
+        id: this.generateId(),
+        scheduledPaymentDate: newDate,
+        createdAt: new Date()
+      };
+
+      expenses.push(periodicExpense);
+      nextMonth += monthInterval;
+    }
+
+    return expenses;
   }
 
   /**

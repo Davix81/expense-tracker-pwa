@@ -60,90 +60,128 @@
 
   <!-- Mobile Card View -->
   <div class="mobile-card-view">
-    <mat-card *ngFor="let expense of filteredExpenses" class="expense-card">
+    <!-- Toggle compact mode button -->
+    <div class="compact-toggle">
+      <button mat-stroked-button (click)="toggleCompactMode()" class="toggle-btn">
+        <mat-icon>{{ compactMode ? 'unfold_more' : 'unfold_less' }}</mat-icon>
+        {{ compactMode ? 'Més detalls' : 'Menys detalls' }}
+      </button>
+    </div>
+
+    <mat-card *ngFor="let expense of filteredExpenses" class="expense-card" [class.compact]="compactMode">
       <mat-card-header>
         <mat-card-title>
           <mat-icon class="title-icon">receipt</mat-icon>
           {{ expense.name }}
         </mat-card-title>
-        <mat-card-subtitle>
+        <mat-card-subtitle *ngIf="!compactMode">
           <mat-icon class="subtitle-icon">category</mat-icon>
           {{ expense.category }}
         </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <div class="card-row">
-          <span class="label">
-            <mat-icon>description</mat-icon>
-            Descripció
-          </span>
-          <span class="value">{{ expense.description }}</span>
-        </div>
-        <div class="card-row">
-          <span class="label">
-            <mat-icon>business</mat-icon>
-            Emissor
-          </span>
-          <span class="value">{{ expense.issuer }}</span>
-        </div>
-        <div class="card-row">
-          <span class="label">
-            <mat-icon>label</mat-icon>
-            Etiqueta
-          </span>
-          <span class="value">{{ expense.tag }}</span>
-        </div>
-        <div class="card-row highlight-row">
-          <span class="label">
-            <mat-icon>euro</mat-icon>
-            Import aproximat
-          </span>
-          <span class="value amount">{{ expense.approximateAmount | currency:'EUR':'symbol':'1.2-2':'es' }}</span>
-        </div>
-        <div class="card-row">
-          <span class="label">
-            <mat-icon>event</mat-icon>
-            Data prevista
-          </span>
-          <span class="value">{{ expense.scheduledPaymentDate | date:'dd/MM/yyyy' }}</span>
-        </div>
-        <div class="card-row">
-          <span class="label">
-            <mat-icon>event_repeat</mat-icon>
-            Periodicitat
-          </span>
-          <span class="value">{{ getPeriodicityLabel(expense.periodicity) }}</span>
-        </div>
-        <div class="card-row" *ngIf="expense.actualPaymentDate">
-          <span class="label">
-            <mat-icon>event_available</mat-icon>
-            Data real
-          </span>
-          <span class="value">{{ expense.actualPaymentDate | date:'dd/MM/yyyy' }}</span>
-        </div>
-        <div class="card-row highlight-row" *ngIf="expense.actualAmount !== null">
-          <span class="label">
-            <mat-icon>paid</mat-icon>
-            Import real
-          </span>
-          <span class="value amount">{{ expense.actualAmount | currency:'EUR':'symbol':'1.2-2':'es' }}</span>
-        </div>
-        <div class="card-row">
-          <span class="label">
-            <mat-icon>account_balance</mat-icon>
-            Banc
-          </span>
-          <span class="value">{{ expense.bank }}</span>
-        </div>
-        <div class="card-row status-row">
-          <span class="label">
-            <mat-icon>info</mat-icon>
-            Estat
-          </span>
-          <mat-chip [ngClass]="getStatusClass(expense.paymentStatus)">
-            {{ expense.paymentStatus }}
-          </mat-chip>
-        </div>
+        <!-- Compact view: only essential info -->
+        <ng-container *ngIf="compactMode">
+          <div class="card-row highlight-row">
+            <span class="label">
+              <mat-icon>euro</mat-icon>
+              Import
+            </span>
+            <span class="value amount">{{ (expense.paymentStatus === 'PAID' && expense.actualAmount !== null ? expense.actualAmount : expense.approximateAmount) | currency:'EUR':'symbol':'1.2-2':'es' }}</span>
+          </div>
+          <div class="card-row">
+            <span class="label">
+              <mat-icon>{{ expense.paymentStatus === 'PAID' ? 'event_available' : 'event' }}</mat-icon>
+              {{ expense.paymentStatus === 'PAID' ? 'Pagat' : 'Previst' }}
+            </span>
+            <span class="value">{{ (expense.paymentStatus === 'PAID' && expense.actualPaymentDate ? expense.actualPaymentDate : expense.scheduledPaymentDate) | date:'dd/MM/yyyy' }}</span>
+          </div>
+          <div class="card-row status-row">
+            <span class="label">
+              <mat-icon>info</mat-icon>
+              Estat
+            </span>
+            <mat-chip [ngClass]="getStatusClass(expense.paymentStatus)">
+              {{ expense.paymentStatus }}
+            </mat-chip>
+          </div>
+        </ng-container>
+
+        <!-- Full view: all details -->
+        <ng-container *ngIf="!compactMode">
+          <div class="card-row">
+            <span class="label">
+              <mat-icon>description</mat-icon>
+              Descripció
+            </span>
+            <span class="value">{{ expense.description }}</span>
+          </div>
+          <div class="card-row">
+            <span class="label">
+              <mat-icon>business</mat-icon>
+              Emissor
+            </span>
+            <span class="value">{{ expense.issuer }}</span>
+          </div>
+          <div class="card-row">
+            <span class="label">
+              <mat-icon>label</mat-icon>
+              Etiqueta
+            </span>
+            <span class="value">{{ expense.tag }}</span>
+          </div>
+          <div class="card-row highlight-row">
+            <span class="label">
+              <mat-icon>euro</mat-icon>
+              Import aproximat
+            </span>
+            <span class="value amount">{{ expense.approximateAmount | currency:'EUR':'symbol':'1.2-2':'es' }}</span>
+          </div>
+          <div class="card-row">
+            <span class="label">
+              <mat-icon>event</mat-icon>
+              Data prevista
+            </span>
+            <span class="value">{{ expense.scheduledPaymentDate | date:'dd/MM/yyyy' }}</span>
+          </div>
+          <div class="card-row">
+            <span class="label">
+              <mat-icon>event_repeat</mat-icon>
+              Periodicitat
+            </span>
+            <span class="value">{{ getPeriodicityLabel(expense.periodicity) }}</span>
+          </div>
+          <div class="card-row" *ngIf="expense.actualPaymentDate">
+            <span class="label">
+              <mat-icon>event_available</mat-icon>
+              Data real
+            </span>
+            <span class="value">{{ expense.actualPaymentDate | date:'dd/MM/yyyy' }}</span>
+          </div>
+          <div class="card-row highlight-row" *ngIf="expense.actualAmount !== null">
+            <span class="label">
+              <mat-icon>paid</mat-icon>
+              Import real
+            </span>
+            <span class="value amount">{{ expense.actualAmount | currency:'EUR':'symbol':'1.2-2':'es' }}</span>
+          </div>
+          <div class="card-row">
+            <span class="label">
+              <mat-icon>account_balance</mat-icon>
+              Banc
+            </span>
+            <span class="value">{{ expense.bank }}</span>
+          </div>
+          <div class="card-row status-row">
+            <span class="label">
+              <mat-icon>info</mat-icon>
+              Estat
+            </span>
+            <mat-chip [ngClass]="getStatusClass(expense.paymentStatus)">
+              {{ expense.paymentStatus }}
+            </mat-chip>
+          </div>
+        </ng-container>
       </mat-card-content>
       <mat-card-actions>
         <button mat-mini-fab color="primary" (click)="onEdit(expense)" aria-label="Editar" class="action-button">

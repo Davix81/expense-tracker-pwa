@@ -11,9 +11,11 @@ export type PaymentStatus = 'PENDING' | 'PAID' | 'FAILED';
  * - MENSUAL: Monthly payment
  * - BIMENSUAL: Bi-monthly payment (every 2 months)
  * - TRIMESTRAL: Quarterly payment (every 3 months)
+ * - CUATRIMESTRAL: Every 4 months payment
+ * - SEMESTRAL: Semi-annual payment (every 6 months)
  * - ANUAL: Annual payment
  */
-export type Periodicity = 'MENSUAL' | 'BIMENSUAL' | 'TRIMESTRAL' | 'ANUAL';
+export type Periodicity = 'MENSUAL' | 'BIMENSUAL' | 'TRIMESTRAL' | 'CUATRIMESTRAL' | 'SEMESTRAL' | 'ANUAL';
 
 /**
  * Fraction of a payment when split into multiple parts
