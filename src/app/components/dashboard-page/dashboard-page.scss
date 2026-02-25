@@ -2,19 +2,19 @@
 @use '../../../styles/mixins' as *;
 @use '../../../styles/typography' as *;
 
-// Dashboard uses page-container layout (no scrolling on desktop/tablet)
 .page-container {
   display: flex;
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
+  background-color: $bg-dark;
 }
 
 .page-header {
   flex-shrink: 0;
   @include responsive-spacing('padding', $spacing-base, $spacing-lg, $spacing-xl);
-  border-bottom: 1px solid $gray-300;
-  background: white;
+  border-bottom: 1px solid $border-dark;
+  background: $bg-dark-secondary;
   z-index: $z-index-sticky;
 }
 
@@ -24,7 +24,7 @@
   overflow-x: hidden;
   @include responsive-spacing('padding', $spacing-base, $spacing-lg, $spacing-xl);
   @include custom-scrollbar();
-  background: linear-gradient(135deg, #faf5ff 0%, #f0f9ff 50%, #f0fdf4 100%);
+  background: $bg-dark;
 }
 
 .dashboard-header {
@@ -45,6 +45,7 @@
       @include responsive-font-size($font-size-lg, $font-size-2xl);
       font-weight: $font-weight-medium;
       white-space: nowrap;
+      color: $text-primary;
     }
 
     .year-selector {
@@ -57,6 +58,7 @@
 
       ::ng-deep .mat-mdc-text-field-wrapper {
         padding: 0;
+        background-color: $bg-dark-tertiary;
       }
 
       ::ng-deep .mdc-text-field {
@@ -81,6 +83,11 @@
       width: 40px;
       height: 40px;
       padding: 0;
+      color: $text-secondary;
+
+      &:hover {
+        color: $text-primary;
+      }
 
       mat-icon {
         font-size: 20px;
@@ -91,16 +98,16 @@
   }
 }
 
-// Grid para card principal (Próximo Pago)
 .main-cards-grid {
   margin-bottom: $spacing-xl;
 }
 
 .next-payment-card {
-  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #3b82f6 100%);
+  background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 50%, #2563eb 100%);
   color: white;
   border-radius: $border-radius-lg;
   overflow: hidden;
+  border: 1px solid #3b82f6;
 
   mat-card-header {
     mat-card-title {
@@ -141,7 +148,7 @@
       flex-direction: column;
       align-items: center;
       padding: $spacing-base $spacing-2xl;
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.3);
       border-radius: $border-radius-lg;
       backdrop-filter: blur(10px);
 
@@ -176,25 +183,26 @@
     p {
       margin: 0;
       font-size: $font-size-lg;
+      color: white;
     }
   }
 }
 
-// Tarjeta de Filtro de Tags
 .tags-filter-card {
   margin-bottom: $spacing-xl;
-  background: white;
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.08);
+  background: $bg-card;
+  box-shadow: $shadow-md;
   border-radius: $border-radius-lg;
   overflow: hidden;
+  border: 1px solid $border-dark;
 
   mat-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient(135deg, #faf5ff 0%, #f0f9ff 100%);
+    background: $bg-dark-tertiary;
     padding: $spacing-base $spacing-lg;
-    border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+    border-bottom: 1px solid $border-dark;
 
     mat-card-title {
       display: flex;
@@ -202,10 +210,10 @@
       gap: $spacing-sm;
       font-size: $font-size-base;
       font-weight: $font-weight-semibold;
-      color: #6366f1;
+      color: $text-primary;
 
       mat-icon {
-        color: #8b5cf6;
+        color: $primary-light;
       }
     }
   }
@@ -222,18 +230,18 @@
     mat-chip {
       cursor: pointer;
       transition: all $transition-fast;
-      background-color: #f0f9ff;
-      color: #6366f1;
-      border: 1px solid rgba(99, 102, 241, 0.2);
+      background-color: $bg-dark-tertiary;
+      color: $text-secondary;
+      border: 1px solid $border-dark;
 
       &:hover {
-        background-color: #e0e7ff;
+        background-color: $bg-card-hover;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        box-shadow: $shadow-md;
       }
 
       &.selected {
-        background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+        background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
         color: white;
         border-color: transparent;
 
@@ -251,7 +259,6 @@
   }
 }
 
-// Tarjetas de Estadísticas
 .stats-grid {
   @include responsive-grid(1, 2, 2, $spacing-lg);
   margin-bottom: $spacing-xl;
@@ -259,20 +266,21 @@
 
 .stat-card {
   transition: transform $transition-fast, box-shadow $transition-fast;
-  background: white;
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.08);
+  background: $bg-card;
+  box-shadow: $shadow-md;
   border-radius: $border-radius-lg;
   overflow: hidden;
+  border: 1px solid $border-dark;
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 28px rgba(99, 102, 241, 0.15);
+    box-shadow: $shadow-lg;
   }
 
   mat-card-header {
-    background: linear-gradient(135deg, #faf5ff 0%, #f0f9ff 100%);
+    background: $bg-dark-tertiary;
     padding: $spacing-base $spacing-lg;
-    border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+    border-bottom: 1px solid $border-dark;
 
     mat-card-title {
       display: flex;
@@ -280,17 +288,17 @@
       gap: $spacing-sm;
       font-size: $font-size-base;
       font-weight: $font-weight-semibold;
-      color: #6366f1;
+      color: $text-primary;
 
       mat-icon {
-        color: #8b5cf6;
+        color: $primary-light;
       }
     }
   }
 
   mat-card-content {
     padding: $spacing-xl !important;
-    background: white;
+    background: $bg-card;
   }
 
   .stat-row {
@@ -306,14 +314,14 @@
     text-align: center;
     padding: $spacing-base;
     border-radius: $border-radius-lg;
-    background: linear-gradient(135deg, #faf5ff 0%, #f0f9ff 100%);
+    background: $bg-dark-tertiary;
     min-width: 120px;
   }
 
   .stat-label {
     font-size: $font-size-xs;
     font-weight: $font-weight-medium;
-    color: $gray-500;
+    color: $text-muted;
     margin-bottom: $spacing-sm;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -323,22 +331,23 @@
     @include responsive-font-size($font-size-2xl, $font-size-3xl);
     font-weight: $font-weight-bold;
     line-height: 1.2;
+    color: $text-primary;
 
     &.stat-value-green {
-      color: #10b981;
+      color: $success-light;
     }
 
     &.stat-value-orange {
-      color: #f59e0b;
+      color: $warning;
     }
   }
 
   &.stat-card-month {
-    border-left: 4px solid #8b5cf6;
+    border-left: 4px solid $primary;
   }
 
   &.stat-card-year {
-    border-left: 4px solid #10b981;
+    border-left: 4px solid $success;
   }
 }
 
@@ -347,21 +356,22 @@
 }
 
 .chart-card {
-  background: white;
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.08);
+  background: $bg-card;
+  box-shadow: $shadow-md;
   border-radius: $border-radius-lg;
   overflow: hidden;
+  border: 1px solid $border-dark;
 
   mat-card-header {
     margin-bottom: $spacing-base;
     padding: $spacing-base $spacing-lg;
-    background: linear-gradient(135deg, #faf5ff 0%, #f0f9ff 100%);
-    border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+    background: $bg-dark-tertiary;
+    border-bottom: 1px solid $border-dark;
 
     mat-card-title {
       font-size: $font-size-base;
       font-weight: $font-weight-semibold;
-      color: #6366f1;
+      color: $text-primary;
     }
   }
 

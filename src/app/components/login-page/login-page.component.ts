@@ -50,9 +50,9 @@ export class LoginPageComponent {
       password: ['', [Validators.required, Validators.minLength(8)]]
     });
 
-    // Check if biometric login is available
+    // Check if biometric login is available and auto-trigger if possible
     // Requirement 3.1: Display biometric login option when credentials exist
-    this.checkBiometricAvailability();
+    this.initializeBiometricLogin();
     
     // Monitor online/offline status
     // Requirement 4.3: Detect network connectivity status
@@ -60,10 +60,27 @@ export class LoginPageComponent {
   }
 
   /**
-   * Check if biometric login should be shown
+   * Initialize biometric login - check availability and auto-trigger if available
    * Requirements: 3.1, 4.5
    */
-  private async checkBiometricAvailability(): Promise<void> {
+  private async initializeBiometricLogin(): Promise<void> {
+    const isAvailable = await this.checkBiometricAvailability();
+    
+    // If biometric is available, automatically trigger it after a short delay
+    // This gives the user a chance to see the UI before the biometric prompt appears
+    if (isAvailable && !this.isOffline) {
+      setTimeout(() => {
+        this.onBiometricLogin();
+      }, 300);
+    }
+  }
+
+  /**
+   * Check if biometric login should be shown
+   * Requirements: 3.1, 4.5
+   * @returns true if biometric is available
+   */
+  private async checkBiometricAvailability(): Promise<boolean> {
     try {
       const username = 'user'; // Default username
       
@@ -78,17 +95,21 @@ export class LoginPageComponent {
           
           if (isHealthy) {
             this.showBiometricButton = true;
+            return true;
           } else {
             // Credential is no longer valid - remove it and hide button
             this.webAuthnService.removeCredential(username);
             this.showBiometricButton = false;
             console.warn('Biometric credential is no longer valid and has been removed');
+            return false;
           }
         }
       }
+      return false;
     } catch (error) {
       console.error('Error checking biometric availability:', error);
       this.showBiometricButton = false;
+      return false;
     }
   }
 

@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #faf5ff 0%, #f0f9ff 50%, #f0fdf4 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
   padding: 16px;
 }
 
@@ -11,8 +11,10 @@
   max-width: 400px;
   width: 100%;
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   overflow: hidden;
+  background-color: #1e293b;
+  border: 1px solid #334155;
 }
 
 mat-card-header {
@@ -26,12 +28,12 @@ mat-card-title {
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 8px;
-  color: #6366f1;
+  color: #3b82f6;
 }
 
 mat-card-subtitle {
   font-size: 14px;
-  color: #71717a;
+  color: #94a3b8;
 }
 
 form {
@@ -45,21 +47,21 @@ form {
 }
 
 .error-message {
-  color: #f44336;
+  color: #fca5a5;
   font-size: 14px;
   padding: 8px 12px;
-  background-color: #ffebee;
+  background-color: rgba(220, 38, 38, 0.15);
   border-radius: 4px;
   margin-bottom: 8px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  border-left: 3px solid #dc2626;
   
   .error-text {
     line-height: 1.5;
   }
   
-  // Requirement 3.4: Retry button for failed biometric attempts
   .retry-button {
     align-self: flex-start;
     height: 36px;
@@ -80,7 +82,6 @@ button[type="submit"] {
   font-size: 16px;
 }
 
-// Biometric section styles
 .biometric-section {
   display: flex;
   flex-direction: column;
@@ -88,18 +89,16 @@ button[type="submit"] {
   margin-bottom: 24px;
 }
 
-// Offline banner styles
-// Requirement 4.3: Display informative message when offline
 .offline-banner {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  background-color: #fff3e0;
-  border: 1px solid #ffb74d;
+  background-color: rgba(217, 119, 6, 0.15);
+  border: 1px solid #d97706;
   border-radius: 4px;
   margin-bottom: 20px;
-  color: #e65100;
+  color: #fbbf24;
   font-size: 14px;
   line-height: 1.5;
   
@@ -148,14 +147,14 @@ button[type="submit"] {
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), transparent);
+    background: linear-gradient(90deg, transparent, #475569, transparent);
   }
   
   span {
     position: relative;
-    background-color: white;
+    background-color: #1e293b;
     padding: 0 16px;
-    color: #8b5cf6;
+    color: #64748b;
     font-size: 14px;
   }
 }
@@ -195,7 +194,7 @@ button[type="submit"] {
     gap: 10px;
     
     .retry-button {
-      height: 40px; // Minimum 44px touch target with padding
+      height: 40px;
       font-size: 13px;
       
       mat-icon {
@@ -206,8 +205,6 @@ button[type="submit"] {
     }
   }
 
-  // Biometric button mobile styles
-  // Requirement 5.4: Minimum 44px touch targets on mobile devices
   .biometric-button {
     height: 52px;
     font-size: 15px;
@@ -223,7 +220,6 @@ button[type="submit"] {
     margin-bottom: 20px;
   }
 
-  // Offline banner mobile styles
   .offline-banner {
     font-size: 13px;
     padding: 10px 12px;

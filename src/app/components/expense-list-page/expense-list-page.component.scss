@@ -2,12 +2,12 @@
 @use '../../../styles/mixins' as *;
 @use '../../../styles/typography' as *;
 
-// Expense list uses page-container layout
 .page-container {
   display: flex;
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
+  background-color: $bg-dark;
 }
 
 .dashboard-header {
@@ -21,6 +21,7 @@
     @include responsive-font-size($font-size-lg, $font-size-2xl);
     font-weight: $font-weight-medium;
     white-space: nowrap;
+    color: $text-primary;
   }
 
   .header-actions {
@@ -33,6 +34,11 @@
       width: 40px;
       height: 40px;
       padding: 0;
+      color: $text-secondary;
+
+      &:hover {
+        color: $text-primary;
+      }
 
       mat-icon {
         font-size: 20px;
@@ -47,15 +53,16 @@
   flex: 1 1 auto;
 }
 
-// Toolbar styles
 .app-toolbar {
   flex-shrink: 0;
   z-index: $z-index-sticky;
   box-shadow: $shadow-md;
+  background-color: $bg-dark-secondary;
 
   .app-title {
     @include responsive-font-size($font-size-base, $font-size-lg);
     font-weight: $font-weight-medium;
+    color: $text-primary;
   }
 
   .toolbar-buttons {
@@ -74,12 +81,21 @@
   }
 }
 
+.page-header {
+  flex-shrink: 0;
+  @include responsive-spacing('padding', $spacing-base, $spacing-lg, $spacing-xl);
+  border-bottom: 1px solid $border-dark;
+  background: $bg-dark-secondary;
+  z-index: $z-index-sticky;
+}
+
 .page-content {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   @include responsive-spacing('padding', $spacing-base, $spacing-lg, $spacing-xl);
   @include custom-scrollbar();
+  background: $bg-dark;
 }
 
 .loading-container {
@@ -91,7 +107,7 @@
   
   p {
     margin-top: $spacing-base;
-    color: $gray-600;
+    color: $text-secondary;
   }
 }
 
@@ -108,11 +124,12 @@
     width: 48px;
     height: 48px;
     margin-bottom: $spacing-base;
+    color: $warn;
   }
   
   p {
     margin-bottom: $spacing-base;
-    color: $gray-900;
+    color: $text-primary;
   }
 }
 
@@ -140,18 +157,18 @@
     font-size: 64px;
     width: 64px;
     height: 64px;
-    color: $gray-400;
+    color: $text-muted;
     margin-bottom: $spacing-base;
   }
   
   h2 {
     margin: 0 0 $spacing-sm 0;
-    color: $gray-900;
+    color: $text-primary;
   }
   
   p {
     margin: 0;
-    color: $gray-600;
+    color: $text-secondary;
   }
 }
 
@@ -179,6 +196,10 @@
 
 // Mobile styles (< 768px)
 @include respond-to-max('md') {
+  .page-header {
+    padding: $spacing-sm $spacing-base;
+  }
+
   .page-content {
     padding: $spacing-base $spacing-sm;
   }
@@ -284,6 +305,10 @@
 
 // Tablet styles (768px - 1024px)
 @include respond-to('md') {
+  .page-header {
+    padding: $spacing-base $spacing-lg;
+  }
+
   .page-content {
     padding: $spacing-lg;
   }
@@ -318,6 +343,10 @@
 
 // Desktop styles (> 1024px)
 @include respond-to('lg') {
+  .page-header {
+    padding: $spacing-lg $spacing-xl;
+  }
+
   .page-content {
     padding: $spacing-xl;
   }

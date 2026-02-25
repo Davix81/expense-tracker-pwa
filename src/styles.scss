@@ -1,8 +1,4 @@
 // Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
 // ============================================================================
@@ -15,15 +11,14 @@
 @use 'styles/utilities';
 
 // ============================================================================
-// Material Theme Configuration
+// Material Theme Configuration - Dark Professional Theme
 // ============================================================================
-// Using a vibrant, cheerful theme with Material 3 design system
 html {
   height: 100%;
   @include mat.theme((
     color: (
-      primary: mat.$violet-palette,
-      tertiary: mat.$magenta-palette,
+      primary: mat.$azure-palette,
+      tertiary: mat.$cyan-palette,
     ),
     typography: Roboto,
     density: 0,
@@ -31,15 +26,10 @@ html {
 }
 
 body {
-  // Default the application to a light color theme
-  color-scheme: light;
-
-  // Set default background, font and text colors using Material system variables
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
+  color-scheme: dark;
+  background-color: $bg-dark;
+  color: $text-primary;
   font: var(--mat-sys-body-medium);
-
-  // Reset the user agent margin
   margin: 0;
   height: 100%;
 }
@@ -47,19 +37,18 @@ body {
 // ============================================================================
 // Responsive Breakpoints
 // ============================================================================
-// Custom breakpoints aligned with task requirements
-$breakpoint-mobile: 768px;    // Mobile devices (< 768px)
-$breakpoint-tablet: 1024px;   // Tablet devices (768px - 1024px)
-$breakpoint-desktop: 1024px;  // Desktop devices (> 1024px)
-$breakpoint-large: 1920px;    // Large desktop screens
+$breakpoint-mobile: 768px;
+$breakpoint-tablet: 1024px;
+$breakpoint-desktop: 1024px;
+$breakpoint-large: 1920px;
 
 // ============================================================================
 // Global Typography Styles
 // ============================================================================
-// Typography scale following Material Design guidelines
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
   font-weight: 400;
+  color: $text-primary;
 }
 
 h1 {
@@ -95,6 +84,7 @@ h6 {
 p {
   font: var(--mat-sys-body-medium);
   margin: 0 0 12px 0;
+  color: $text-secondary;
 }
 
 .mat-body-strong {
@@ -108,7 +98,6 @@ p {
 // ============================================================================
 // Global Utility Classes
 // ============================================================================
-// Container with responsive padding
 .container {
   width: 100%;
   padding: 16px;
@@ -126,7 +115,6 @@ p {
   }
 }
 
-// Responsive spacing utilities
 .spacing-mobile {
   padding: 8px;
   
@@ -140,9 +128,30 @@ p {
 }
 
 // ============================================================================
-// Material Component Overrides
+// Material Component Overrides - Dark Theme
 // ============================================================================
-// Ensure Material components are responsive
+.mat-mdc-card {
+  background-color: $bg-card !important;
+  border: 1px solid $border-dark;
+}
+
+.mat-mdc-dialog-container {
+  --mdc-dialog-container-color: #{$bg-card};
+}
+
+.mat-mdc-form-field {
+  .mat-mdc-text-field-wrapper {
+    background-color: $bg-dark-secondary;
+  }
+}
+
+.mat-mdc-select-panel {
+  background-color: $bg-dark-secondary !important;
+}
+
+.mat-mdc-menu-panel {
+  background-color: $bg-dark-secondary !important;
+}
 
 // Mobile styles (< 768px)
 @media (max-width: $breakpoint-mobile - 1px) {
@@ -220,9 +229,8 @@ p {
 // ============================================================================
 // Accessibility
 // ============================================================================
-// Focus visible styles for keyboard navigation
 *:focus-visible {
-  outline: 2px solid var(--mat-sys-primary);
+  outline: 2px solid $primary;
   outline-offset: 2px;
 }
 
@@ -234,7 +242,7 @@ p {
 }
 
 a {
-  color: var(--mat-sys-primary);
+  color: $primary-light;
   text-decoration: none;
   
   &:hover {

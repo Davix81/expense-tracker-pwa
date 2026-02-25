@@ -2,7 +2,6 @@
 @use '../../../styles/mixins' as *;
 @use '../../../styles/typography' as *;
 
-// Dialog container
 :host ::ng-deep {
   .mat-mdc-dialog-container {
     padding: 0 !important;
@@ -12,13 +11,13 @@
     display: flex !important;
     flex-direction: column !important;
     max-height: 100%;
+    background-color: $bg-card !important;
   }
 }
 
-// Dialog header
 .dialog-header {
   flex-shrink: 0;
-  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #3b82f6 100%);
+  background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 50%, #2563eb 100%);
   color: white;
   @include responsive-spacing('padding', $spacing-base $spacing-lg, $spacing-lg $spacing-xl, $spacing-lg $spacing-xl);
 
@@ -38,28 +37,26 @@
   }
 }
 
-// Dialog content - scrollable
 mat-dialog-content {
   flex: 1 1 auto !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
   @include responsive-spacing('padding', $spacing-base $spacing-lg, $spacing-lg $spacing-xl, $spacing-lg $spacing-xl);
   @include custom-scrollbar();
-  background: linear-gradient(135deg, #faf5ff 0%, #f0f9ff 50%, #f0fdf4 100%);
+  background: $bg-dark;
 }
 
-// Error message
 .error-message {
   display: flex;
   align-items: center;
   gap: $spacing-md;
-  background-color: #ffebee;
-  color: #c62828;
+  background-color: rgba(220, 38, 38, 0.15);
+  color: #fca5a5;
   padding: $spacing-md $spacing-base;
   border-radius: $border-radius-base;
   margin-bottom: $spacing-base;
   font-size: $font-size-sm;
-  border-left: 4px solid #c62828;
+  border-left: 4px solid $warn;
 
   mat-icon {
     font-size: 20px;
@@ -73,14 +70,12 @@ mat-dialog-content {
   }
 }
 
-// Form
 .expense-form {
   display: flex;
   flex-direction: column;
   gap: $spacing-md;
 }
 
-// Form rows
 .form-row {
   display: grid;
   gap: $spacing-md;
@@ -91,7 +86,6 @@ mat-dialog-content {
   }
 }
 
-// Divider
 .divider {
   display: flex;
   align-items: center;
@@ -102,31 +96,30 @@ mat-dialog-content {
     content: '';
     flex: 1;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), transparent);
+    background: linear-gradient(90deg, transparent, $border-dark, transparent);
   }
 
   span {
     padding: 0 $spacing-md;
     font-size: $font-size-xs;
     font-weight: $font-weight-medium;
-    color: #8b5cf6;
+    color: $text-muted;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
 }
 
-// Form field styling
 mat-form-field {
   ::ng-deep {
     .mat-mdc-text-field-wrapper {
-      background-color: white;
+      background-color: $bg-dark-secondary;
       border-radius: $border-radius-base;
-      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.08);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
 
     .mat-mdc-form-field-icon-prefix {
       padding-right: $spacing-sm;
-      color: #8b5cf6;
+      color: $primary-light;
 
       mat-icon {
         font-size: 20px;
@@ -137,7 +130,6 @@ mat-form-field {
   }
 }
 
-// Status options in select
 .status-option {
   display: inline-flex;
   align-items: center;
@@ -147,27 +139,26 @@ mat-form-field {
   font-weight: $font-weight-medium;
 
   &.status-pending {
-    background-color: #fff3e0;
-    color: #e65100;
+    background-color: rgba(217, 119, 6, 0.2);
+    color: #fbbf24;
   }
 
   &.status-paid {
-    background-color: #e8f5e9;
-    color: #2e7d32;
+    background-color: rgba(22, 163, 74, 0.2);
+    color: #4ade80;
   }
 
   &.status-failed {
-    background-color: #ffebee;
-    color: #c62828;
+    background-color: rgba(220, 38, 38, 0.2);
+    color: #fca5a5;
   }
 }
 
-// Dialog actions
 mat-dialog-actions {
   flex-shrink: 0;
   @include responsive-spacing('padding', $spacing-md $spacing-lg, $spacing-base $spacing-xl, $spacing-base $spacing-xl);
-  border-top: 1px solid rgba(139, 92, 246, 0.1);
-  background: linear-gradient(135deg, #faf5ff 0%, #f0f9ff 100%);
+  border-top: 1px solid $border-dark;
+  background: $bg-dark-secondary;
   gap: $spacing-md;
   display: flex;
   justify-content: flex-end;
