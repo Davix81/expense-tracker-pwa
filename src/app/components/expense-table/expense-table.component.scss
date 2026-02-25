@@ -259,30 +259,29 @@
 
 // Payment status badge styling
 mat-chip {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  min-height: 26px;
-  padding: 5px 14px;
-  border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  min-height: 24px;
+  padding: 4px 12px;
+  border-radius: 12px;
+  box-shadow: none !important;
   border: none !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   
   &.status-paid {
-    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%) !important;
-    color: white !important;
-    border: none !important;
+    background-color: #dcfce7 !important;
+    color: #166534 !important;
   }
   
   &.status-pending {
-    background: linear-gradient(135deg, #d97706 0%, #b45309 100%) !important;
-    color: white !important;
-    border: none !important;
+    background-color: #fef3c7 !important;
+    color: #92400e !important;
   }
   
   &.status-failed {
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
-    color: white !important;
-    border: none !important;
+    background-color: #fee2e2 !important;
+    color: #991b1b !important;
   }
 
   ::ng-deep {
