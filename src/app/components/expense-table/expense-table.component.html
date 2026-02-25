@@ -70,14 +70,26 @@
 
     <mat-card *ngFor="let expense of filteredExpenses" class="expense-card" [class.compact]="compactMode">
       <mat-card-header>
-        <mat-card-title>
-          <mat-icon class="title-icon">receipt</mat-icon>
-          {{ expense.name }}
-        </mat-card-title>
-        <mat-card-subtitle *ngIf="!compactMode">
-          <mat-icon class="subtitle-icon">category</mat-icon>
-          {{ expense.category }}
-        </mat-card-subtitle>
+        <div class="card-header-content">
+          <div class="card-title-section">
+            <mat-card-title>
+              <mat-icon class="title-icon">receipt</mat-icon>
+              {{ expense.name }}
+            </mat-card-title>
+            <mat-card-subtitle *ngIf="!compactMode">
+              <mat-icon class="subtitle-icon">category</mat-icon>
+              {{ expense.category }}
+            </mat-card-subtitle>
+          </div>
+          <div class="card-header-actions">
+            <button mat-mini-fab color="primary" (click)="onEdit(expense)" aria-label="Editar" class="action-button">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-mini-fab color="warn" (click)="onDelete(expense)" aria-label="Eliminar" class="action-button">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
       </mat-card-header>
       <mat-card-content>
         <!-- Compact view: only essential info -->
@@ -183,14 +195,6 @@
           </div>
         </ng-container>
       </mat-card-content>
-      <mat-card-actions>
-        <button mat-mini-fab color="primary" (click)="onEdit(expense)" aria-label="Editar" class="action-button">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-mini-fab color="warn" (click)="onDelete(expense)" aria-label="Eliminar" class="action-button">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-card-actions>
     </mat-card>
     
     <!-- Empty state for mobile -->
