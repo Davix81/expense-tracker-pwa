@@ -342,6 +342,12 @@
     }
   }
 
+  .stat-count {
+    font-size: $font-size-xs;
+    color: $text-muted;
+    margin-top: $spacing-xs;
+  }
+
   &.stat-card-month {
     border-left: 4px solid $primary;
   }

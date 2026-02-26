@@ -106,10 +106,12 @@
             <div class="stat-item">
               <div class="stat-label">Pagat</div>
               <div class="stat-value stat-value-green">{{ totalPaidThisMonth() | currency:'EUR':'symbol':'1.2-2':'es' }}</div>
+              <div class="stat-count">{{ paidCountThisMonth() }} gastos</div>
             </div>
             <div class="stat-item">
               <div class="stat-label">Pendent</div>
               <div class="stat-value stat-value-orange">{{ totalPendingThisMonth() | currency:'EUR':'symbol':'1.2-2':'es' }}</div>
+              <div class="stat-count">{{ pendingCountThisMonth() }} gastos</div>
             </div>
           </div>
         </mat-card-content>
@@ -128,10 +130,12 @@
             <div class="stat-item">
               <div class="stat-label">Pagat</div>
               <div class="stat-value stat-value-green">{{ totalPaidThisYear() | currency:'EUR':'symbol':'1.2-2':'es' }}</div>
+              <div class="stat-count">{{ paidCountThisYear() }} rebuts</div>
             </div>
             <div class="stat-item">
               <div class="stat-label">Pendent</div>
               <div class="stat-value stat-value-orange">{{ totalPendingThisYear() | currency:'EUR':'symbol':'1.2-2':'es' }}</div>
+              <div class="stat-count">{{ pendingCountThisYear() }} rebuts</div>
             </div>
           </div>
         </mat-card-content>

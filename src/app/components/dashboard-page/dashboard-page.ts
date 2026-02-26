@@ -71,10 +71,14 @@ export class DashboardPageComponent implements OnInit {
   // Estadísticas del mes actual
   totalPaidThisMonth = signal<number>(0);
   totalPendingThisMonth = signal<number>(0);
+  paidCountThisMonth = signal<number>(0);
+  pendingCountThisMonth = signal<number>(0);
 
   // Estadísticas del año actual
   totalPaidThisYear = signal<number>(0);
   totalPendingThisYear = signal<number>(0);
+  paidCountThisYear = signal<number>(0);
+  pendingCountThisYear = signal<number>(0);
 
   // Gráfico mensual (últimos 6 meses)
   monthlyChartData = signal<ChartData<'bar'>>({
@@ -240,45 +244,41 @@ export class DashboardPageComponent implements OnInit {
     const currentMonth = now.getMonth();
     const currentYear = now.getFullYear();
 
-    // Total pagado este mes
-    const paidThisMonth = expenses
-      .filter(e => {
-        if (e.paymentStatus !== 'PAID' || !e.actualPaymentDate || !e.actualAmount) return false;
-        const date = new Date(e.actualPaymentDate);
-        return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
-      })
-      .reduce((sum, e) => sum + (e.actualAmount || 0), 0);
-    this.totalPaidThisMonth.set(paidThisMonth);
+    // Gastos pagados este mes
+    const paidThisMonthExpenses = expenses.filter(e => {
+      if (e.paymentStatus !== 'PAID' || !e.actualPaymentDate || !e.actualAmount) return false;
+      const date = new Date(e.actualPaymentDate);
+      return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
+    });
+    this.totalPaidThisMonth.set(paidThisMonthExpenses.reduce((sum, e) => sum + (e.actualAmount || 0), 0));
+    this.paidCountThisMonth.set(paidThisMonthExpenses.length);
 
-    // Total pendiente este mes
-    const pendingThisMonth = expenses
-      .filter(e => {
-        if (e.paymentStatus !== 'PENDING') return false;
-        const date = new Date(e.scheduledPaymentDate);
-        return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
-      })
-      .reduce((sum, e) => sum + e.approximateAmount, 0);
-    this.totalPendingThisMonth.set(pendingThisMonth);
+    // Gastos pendientes este mes
+    const pendingThisMonthExpenses = expenses.filter(e => {
+      if (e.paymentStatus !== 'PENDING') return false;
+      const date = new Date(e.scheduledPaymentDate);
+      return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
+    });
+    this.totalPendingThisMonth.set(pendingThisMonthExpenses.reduce((sum, e) => sum + e.approximateAmount, 0));
+    this.pendingCountThisMonth.set(pendingThisMonthExpenses.length);
 
-    // Total pagado este año
-    const paidThisYear = expenses
-      .filter(e => {
-        if (e.paymentStatus !== 'PAID' || !e.actualPaymentDate || !e.actualAmount) return false;
-        const date = new Date(e.actualPaymentDate);
-        return date.getFullYear() === currentYear;
-      })
-      .reduce((sum, e) => sum + (e.actualAmount || 0), 0);
-    this.totalPaidThisYear.set(paidThisYear);
+    // Gastos pagados este año
+    const paidThisYearExpenses = expenses.filter(e => {
+      if (e.paymentStatus !== 'PAID' || !e.actualPaymentDate || !e.actualAmount) return false;
+      const date = new Date(e.actualPaymentDate);
+      return date.getFullYear() === currentYear;
+    });
+    this.totalPaidThisYear.set(paidThisYearExpenses.reduce((sum, e) => sum + (e.actualAmount || 0), 0));
+    this.paidCountThisYear.set(paidThisYearExpenses.length);
 
-    // Total pendiente este año
-    const pendingThisYear = expenses
-      .filter(e => {
-        if (e.paymentStatus !== 'PENDING') return false;
-        const date = new Date(e.scheduledPaymentDate);
-        return date.getFullYear() === currentYear;
-      })
-      .reduce((sum, e) => sum + e.approximateAmount, 0);
-    this.totalPendingThisYear.set(pendingThisYear);
+    // Gastos pendientes este año
+    const pendingThisYearExpenses = expenses.filter(e => {
+      if (e.paymentStatus !== 'PENDING') return false;
+      const date = new Date(e.scheduledPaymentDate);
+      return date.getFullYear() === currentYear;
+    });
+    this.totalPendingThisYear.set(pendingThisYearExpenses.reduce((sum, e) => sum + e.approximateAmount, 0));
+    this.pendingCountThisYear.set(pendingThisYearExpenses.length);
   }
 
   private calculateNextPayment(expenses: Expense[]): void {

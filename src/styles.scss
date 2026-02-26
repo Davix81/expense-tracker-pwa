@@ -1,9 +1,5 @@
-// Include theming for Angular Material with `mat.theme()`.
+// Modern SaaS Light Theme - Global Styles
 @use '@angular/material' as mat;
-
-// ============================================================================
-// Import Custom SCSS Architecture
-// ============================================================================
 @use 'styles/variables' as *;
 @use 'styles/mixins' as *;
 @use 'styles/typography' as *;
@@ -11,10 +7,14 @@
 @use 'styles/utilities';
 
 // ============================================================================
-// Material Theme Configuration - Dark Professional Theme
+// Material Theme - Light Modern
 // ============================================================================
 html {
   height: 100%;
+  @include mat.theme((
+    color: (
+      primary: mat.$violet-palette,
+      tertiary;
   @include mat.theme((
     color: (
       primary: mat.$azure-palette,
