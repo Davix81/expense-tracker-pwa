@@ -135,7 +135,7 @@
             <mat-icon>receipt_long</mat-icon>
             <span>Descarregar Expenses.json</span>
           </button>
-          <button mat-raised-button color="accent" (click)="downloadSettingsJson()">
+          <button mat-raised-button color="primary" (click)="downloadSettingsJson()">
             <mat-icon>settings</mat-icon>
             <span>Descarregar Settings.json</span>
           </button>
@@ -165,7 +165,7 @@
             <span>Seleccionar Expenses.json</span>
           </button>
           <input #settingsFileInput type="file" accept=".json" (change)="onSettingsFileSelected($event)" style="display: none">
-          <button mat-raised-button color="accent" (click)="settingsFileInput.click()">
+          <button mat-raised-button color="primary" (click)="settingsFileInput.click()">
             <mat-icon>settings</mat-icon>
             <span>Seleccionar Settings.json</span>
           </button>

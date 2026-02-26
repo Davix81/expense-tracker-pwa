@@ -1,8 +1,9 @@
 .expense-table-container {
   width: 100%;
   padding: 20px;
-  background: #0f172a;
-  border-radius: 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
 }
 
 .filter-row {
@@ -19,13 +20,14 @@
   margin: 0;
 
   ::ng-deep .mat-mdc-text-field-wrapper {
-    background-color: #1e293b;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-base);
+    box-shadow: var(--shadow-sm);
   }
 
   mat-icon {
-    color: #3b82f6;
+    color: var(--color-primary);
   }
 }
 
@@ -34,9 +36,10 @@
   margin: 0;
 
   ::ng-deep .mat-mdc-text-field-wrapper {
-    background-color: #1e293b;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-base);
+    box-shadow: var(--shadow-sm);
   }
 
   ::ng-deep .mat-mdc-form-field-subscript-wrapper {
@@ -49,9 +52,10 @@
   margin: 0;
 
   ::ng-deep .mat-mdc-text-field-wrapper {
-    background-color: #1e293b;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-base);
+    box-shadow: var(--shadow-sm);
   }
 
   ::ng-deep .mat-mdc-form-field-subscript-wrapper {
@@ -59,14 +63,15 @@
   }
 }
 
+
 // Tags Filter Section
 .tags-filter-section {
   margin-bottom: 20px;
   padding: 16px;
-  background: #1e293b;
-  border-radius: 12px;
-  border: 1px solid #334155;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
 
   .tags-header {
     display: flex;
@@ -80,13 +85,13 @@
       gap: 10px;
       font-weight: 600;
       font-size: 15px;
-      color: #f1f5f9;
+      color: var(--color-text-primary);
 
       mat-icon {
         font-size: 22px;
         width: 22px;
         height: 22px;
-        color: #3b82f6;
+        color: var(--color-primary);
       }
     }
 
@@ -94,7 +99,7 @@
       font-size: 13px;
       font-weight: 500;
       padding: 6px 12px;
-      border-radius: 6px;
+      border-radius: var(--radius-sm);
 
       mat-icon {
         margin-right: 4px;
@@ -112,20 +117,20 @@
 
     mat-chip {
       cursor: pointer;
-      background-color: #334155;
-      color: #94a3b8;
-      border: 1.5px solid #475569;
+      background-color: var(--color-surface-hover);
+      color: var(--color-text-secondary);
+      border: 1.5px solid var(--color-border-dark);
       font-weight: 500;
       font-size: 13px;
       padding: 8px 14px;
-      border-radius: 20px;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      border-radius: var(--radius-full);
+      box-shadow: var(--shadow-xs);
 
       &.selected {
-        background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+        background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary-hover) 100%);
         color: white;
-        border-color: #3b82f6;
-        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+        border-color: var(--color-primary);
+        box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
 
         mat-icon {
           color: white;
@@ -157,14 +162,14 @@
     align-items: center;
     gap: 8px;
     padding: 8px 20px;
-    border-radius: 20px;
+    border-radius: var(--radius-full);
     font-weight: 500;
     font-size: 14px;
-    color: #3b82f6;
-    border-color: #3b82f6;
-    background-color: #1e293b;
-    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
-    transition: all 0.2s ease;
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background-color: var(--color-surface);
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+    transition: all var(--transition-base);
 
     mat-icon {
       font-size: 20px;
@@ -173,8 +178,8 @@
     }
 
     &:hover {
-      background-color: #334155;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      background-color: var(--color-surface-hover);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
     }
   }
 }
@@ -205,16 +210,17 @@
   }
 }
 
+
 // Desktop Table View (visible by default)
 .table-wrapper {
   display: block;
   overflow-x: auto;
   width: 100%;
   -webkit-overflow-scrolling: touch;
-  background-color: #1e293b;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  border: 1px solid #334155;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border);
 }
 
 .expense-table {
@@ -225,25 +231,25 @@
   
   th {
     font-weight: 600;
-    font-size: 13px;
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    background: #334155;
-    color: #94a3b8;
-    border-bottom: 2px solid #475569;
+    background: var(--color-surface-hover);
+    color: var(--color-text-secondary);
+    border-bottom: 2px solid var(--color-border);
     position: sticky;
     top: 0;
     z-index: 10;
   }
   
   td, th {
-    padding: 14px 18px;
+    padding: var(--spacing-base) var(--spacing-lg);
   }
 
   td {
     font-size: 14px;
-    color: #f1f5f9;
-    border-bottom: 1px solid #334155;
+    color: var(--color-text-primary);
+    border-bottom: 1px solid var(--color-border-light);
   }
   
   tr {
@@ -252,7 +258,7 @@
     }
 
     &:hover td {
-      background-color: #334155;
+      background-color: var(--color-surface-hover);
     }
   }
 }
@@ -263,24 +269,24 @@ mat-chip {
   font-weight: 600;
   min-height: 24px;
   padding: 4px 12px;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   box-shadow: none !important;
   border: none !important;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   
   &.status-paid {
-    background-color: #22c55e !important;
+    background-color: var(--color-success) !important;
     color: white !important;
   }
   
   &.status-pending {
-    background-color: #f59e0b !important;
+    background-color: var(--color-warning) !important;
     color: white !important;
   }
   
   &.status-failed {
-    background-color: #ef4444 !important;
+    background-color: var(--color-error) !important;
     color: white !important;
   }
 
@@ -308,25 +314,26 @@ mat-chip {
 .empty-state {
   text-align: center;
   padding: 48px 32px !important;
-  color: #64748b;
+  color: var(--color-text-muted);
   font-style: normal;
   font-size: 15px;
-  background: #1e293b;
+  background: var(--color-surface);
 }
+
 
 // Mobile Card Styles
 .expense-card {
   margin-bottom: 16px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  border: 1px solid #334155;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border);
   overflow: hidden;
-  background-color: #1e293b;
+  background-color: var(--color-surface);
 
   mat-card-header {
     margin-bottom: 16px;
     padding: 16px;
-    background: #334155;
+    background: var(--color-surface-hover);
 
     .card-header-content {
       display: flex;
@@ -363,7 +370,7 @@ mat-chip {
       font-size: 18px;
       font-weight: 600;
       margin-bottom: 6px;
-      color: #f1f5f9;
+      color: var(--color-text-primary);
       display: flex;
       align-items: center;
       gap: 8px;
@@ -372,13 +379,13 @@ mat-chip {
         font-size: 20px;
         width: 20px;
         height: 20px;
-        color: #3b82f6;
+        color: var(--color-primary);
       }
     }
 
     mat-card-subtitle {
       font-size: 14px;
-      color: #94a3b8;
+      color: var(--color-text-secondary);
       font-weight: 500;
       display: flex;
       align-items: center;
@@ -388,7 +395,7 @@ mat-chip {
         font-size: 16px;
         width: 16px;
         height: 16px;
-        color: #64748b;
+        color: var(--color-text-muted);
       }
     }
   }
@@ -403,23 +410,23 @@ mat-chip {
     justify-content: space-between;
     align-items: center;
     padding: 10px 0;
-    border-bottom: 1px solid #334155;
+    border-bottom: 1px solid var(--color-border-light);
 
     &:last-child {
       border-bottom: none;
     }
 
     &.highlight-row {
-      background-color: #334155;
+      background-color: var(--color-surface-hover);
       padding: 12px 10px;
       margin: 8px -10px;
-      border-radius: 8px;
+      border-radius: var(--radius-base);
       border-bottom: none;
     }
 
     .label {
       font-weight: 600;
-      color: #64748b;
+      color: var(--color-text-muted);
       font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 0.3px;
@@ -433,27 +440,27 @@ mat-chip {
         font-size: 16px;
         width: 16px;
         height: 16px;
-        color: #64748b;
+        color: var(--color-text-muted);
       }
     }
 
     .value {
       text-align: right;
-      color: #f1f5f9;
+      color: var(--color-text-primary);
       font-size: 14px;
       word-break: break-word;
       font-weight: 500;
 
       &.amount {
         font-weight: 700;
-        color: #3b82f6;
+        color: var(--color-primary);
         font-size: 17px;
       }
     }
 
     &.status-row {
       padding-top: 14px;
-      border-top: 2px solid #475569;
+      border-top: 2px solid var(--color-border);
       margin-top: 10px;
     }
   }
@@ -466,25 +473,26 @@ mat-chip {
   justify-content: center;
   padding: 64px 24px;
   text-align: center;
-  background: #1e293b;
-  border-radius: 12px;
-  border: 2px dashed #475569;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 2px dashed var(--color-border-dark);
 
   mat-icon {
     font-size: 72px;
     width: 72px;
     height: 72px;
-    color: #475569;
+    color: var(--color-border-dark);
     margin-bottom: 20px;
   }
 
   p {
     margin: 0;
-    color: #64748b;
+    color: var(--color-text-muted);
     font-size: 16px;
     font-weight: 500;
   }
 }
+
 
 // ============================================
 // RESPONSIVE BREAKPOINTS
@@ -495,6 +503,7 @@ mat-chip {
   .expense-table-container {
     padding: 12px;
     background: transparent;
+    border: none;
   }
 
   .filter-row {
@@ -564,7 +573,7 @@ mat-chip {
 
   .expense-card {
     margin-bottom: 14px;
-    border-radius: 10px;
+    border-radius: var(--radius-base);
 
     mat-card-header {
       padding: 14px;
@@ -658,6 +667,7 @@ mat-chip {
   }
 }
 
+
 // Action buttons styling
 .actions-cell {
   white-space: nowrap;
@@ -668,12 +678,12 @@ mat-chip {
   height: 36px !important;
   min-width: 36px !important;
   margin: 0 4px !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
-  transition: all 0.2s ease !important;
+  box-shadow: var(--shadow-sm) !important;
+  transition: all var(--transition-base) !important;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4) !important;
+    box-shadow: var(--shadow-md) !important;
   }
 
   &:active {
@@ -733,7 +743,7 @@ mat-chip {
   // Show table on tablet
   .table-wrapper {
     display: block;
-    border-radius: 10px;
+    border-radius: var(--radius-base);
   }
 
   .expense-table {
@@ -745,7 +755,7 @@ mat-chip {
     }
 
     th {
-      font-size: 12px;
+      font-size: 0.75rem;
     }
   }
 
@@ -789,12 +799,12 @@ mat-chip {
     min-width: 1200px;
     
     td, th {
-      padding: 14px 18px;
+      padding: var(--spacing-base) var(--spacing-lg);
       font-size: 14px;
     }
 
     th {
-      font-size: 13px;
+      font-size: 0.75rem;
     }
   }
 

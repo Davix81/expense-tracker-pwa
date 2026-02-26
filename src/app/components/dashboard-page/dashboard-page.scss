@@ -7,14 +7,14 @@
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
-  background-color: $bg-dark;
+  background-color: var(--color-background);
 }
 
 .page-header {
   flex-shrink: 0;
   @include responsive-spacing('padding', $spacing-base, $spacing-lg, $spacing-xl);
-  border-bottom: 1px solid $border-dark;
-  background: $bg-dark-secondary;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
   z-index: $z-index-sticky;
 }
 
@@ -24,7 +24,7 @@
   overflow-x: hidden;
   @include responsive-spacing('padding', $spacing-base, $spacing-lg, $spacing-xl);
   @include custom-scrollbar();
-  background: $bg-dark;
+  background: var(--color-background);
 }
 
 .dashboard-header {
@@ -45,7 +45,7 @@
       @include responsive-font-size($font-size-lg, $font-size-2xl);
       font-weight: $font-weight-medium;
       white-space: nowrap;
-      color: $text-primary;
+      color: var(--color-text-primary);
     }
 
     .year-selector {
@@ -58,7 +58,7 @@
 
       ::ng-deep .mat-mdc-text-field-wrapper {
         padding: 0;
-        background-color: $bg-dark-tertiary;
+        background-color: var(--color-surface-hover);
       }
 
       ::ng-deep .mdc-text-field {
@@ -83,10 +83,10 @@
       width: 40px;
       height: 40px;
       padding: 0;
-      color: $text-secondary;
+      color: var(--color-text-secondary);
 
       &:hover {
-        color: $text-primary;
+        color: var(--color-text-primary);
       }
 
       mat-icon {
@@ -103,11 +103,11 @@
 }
 
 .next-payment-card {
-  background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 50%, #2563eb 100%);
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 50%, var(--color-primary-light) 100%);
   color: white;
-  border-radius: $border-radius-lg;
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  border: 1px solid #3b82f6;
+  border: 1px solid var(--color-primary-light);
 
   mat-card-header {
     mat-card-title {
@@ -149,7 +149,7 @@
       align-items: center;
       padding: $spacing-base $spacing-2xl;
       background: rgba(0, 0, 0, 0.3);
-      border-radius: $border-radius-lg;
+      border-radius: var(--radius-lg);
       backdrop-filter: blur(10px);
 
       .countdown-number {
@@ -190,19 +190,19 @@
 
 .tags-filter-card {
   margin-bottom: $spacing-xl;
-  background: $bg-card;
-  box-shadow: $shadow-md;
-  border-radius: $border-radius-lg;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  border: 1px solid $border-dark;
+  border: 1px solid var(--color-border);
 
   mat-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: $bg-dark-tertiary;
+    background: var(--color-surface-hover);
     padding: $spacing-base $spacing-lg;
-    border-bottom: 1px solid $border-dark;
+    border-bottom: 1px solid var(--color-border);
 
     mat-card-title {
       display: flex;
@@ -210,10 +210,10 @@
       gap: $spacing-sm;
       font-size: $font-size-base;
       font-weight: $font-weight-semibold;
-      color: $text-primary;
+      color: var(--color-text-primary);
 
       mat-icon {
-        color: $primary-light;
+        color: var(--color-primary-light);
       }
     }
   }
@@ -229,19 +229,19 @@
 
     mat-chip {
       cursor: pointer;
-      transition: all $transition-fast;
-      background-color: $bg-dark-tertiary;
-      color: $text-secondary;
-      border: 1px solid $border-dark;
+      transition: all var(--transition-fast);
+      background-color: var(--color-surface-hover);
+      color: var(--color-text-secondary);
+      border: 1px solid var(--color-border);
 
       &:hover {
-        background-color: $bg-card-hover;
+        background-color: var(--color-surface-hover);
         transform: translateY(-2px);
-        box-shadow: $shadow-md;
+        box-shadow: var(--shadow-md);
       }
 
       &.selected {
-        background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+        background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
         color: white;
         border-color: transparent;
 
@@ -265,22 +265,22 @@
 }
 
 .stat-card {
-  transition: transform $transition-fast, box-shadow $transition-fast;
-  background: $bg-card;
-  box-shadow: $shadow-md;
-  border-radius: $border-radius-lg;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  transition: all var(--transition-base);
   overflow: hidden;
-  border: 1px solid $border-dark;
 
   &:hover {
+    box-shadow: var(--shadow-card-hover);
     transform: translateY(-4px);
-    box-shadow: $shadow-lg;
   }
 
   mat-card-header {
-    background: $bg-dark-tertiary;
+    background: var(--color-surface-hover);
     padding: $spacing-base $spacing-lg;
-    border-bottom: 1px solid $border-dark;
+    border-bottom: 1px solid var(--color-border);
 
     mat-card-title {
       display: flex;
@@ -288,17 +288,17 @@
       gap: $spacing-sm;
       font-size: $font-size-base;
       font-weight: $font-weight-semibold;
-      color: $text-primary;
+      color: var(--color-text-primary);
 
       mat-icon {
-        color: $primary-light;
+        color: var(--color-primary-light);
       }
     }
   }
 
   mat-card-content {
     padding: $spacing-xl !important;
-    background: $bg-card;
+    background: var(--color-surface);
   }
 
   .stat-row {
@@ -313,15 +313,15 @@
     align-items: center;
     text-align: center;
     padding: $spacing-base;
-    border-radius: $border-radius-lg;
-    background: $bg-dark-tertiary;
+    border-radius: var(--radius-lg);
+    background: var(--color-surface-hover);
     min-width: 120px;
   }
 
   .stat-label {
     font-size: $font-size-xs;
     font-weight: $font-weight-medium;
-    color: $text-muted;
+    color: var(--color-text-muted);
     margin-bottom: $spacing-sm;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -331,29 +331,36 @@
     @include responsive-font-size($font-size-2xl, $font-size-3xl);
     font-weight: $font-weight-bold;
     line-height: 1.2;
-    color: $text-primary;
+    color: var(--color-text-primary);
 
+    // Semantic color classes for positive/negative values
+    &.positive,
     &.stat-value-green {
-      color: $success-light;
+      color: var(--color-success);
+    }
+
+    &.negative,
+    &.stat-value-red {
+      color: var(--color-error);
     }
 
     &.stat-value-orange {
-      color: $warning;
+      color: var(--color-warning);
     }
   }
 
   .stat-count {
     font-size: $font-size-xs;
-    color: $text-muted;
+    color: var(--color-text-muted);
     margin-top: $spacing-xs;
   }
 
   &.stat-card-month {
-    border-left: 4px solid $primary;
+    border-left: 4px solid var(--color-primary);
   }
 
   &.stat-card-year {
-    border-left: 4px solid $success;
+    border-left: 4px solid var(--color-success);
   }
 }
 
@@ -362,22 +369,22 @@
 }
 
 .chart-card {
-  background: $bg-card;
-  box-shadow: $shadow-md;
-  border-radius: $border-radius-lg;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  border: 1px solid $border-dark;
+  border: 1px solid var(--color-border);
 
   mat-card-header {
     margin-bottom: $spacing-base;
     padding: $spacing-base $spacing-lg;
-    background: $bg-dark-tertiary;
-    border-bottom: 1px solid $border-dark;
+    background: var(--color-surface-hover);
+    border-bottom: 1px solid var(--color-border);
 
     mat-card-title {
       font-size: $font-size-base;
       font-weight: $font-weight-semibold;
-      color: $text-primary;
+      color: var(--color-text-primary);
     }
   }
 

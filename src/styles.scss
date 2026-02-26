@@ -13,8 +13,8 @@ html {
   height: 100%;
   @include mat.theme((
     color: (
-      primary: mat.$violet-palette,
-      tertiary: mat.$magenta-palette,
+      primary: mat.$blue-palette,
+      tertiary: mat.$orange-palette,
     ),
     typography: Roboto,
     density: 0,
@@ -124,20 +124,464 @@ p {
 }
 
 // ============================================================================
-// Material Component Overrides - Dark Theme
+// Material Component Overrides - Modern SaaS Theme
 // ============================================================================
 .mat-mdc-card {
   background-color: $bg-card !important;
   border: 1px solid $border-dark;
 }
 
-.mat-mdc-dialog-container {
-  --mdc-dialog-container-color: #{$bg-card};
-}
+// Dialog container override moved to Angular Material Dialog Overrides section below
 
+// ============================================================================
+// Angular Material Form Field Overrides
+// ============================================================================
 .mat-mdc-form-field {
   .mat-mdc-text-field-wrapper {
-    background-color: $bg-dark-secondary;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-base);
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+
+    // Remove duplicate border
+    .mdc-notched-outline {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: var(--color-border);
+        transition: border-color var(--transition-base);
+      }
+    }
+
+    &:hover {
+      .mdc-notched-outline {
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__notch,
+        .mdc-notched-outline__trailing {
+          border-color: var(--color-border-dark);
+        }
+      }
+    }
+
+    &.mdc-text-field--focused {
+      .mdc-notched-outline {
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__notch,
+        .mdc-notched-outline__trailing {
+          border-color: var(--color-primary);
+          border-width: 2px;
+        }
+      }
+    }
+  }
+
+  .mat-mdc-form-field-icon-prefix,
+  .mat-mdc-form-field-icon-suffix {
+    color: var(--color-text-muted);
+  }
+
+  .mat-mdc-form-field-flex {
+    input,
+    textarea {
+      color: var(--color-text-primary);
+
+      &::placeholder {
+        color: var(--color-text-muted);
+        opacity: 1;
+      }
+    }
+  }
+
+  // Label styling
+  .mat-mdc-floating-label {
+    color: var(--color-text-secondary);
+  }
+
+  // Focused label styling
+  &.mat-focused .mat-mdc-floating-label {
+    color: var(--color-primary);
+  }
+
+  // Hint and error text
+  .mat-mdc-form-field-hint {
+    color: var(--color-text-muted);
+  }
+
+  .mat-mdc-form-field-error {
+    color: var(--color-error);
+  }
+
+  // Underline removal for outlined appearance
+  .mdc-line-ripple {
+    display: none;
+  }
+}
+
+// Form field wrapper class for additional styling context
+.form-field {
+  mat-form-field {
+    width: 100%;
+
+    ::ng-deep {
+      .mat-mdc-text-field-wrapper {
+        background-color: var(--color-surface);
+        border-radius: var(--radius-base);
+      }
+
+      .mat-mdc-form-field-icon-prefix {
+        color: var(--color-text-muted);
+      }
+
+      input,
+      textarea {
+        color: var(--color-text-primary);
+
+        &::placeholder {
+          color: var(--color-text-muted);
+        }
+      }
+    }
+  }
+}
+
+// ============================================================================
+// Angular Material Button Overrides
+// ============================================================================
+.mat-mdc-button,
+.mat-mdc-raised-button,
+.mat-mdc-flat-button {
+  border-radius: var(--radius-base);
+  font-weight: 500;
+  transition: all var(--transition-fast);
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+// Primary button variants
+.mat-mdc-raised-button.mat-primary,
+.mat-mdc-flat-button.mat-primary,
+.mat-mdc-button.mat-primary {
+  --mdc-filled-button-container-color: var(--color-primary);
+  --mdc-filled-button-label-text-color: white;
+  --mdc-protected-button-container-color: var(--color-primary);
+  --mdc-protected-button-label-text-color: white;
+  --mat-text-button-state-layer-color: var(--color-primary);
+  --mat-text-button-with-icon-horizontal-padding: 16px;
+  background-color: var(--color-primary) !important;
+  color: white !important;
+
+  &:hover {
+    --mdc-filled-button-container-color: var(--color-primary-hover);
+    --mdc-protected-button-container-color: var(--color-primary-hover);
+    background-color: var(--color-primary-hover) !important;
+    box-shadow: var(--shadow-md);
+  }
+
+  &:active {
+    background-color: var(--color-primary-dark) !important;
+  }
+
+  mat-icon {
+    color: white !important;
+  }
+}
+
+// Mini FAB button styling
+.mat-mdc-mini-fab {
+  &.mat-primary {
+    --mdc-fab-container-color: var(--color-primary);
+    --mdc-fab-icon-color: white;
+    background-color: var(--color-primary) !important;
+    color: white !important;
+
+    &:hover {
+      background-color: var(--color-primary-hover) !important;
+      box-shadow: var(--shadow-md);
+    }
+
+    mat-icon {
+      color: white !important;
+    }
+  }
+
+  &.mat-warn {
+    --mdc-fab-container-color: var(--color-error);
+    --mdc-fab-icon-color: white;
+    background-color: var(--color-error) !important;
+    color: white !important;
+
+    &:hover {
+      background-color: #b91c1c !important;
+      box-shadow: var(--shadow-md);
+    }
+
+    mat-icon {
+      color: white !important;
+    }
+  }
+
+  &.mat-accent {
+    --mdc-fab-container-color: var(--color-accent);
+    --mdc-fab-icon-color: white;
+    background-color: var(--color-accent) !important;
+    color: white !important;
+
+    &:hover {
+      background-color: #0d9488 !important;
+      box-shadow: var(--shadow-md);
+    }
+
+    mat-icon {
+      color: white !important;
+    }
+  }
+}
+
+// Basic/text button styling
+.mat-mdc-button:not(.mat-primary) {
+  color: var(--color-text-primary);
+
+  &:hover {
+    background-color: var(--color-surface-hover);
+  }
+}
+
+// Accent button styling
+.mat-mdc-raised-button.mat-accent,
+.mat-mdc-flat-button.mat-accent {
+  --mdc-filled-button-container-color: var(--color-accent);
+  --mdc-filled-button-label-text-color: white;
+  --mdc-protected-button-container-color: var(--color-accent);
+  --mdc-protected-button-label-text-color: white;
+  background-color: var(--color-accent) !important;
+  color: white !important;
+
+  &:hover {
+    background-color: #0d9488 !important;
+    box-shadow: var(--shadow-md);
+  }
+
+  mat-icon {
+    color: white !important;
+  }
+}
+
+// Raised button base styling
+.mat-mdc-raised-button:not(.mat-primary):not(.mat-accent):not(.mat-warn) {
+  --mdc-protected-button-container-color: var(--color-surface);
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+
+  &:hover {
+    background-color: var(--color-surface-hover);
+    border-color: var(--color-border-dark);
+  }
+}
+
+// Flat button base styling
+.mat-mdc-flat-button:not(.mat-primary):not(.mat-accent):not(.mat-warn) {
+  --mdc-filled-button-container-color: var(--color-surface);
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+
+  &:hover {
+    background-color: var(--color-surface-hover);
+    border-color: var(--color-border-dark);
+  }
+}
+
+// ============================================================================
+// Angular Material Dialog Overrides
+// ============================================================================
+.mat-mdc-dialog-container {
+  --mdc-dialog-container-color: var(--color-surface);
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+
+  .mat-mdc-dialog-surface {
+    background: var(--color-surface);
+    border-radius: var(--radius-xl);
+  }
+}
+
+// ============================================================================
+// Angular Material Table Overrides
+// ============================================================================
+.mat-mdc-table {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+
+  .mat-mdc-header-row {
+    background: var(--color-surface-hover);
+  }
+
+  .mat-mdc-header-cell {
+    background: var(--color-surface-hover);
+    color: var(--color-text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    padding: var(--spacing-base) var(--spacing-lg);
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  .mat-mdc-cell {
+    color: var(--color-text-primary);
+    padding: var(--spacing-base) var(--spacing-lg);
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .mat-mdc-row {
+    transition: background-color var(--transition-fast);
+
+    &:hover {
+      .mat-mdc-cell {
+        background: var(--color-surface-hover);
+      }
+    }
+
+    &:last-child {
+      .mat-mdc-cell {
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+// ============================================================================
+// Angular Material Slide Toggle Overrides
+// ============================================================================
+.mat-mdc-slide-toggle {
+  &.mat-mdc-slide-toggle-checked {
+    .mdc-switch__track {
+      background-color: var(--color-primary) !important;
+    }
+
+    .mdc-switch__handle::after {
+      background-color: var(--color-primary) !important;
+    }
+  }
+
+  .mdc-switch__track {
+    background-color: var(--color-border-dark) !important;
+    transition: background-color var(--transition-base);
+  }
+
+  // Focus state for accessibility
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+// Data table utility class (for non-Material tables)
+.data-table {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+
+  th {
+    background: var(--color-surface-hover);
+    color: var(--color-text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    padding: var(--spacing-base) var(--spacing-lg);
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  td {
+    color: var(--color-text-primary);
+    padding: var(--spacing-base) var(--spacing-lg);
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  tr:hover td {
+    background: var(--color-surface-hover);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+// ============================================================================
+// Global Utility Classes - Buttons
+// ============================================================================
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-base);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-weight: 500;
+  transition: all var(--transition-fast);
+
+  &:hover {
+    background: var(--color-primary-hover);
+    box-shadow: var(--shadow-md);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+.btn-secondary {
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-weight: 500;
+  transition: all var(--transition-fast);
+
+  &:hover {
+    background: var(--color-surface-hover);
+    border-color: var(--color-border-dark);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+// ============================================================================
+// Global Utility Classes - Cards
+// ============================================================================
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+
+  .card-header {
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid var(--color-border-light);
+    background: var(--color-surface);
+
+    .card-title {
+      color: var(--color-text-primary);
+      font-weight: 600;
+      font-size: 1.125rem;
+    }
+  }
+
+  .card-content {
+    padding: var(--spacing-lg);
   }
 }
 

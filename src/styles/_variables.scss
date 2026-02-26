@@ -45,38 +45,38 @@ $container-md: 1200px;
 $container-lg: 1400px;
 $container-xl: 1600px;
 
-// Primary Colors - Modern Indigo/Violet
-$primary: #6366f1;        // Indigo 500
-$primary-light: #818cf8;  // Indigo 400
-$primary-dark: #4f46e5;   // Indigo 600
-$primary-50: #eef2ff;     // Indigo 50
-$primary-100: #e0e7ff;    // Indigo 100
+// Primary Colors - Navy/Dark Blue (corporate and serious)
+$primary: #1e3a8a;        // Blue 900 - deep navy
+$primary-light: #3b82f6;  // Blue 500
+$primary-dark: #1e40af;   // Blue 800
+$primary-50: #eff6ff;     // Blue 50
+$primary-100: #dbeafe;    // Blue 100
 
-// Accent Colors
-$accent: #8b5cf6;         // Violet 500
-$accent-light: #a78bfa;   // Violet 400
+// Accent Colors - Subtle teal for sophistication
+$accent: #0f766e;         // Teal 700
+$accent-light: #14b8a6;   // Teal 500
 
-// Semantic Colors
-$success: #10b981;        // Emerald 500
+// Semantic Colors - More muted and professional
+$success: #059669;        // Emerald 600 - darker green
 $success-light: #34d399;  // Emerald 400
 $success-bg: #ecfdf5;     // Emerald 50
 $info: #3b82f6;           // Blue 500
 $info-light: #60a5fa;     // Blue 400
-$warning: #f59e0b;        // Amber 500
+$warning: #d97706;        // Amber 600 - darker amber
 $warning-light: #fbbf24;  // Amber 400
 $warning-bg: #fffbeb;     // Amber 50
-$warn: #ef4444;           // Red 500
+$warn: #dc2626;           // Red 600 - darker red
 $warn-light: #f87171;     // Red 400
 $warn-bg: #fef2f2;        // Red 50
 
-// Light Theme Backgrounds
-$bg-page: #f8fafc;        // Slate 50 - Main page background
+// Light Theme Backgrounds - Clean and light
+$bg-page: #f9fafb;        // Gray 50 - slightly warmer
 $bg-white: #ffffff;       // Pure white for cards
 $bg-subtle: #f1f5f9;      // Slate 100 - Subtle sections
 $bg-muted: #e2e8f0;       // Slate 200 - Muted areas
 
-// Text Colors
-$text-primary: #1e293b;   // Slate 800
+// Text Colors - Darker for seriousness
+$text-primary: #0f172a;   // Slate 900 - almost black
 $text-secondary: #475569; // Slate 600
 $text-muted: #94a3b8;     // Slate 400
 $text-light: #cbd5e1;     // Slate 300
@@ -138,4 +138,81 @@ $shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
 
 // Card shadow
 $shadow-card: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
-$shadow-card-hover: 0 10px 20px -5px rgba(99, 102, 241, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$shadow-card-hover: 0 10px 20px -5px rgba(30, 58, 138, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+// ============================================
+// CSS Custom Properties (Design Tokens)
+// Modern SaaS Theme System
+// ============================================
+
+:root {
+  // Primary Palette - Navy/Dark Blue (corporate and serious)
+  --color-primary: #1e3a8a;
+  --color-primary-hover: #1e40af;
+  --color-primary-light: #3b82f6;
+  --color-primary-dark: #172554;
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+
+  // Backgrounds - Light theme
+  --color-background: #f9fafb;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f1f5f9;
+  --color-surface-elevated: #ffffff;
+
+  // Text Colors - WCAG AA compliant (≥4.5:1 contrast ratio)
+  // #0f172a on #f9fafb = ~15.8:1 contrast ratio ✓
+  // #0f172a on #ffffff = ~16.9:1 contrast ratio ✓
+  // #475569 on #ffffff = ~6.4:1 contrast ratio ✓
+  --color-text-primary: #0f172a;    // Slate 900 - almost black for seriousness
+  --color-text-secondary: #475569;  // Slate 600 - readable secondary text
+  --color-text-muted: #94a3b8;      // Slate 400 - muted/decorative text
+
+  // Border Colors
+  --color-border: #e2e8f0;          // Slate 200 - default borders
+  --color-border-light: #f1f5f9;    // Slate 100 - subtle borders
+  --color-border-dark: #cbd5e1;     // Slate 300 - emphasized borders
+
+  // Semantic Colors - More muted and professional
+  --color-success: #059669;         // Emerald 600 - darker green
+  --color-success-light: #34d399;   // Emerald 400 - lighter success variant
+  --color-success-bg: #ecfdf5;      // Emerald 50 - success backgrounds
+  --color-warning: #d97706;         // Amber 600 - darker amber
+  --color-warning-light: #fbbf24;   // Amber 400 - lighter warning variant
+  --color-warning-bg: #fffbeb;      // Amber 50 - warning backgrounds
+  --color-error: #dc2626;           // Red 600 - darker red
+  --color-error-light: #f87171;     // Red 400 - lighter error variant
+  --color-error-bg: #fef2f2;        // Red 50 - error backgrounds
+  --color-info: #3b82f6;            // Blue 500 - informational
+
+  // Shadow System - Subtle, modern shadows
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-card-hover: 0 10px 20px -5px rgba(30, 58, 138, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  // Border Radius System - Soft, modern corners
+  --radius-sm: 6px;       // Small elements like badges and chips
+  --radius-base: 10px;    // Standard elements like buttons and inputs
+  --radius-lg: 14px;      // Cards and containers
+  --radius-xl: 20px;      // Dialogs and prominent cards
+  --radius-2xl: 24px;     // Hero sections
+  --radius-full: 9999px;  // Circular elements like avatars
+
+  // Spacing System - Generous, modern spacing
+  --spacing-xs: 0.25rem;  // 4px - tight spacing
+  --spacing-sm: 0.5rem;   // 8px - small gaps
+  --spacing-md: 0.75rem;  // 12px - medium gaps
+  --spacing-base: 1rem;   // 16px - standard spacing
+  --spacing-lg: 1.5rem;   // 24px - section spacing
+  --spacing-xl: 2rem;     // 32px - large section spacing
+  --spacing-2xl: 2.5rem;  // 40px - generous page margins
+
+  // Transition System - Smooth, responsive animations
+  --transition-fast: 150ms ease-out;  // Quick micro-interactions
+  --transition-base: 200ms ease-out;  // Standard hover and focus transitions
+  --transition-slow: 300ms ease-out;  // Larger animations like card lifts
+}
