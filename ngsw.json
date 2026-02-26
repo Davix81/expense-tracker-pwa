@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1772112390266,
+  "timestamp": 1772125220069,
   "index": "/expense-tracker-pwa/index.html",
   "assetGroups": [
     {
@@ -11,15 +11,15 @@
         "ignoreVary": true
       },
       "urls": [
-        "/expense-tracker-pwa/chunk-B362ITD4.js",
+        "/expense-tracker-pwa/chunk-63FGSD3K.js",
         "/expense-tracker-pwa/chunk-HBOMMIKX.js",
         "/expense-tracker-pwa/chunk-HQBEN7XJ.js",
         "/expense-tracker-pwa/chunk-UCIAFO27.js",
         "/expense-tracker-pwa/favicon.ico",
         "/expense-tracker-pwa/index.html",
-        "/expense-tracker-pwa/main-3S4SZRDL.js",
+        "/expense-tracker-pwa/main-BOZ6NOC3.js",
         "/expense-tracker-pwa/manifest.webmanifest",
-        "/expense-tracker-pwa/styles-DQYYO2MU.css"
+        "/expense-tracker-pwa/styles-C2SBZCPJ.css"
       ],
       "patterns": []
     },
@@ -60,7 +60,7 @@
     }
   ],
   "hashTable": {
-    "/expense-tracker-pwa/chunk-B362ITD4.js": "1c77488c4d642e2875a970939b42c5cac2fb686e",
+    "/expense-tracker-pwa/chunk-63FGSD3K.js": "bd0203d3db32ac1635ed21c0cd267b600d1918b4",
     "/expense-tracker-pwa/chunk-HBOMMIKX.js": "a54ca34aa810dc53abe5f58624dcabe3fa4b74b7",
     "/expense-tracker-pwa/chunk-HQBEN7XJ.js": "7511fd6aa1156c1cab4590e3f3c06a3f1a4c5644",
     "/expense-tracker-pwa/chunk-UCIAFO27.js": "fb1ab26c7b7b8f3b35f830c76b5e1f47390c2a68",
@@ -73,10 +73,10 @@
     "/expense-tracker-pwa/icons/icon-512x512.png": "1de182f76f7329dfa8f9fcdd1fdcdd695bea6a99",
     "/expense-tracker-pwa/icons/icon-72x72.png": "aa88a6096bd973be7f6d7a5489bfa6bc2463f8c4",
     "/expense-tracker-pwa/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
-    "/expense-tracker-pwa/index.html": "dcaa9f3d788ce925829ee565be36c6ffd507e0b1",
-    "/expense-tracker-pwa/main-3S4SZRDL.js": "b8887ad66bd580a65958c47d42cdec1d728b65c0",
+    "/expense-tracker-pwa/index.html": "97042d693c09aeaa0c01b0926cdf420af7f9d5eb",
+    "/expense-tracker-pwa/main-BOZ6NOC3.js": "a08f0849e73aa2c7dbe839390108da7098bc1be5",
     "/expense-tracker-pwa/manifest.webmanifest": "905b3dbf84d60073e3a0f7a2ce815c14287e1442",
-    "/expense-tracker-pwa/styles-DQYYO2MU.css": "a4d91f01d029040d69d5e7165cc2c29576e201f1"
+    "/expense-tracker-pwa/styles-C2SBZCPJ.css": "f22d93c2913916fc0fdec4b1ac028809ccb391ac"
   },
   "navigationUrls": [
     {
