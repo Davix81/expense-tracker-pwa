@@ -122,7 +122,6 @@
       border: 1.5px solid var(--color-border-dark);
       font-weight: 500;
       font-size: 13px;
-      padding: 8px 14px;
       border-radius: var(--radius-full);
       box-shadow: var(--shadow-xs);
 
@@ -228,7 +227,7 @@
   min-width: 1200px;
   border-collapse: separate;
   border-spacing: 0;
-  
+
   th {
     font-weight: 600;
     font-size: 0.75rem;
@@ -241,7 +240,7 @@
     top: 0;
     z-index: 10;
   }
-  
+
   td, th {
     padding: var(--spacing-base) var(--spacing-lg);
   }
@@ -251,7 +250,7 @@
     color: var(--color-text-primary);
     border-bottom: 1px solid var(--color-border-light);
   }
-  
+
   tr {
     &:last-child td {
       border-bottom: none;
@@ -269,22 +268,22 @@ mat-chip {
   font-weight: 600;
   min-height: 24px;
   padding: 4px 12px;
-  border-radius: var(--radius-lg);
+  //border-radius: var(--radius-lg);
   box-shadow: none !important;
   border: none !important;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  
+
   &.status-paid {
     background-color: var(--color-success) !important;
     color: white !important;
   }
-  
+
   &.status-pending {
     background-color: var(--color-warning) !important;
     color: white !important;
   }
-  
+
   &.status-failed {
     background-color: var(--color-error) !important;
     color: white !important;
@@ -748,7 +747,7 @@ mat-chip {
 
   .expense-table {
     min-width: 1100px;
-    
+
     td, th {
       padding: 12px 14px;
       font-size: 13px;
@@ -797,7 +796,7 @@ mat-chip {
 
   .expense-table {
     min-width: 1200px;
-    
+
     td, th {
       padding: var(--spacing-base) var(--spacing-lg);
       font-size: 14px;

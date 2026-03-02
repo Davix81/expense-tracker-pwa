@@ -4,7 +4,6 @@
       <div class="header-title">
         <h1>Tauler</h1>
         <mat-form-field class="year-selector" appearance="outline">
-          <mat-label>Any</mat-label>
           <mat-select [value]="selectedYear()" (selectionChange)="onYearChange($event.value)">
             <mat-option *ngFor="let year of availableYears()" [value]="year">
               {{ year }}
@@ -67,7 +66,6 @@
         <mat-card-header>
           <mat-card-title>
             <mat-icon>schedule</mat-icon>
-            Proper Pagament
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>

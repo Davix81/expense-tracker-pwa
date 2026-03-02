@@ -22,7 +22,6 @@ html {
 }
 
 body {
-  color-scheme: dark;
   background-color: $bg-dark;
   color: $text-primary;
   font: var(--mat-sys-body-medium);
@@ -113,11 +112,11 @@ p {
 
 .spacing-mobile {
   padding: 8px;
-  
+
   @media (min-width: $breakpoint-tablet) {
     padding: 16px;
   }
-  
+
   @media (min-width: $breakpoint-desktop) {
     padding: 24px;
   }
@@ -137,6 +136,20 @@ p {
 // Angular Material Form Field Overrides
 // ============================================================================
 .mat-mdc-form-field {
+  // Force label to always float
+  .mat-mdc-floating-label {
+    transform: translateY(-75%) scale(0.50) !important;
+    color: var(--color-text-secondary);
+    background-color: var(--color-surface);
+    padding: 0 4px;
+    margin-left: -4px;
+  }
+
+  // Focused label styling
+  &.mat-focused .mat-mdc-floating-label {
+    color: var(--color-primary);
+  }
+
   .mat-mdc-text-field-wrapper {
     background-color: var(--color-surface);
     border-radius: var(--radius-base);
@@ -191,14 +204,9 @@ p {
     }
   }
 
-  // Label styling
-  .mat-mdc-floating-label {
-    color: var(--color-text-secondary);
-  }
-
-  // Focused label styling
-  &.mat-focused .mat-mdc-floating-label {
-    color: var(--color-primary);
+  // Ensure label has background when floating
+  .mdc-notched-outline__notch {
+    background-color: var(--color-surface);
   }
 
   // Hint and error text
@@ -412,6 +420,18 @@ p {
 // ============================================================================
 // Angular Material Table Overrides
 // ============================================================================
+.mat-mdc-table tbody,
+.mat-mdc-table tfoot,
+.mat-mdc-table thead,
+.mat-mdc-cell,
+.mat-mdc-footer-cell,
+.mat-mdc-header-row,
+.mat-mdc-row,
+.mat-mdc-footer-row,
+.mat-mdc-table .mat-mdc-header-cell {
+  background: white !important;
+}
+
 .mat-mdc-table {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -480,6 +500,13 @@ p {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
+}
+
+// ============================================================================
+// Angular Material Chip Overrides
+// ============================================================================
+.mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) .mdc-evolution-chip__text-label {
+  color: inherit !important;
 }
 
 // Data table utility class (for non-Material tables)
@@ -617,7 +644,7 @@ p {
 
   .mat-toolbar {
     height: 56px;
-    
+
     .mat-toolbar-row {
       height: 56px;
       padding: 0 8px;
@@ -638,7 +665,7 @@ p {
 
   .mat-toolbar {
     height: 64px;
-    
+
     .mat-toolbar-row {
       height: 64px;
       padding: 0 16px;
@@ -658,7 +685,7 @@ p {
 
   .mat-toolbar {
     height: 64px;
-    
+
     .mat-toolbar-row {
       height: 64px;
       padding: 0 24px;
@@ -684,7 +711,7 @@ p {
 a {
   color: $primary-light;
   text-decoration: none;
-  
+
   &:hover {
     text-decoration: underline;
   }

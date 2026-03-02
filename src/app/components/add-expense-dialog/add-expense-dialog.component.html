@@ -6,9 +6,9 @@
 </div>
 
 <mat-dialog-content>
-  <app-notification-message 
-    [message]="errorMessage" 
-    type="error" 
+  <app-notification-message
+    [message]="errorMessage"
+    type="error"
     [show]="showErrorMessage">
   </app-notification-message>
 
@@ -16,14 +16,12 @@
     <!-- Row 1: Name and Category -->
     <div class="form-row">
       <mat-form-field appearance="outline">
-        <mat-label>Nom</mat-label>
         <input matInput formControlName="name" placeholder="Factura llum" required>
         <mat-icon matPrefix>label</mat-icon>
         <mat-error *ngIf="expenseForm.get('name')?.invalid">Obligatori</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Categoria</mat-label>
         <mat-select formControlName="category" required>
           <mat-option *ngFor="let category of categories$ | async" [value]="category">
             {{ category }}
@@ -37,7 +35,6 @@
     <!-- Row 2: Description -->
     <div class="form-row full-width">
       <mat-form-field appearance="outline">
-        <mat-label>Descripció</mat-label>
         <input matInput formControlName="description" placeholder="Descripció breu" required>
         <mat-icon matPrefix>description</mat-icon>
         <mat-error *ngIf="expenseForm.get('description')?.invalid">Obligatori</mat-error>
@@ -47,14 +44,12 @@
     <!-- Row 3: Issuer and Bank -->
     <div class="form-row">
       <mat-form-field appearance="outline">
-        <mat-label>Emissor</mat-label>
         <input matInput formControlName="issuer" placeholder="Endesa" required>
         <mat-icon matPrefix>business</mat-icon>
         <mat-error *ngIf="expenseForm.get('issuer')?.invalid">Obligatori</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Banc</mat-label>
         <input matInput formControlName="bank" placeholder="CaixaBank" required>
         <mat-icon matPrefix>account_balance</mat-icon>
         <mat-error *ngIf="expenseForm.get('bank')?.invalid">Obligatori</mat-error>
@@ -64,7 +59,6 @@
     <!-- Row 4: Periodicity and Fraction -->
     <div class="form-row">
       <mat-form-field appearance="outline">
-        <mat-label>Periodicitat</mat-label>
         <mat-select formControlName="periodicity" required>
           <mat-option *ngFor="let periodicity of periodicities" [value]="periodicity">
             {{ getPeriodicityLabel(periodicity) }}
@@ -75,7 +69,6 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Fracció</mat-label>
         <mat-select formControlName="fraction" required>
           <mat-option *ngFor="let fraction of fractions" [value]="fraction">
             {{ getFractionLabel(fraction) }}
@@ -89,14 +82,12 @@
     <!-- Row 5: Approximate Amount, Scheduled Date, and Tag -->
     <div class="form-row three-columns">
       <mat-form-field appearance="outline">
-        <mat-label>Import aprox.</mat-label>
+        <mat-icon role="img" matprefix="" class="mat-icon notranslate material-icons mat-ligature-font mat-icon-no-color" aria-hidden="true" data-mat-icon-type="font">euro</mat-icon>
         <input matInput type="number" formControlName="approximateAmount" placeholder="0.00" required>
-        <span matPrefix>€&nbsp;</span>
         <mat-error *ngIf="expenseForm.get('approximateAmount')?.invalid">Obligatori</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Data prevista</mat-label>
         <input matInput [matDatepicker]="scheduledPicker" formControlName="scheduledPaymentDate" required>
         <mat-datepicker-toggle matSuffix [for]="scheduledPicker"></mat-datepicker-toggle>
         <mat-datepicker #scheduledPicker></mat-datepicker>
@@ -104,7 +95,6 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Etiqueta</mat-label>
         <mat-select formControlName="tag">
           <mat-option [value]="''">Sense etiqueta</mat-option>
           <mat-option *ngFor="let tag of tags$ | async" [value]="tag">
@@ -123,15 +113,13 @@
     <!-- Row 6: Actual Amount, Actual Date, and Status -->
     <div class="form-row three-columns">
       <mat-form-field appearance="outline">
-        <mat-label>Import real</mat-label>
+        <mat-icon role="img" matprefix="" class="mat-icon notranslate material-icons mat-ligature-font mat-icon-no-color" aria-hidden="true" data-mat-icon-type="font">euro</mat-icon>
         <input matInput type="number" formControlName="actualAmount" placeholder="0.00">
-        <span matPrefix>€&nbsp;</span>
         <mat-error *ngIf="expenseForm.get('actualAmount')?.hasError('required')">Obligatori per estat Pagat</mat-error>
         <mat-error *ngIf="expenseForm.get('actualAmount')?.hasError('min')">Ha de ser positiu</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Data real</mat-label>
         <input matInput [matDatepicker]="actualPicker" formControlName="actualPaymentDate">
         <mat-datepicker-toggle matSuffix [for]="actualPicker"></mat-datepicker-toggle>
         <mat-datepicker #actualPicker></mat-datepicker>
@@ -139,7 +127,6 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Estat</mat-label>
         <mat-select formControlName="paymentStatus" required>
           <mat-option *ngFor="let status of paymentStatuses" [value]="status">
             <span class="status-option" [class]="'status-' + status.toLowerCase()">
