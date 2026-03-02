@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  isLocalhost: false, // Production mode - use API backend
   // API Backend (Vercel)
   apiUrl: '__API_URL__', // Will be replaced during build
   apiSecret: '__API_SECRET__', // Will be replaced during build

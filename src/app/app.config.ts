@@ -12,6 +12,7 @@ import { routes } from './app.routes';
 import { provideServiceWorker } from '@angular/service-worker';
 import { STORAGE_SERVICE } from './services/storage.token';
 import { ApiStorageService } from './services/api-storage.service';
+import { LocalStorageService } from './services/local-storage.service';
 import { environment } from '../environments/environment';
 
 // Registrar locale español
@@ -38,7 +39,7 @@ export const MY_DATE_FORMATS = {
  * - HttpClient for API communication
  * - Animations for Material Design components
  * - Service Worker for PWA functionality
- * - Storage service (API-based backend via Vercel)
+ * - Storage service (LocalStorageService for localhost, ApiStorageService for production)
  * 
  * Requirements: 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 10.7, 10.8
  */
@@ -52,7 +53,10 @@ export const appConfig: ApplicationConfig = {
     { provide: LOCALE_ID, useValue: 'es-ES' },
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
-    { provide: STORAGE_SERVICE, useClass: ApiStorageService },
+    { 
+      provide: STORAGE_SERVICE, 
+      useClass: environment.isLocalhost ? LocalStorageService : ApiStorageService 
+    },
     provideCharts(withDefaultRegisterables()),
     provideServiceWorker('ngsw-worker.js', {
             enabled: !isDevMode(),

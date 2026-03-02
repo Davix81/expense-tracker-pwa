@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
+  isLocalhost: true, // Enable local development mode
   // API Backend (Vercel)
   apiUrl: 'http://localhost:3000/api', // Local development
   apiSecret: 'dev-secret-key',

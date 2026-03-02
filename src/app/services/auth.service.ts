@@ -18,8 +18,20 @@ export class AuthService {
   constructor(private router: Router) {}
 
   login(credentials: AuthCredentials): Observable<boolean> {
-    // The "password" is actually the encryption key
-    // We store it temporarily to validate it can decrypt data
+    // In localhost mode, accept any password (minimum 1 character)
+    if (environment.isLocalhost) {
+      if (credentials.password && credentials.password.length >= 1) {
+        const token = this.generateSessionToken();
+        this.setSession(token);
+        // Store a dummy encryption key for local mode
+        this.setEncryptionKey('local-dev-key');
+        console.log('[Auth] Localhost mode: login accepted');
+        return of(true);
+      }
+      return of(false);
+    }
+
+    // Production mode: require proper encryption key (8+ chars)
     if (credentials.password && credentials.password.length >= 8) {
       const token = this.generateSessionToken();
       this.setSession(token);
