@@ -86,9 +86,26 @@ export class AddExpenseDialogComponent {
       fraction: [data?.expense?.fraction || 'ÚNICA', [Validators.required]]
     });
 
-    // Escuchar cambios en el estado de pago para actualizar validaciones
+    // Escuchar cambios en el estado de pago para actualizar validaciones y auto-rellenar
     this.expenseForm.get('paymentStatus')?.valueChanges.subscribe(status => {
       this.updatePaymentValidations(status);
+      
+      // Auto-rellenar campos de pago real cuando se selecciona PAID
+      if (status === 'PAID') {
+        const actualAmountControl = this.expenseForm.get('actualAmount');
+        const actualDateControl = this.expenseForm.get('actualPaymentDate');
+        const approximateAmount = this.expenseForm.get('approximateAmount')?.value;
+        const scheduledDate = this.expenseForm.get('scheduledPaymentDate')?.value;
+        
+        // Solo auto-rellenar si los campos están vacíos
+        if (!actualAmountControl?.value && approximateAmount) {
+          actualAmountControl?.setValue(approximateAmount);
+        }
+        
+        if (!actualDateControl?.value && scheduledDate) {
+          actualDateControl?.setValue(scheduledDate);
+        }
+      }
     });
 
     // Aplicar validaciones iniciales si está en modo edición
