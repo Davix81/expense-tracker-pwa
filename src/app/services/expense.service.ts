@@ -266,8 +266,8 @@ export class ExpenseService {
     // Periodicity validation
     if (!expense.periodicity) {
       errors.push('Periodicity is required');
-    } else if (!['MENSUAL', 'BIMENSUAL', 'TRIMESTRAL', 'CUATRIMESTRAL', 'SEMESTRAL', 'ANUAL'].includes(expense.periodicity)) {
-      errors.push('Periodicity must be MENSUAL, BIMENSUAL, TRIMESTRAL, CUATRIMESTRAL, SEMESTRAL, or ANUAL');
+    } else if (!['PUNTUAL', 'MENSUAL', 'BIMENSUAL', 'TRIMESTRAL', 'CUATRIMESTRAL', 'SEMESTRAL', 'ANUAL'].includes(expense.periodicity)) {
+      errors.push('Periodicity must be PUNTUAL, MENSUAL, BIMENSUAL, TRIMESTRAL, CUATRIMESTRAL, SEMESTRAL, or ANUAL');
     }
 
     // Fraction validation
@@ -320,6 +320,11 @@ export class ExpenseService {
    */
   private generatePeriodicExpenses(baseExpense: Expense): Expense[] {
     const expenses: Expense[] = [baseExpense];
+    
+    // PUNTUAL means one-time payment (no recurrence)
+    if (baseExpense.periodicity === 'PUNTUAL') {
+      return expenses;
+    }
     
     // ANUAL means only one occurrence per year
     if (baseExpense.periodicity === 'ANUAL') {

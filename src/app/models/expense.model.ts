@@ -8,6 +8,7 @@ export type PaymentStatus = 'PENDING' | 'PAID' | 'FAILED';
 
 /**
  * Periodicity of an expense
+ * - PUNTUAL: One-time payment (no recurrence)
  * - MENSUAL: Monthly payment
  * - BIMENSUAL: Bi-monthly payment (every 2 months)
  * - TRIMESTRAL: Quarterly payment (every 3 months)
@@ -15,7 +16,7 @@ export type PaymentStatus = 'PENDING' | 'PAID' | 'FAILED';
  * - SEMESTRAL: Semi-annual payment (every 6 months)
  * - ANUAL: Annual payment
  */
-export type Periodicity = 'MENSUAL' | 'BIMENSUAL' | 'TRIMESTRAL' | 'CUATRIMESTRAL' | 'SEMESTRAL' | 'ANUAL';
+export type Periodicity = 'PUNTUAL' | 'MENSUAL' | 'BIMENSUAL' | 'TRIMESTRAL' | 'CUATRIMESTRAL' | 'SEMESTRAL' | 'ANUAL';
 
 /**
  * Fraction of a payment when split into multiple parts

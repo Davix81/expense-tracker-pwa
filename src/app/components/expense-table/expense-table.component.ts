@@ -230,6 +230,7 @@ export class ExpenseTableComponent implements OnInit, OnChanges {
    */
   getPeriodicityLabel(periodicity: string): string {
     const labels: { [key: string]: string } = {
+      'PUNTUAL': 'Puntual',
       'MENSUAL': 'Mensual',
       'BIMENSUAL': 'Bimensual',
       'TRIMESTRAL': 'Trimestral',
