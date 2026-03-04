@@ -348,7 +348,11 @@ export class ExpenseService {
         ...baseExpense,
         id: this.generateId(),
         scheduledPaymentDate: newDate,
-        createdAt: new Date()
+        createdAt: new Date(),
+        // Future periodic expenses should always be PENDING
+        paymentStatus: 'PENDING',
+        actualPaymentDate: null,
+        actualAmount: null
       };
 
       expenses.push(periodicExpense);
