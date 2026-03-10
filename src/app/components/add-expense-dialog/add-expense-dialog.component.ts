@@ -9,6 +9,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ExpenseService } from '../../services/expense.service';
 import { SettingsService } from '../../services/settings.service';
 import { Expense, PaymentStatus, Periodicity, Fraction } from '../../models/expense.model';
@@ -34,6 +35,7 @@ import { NotificationMessageComponent } from '../notification-message/notificati
     MatNativeDateModule,
     MatButtonModule,
     MatIconModule,
+    MatCheckboxModule,
     NotificationMessageComponent
   ],
   templateUrl: './add-expense-dialog.component.html',
@@ -83,7 +85,8 @@ export class AddExpenseDialogComponent {
       paymentStatus: [data?.expense?.paymentStatus || 'PENDING', [Validators.required]],
       bank: [data?.expense?.bank || '', [Validators.required]],
       periodicity: [data?.expense?.periodicity || 'MENSUAL', [Validators.required]],
-      fraction: [data?.expense?.fraction || 'ÚNICA', [Validators.required]]
+      fraction: [data?.expense?.fraction || 'ÚNICA', [Validators.required]],
+      replicateByPeriodicity: [false]
     });
 
     // Escuchar cambios en el estado de pago para actualizar validaciones y auto-rellenar
@@ -112,6 +115,14 @@ export class AddExpenseDialogComponent {
     if (this.isEditMode && data?.expense?.paymentStatus) {
       this.updatePaymentValidations(data.expense.paymentStatus);
     }
+
+    // Escuchar cambios en periodicidad para deshabilitar checkbox de replicación
+    // Requirements: 1.6
+    this.expenseForm.get('periodicity')?.valueChanges.subscribe(periodicity => {
+      if (periodicity === 'PUNTUAL' || periodicity === 'ANUAL') {
+        this.expenseForm.get('replicateByPeriodicity')?.setValue(false);
+      }
+    });
   }
 
   /**
@@ -172,7 +183,8 @@ export class AddExpenseDialogComponent {
         createdAt: this.data!.expense.createdAt
       };
 
-      this.expenseService.updateExpense(updatedExpense).subscribe({
+      const replicate = formValue.replicateByPeriodicity === true;
+      this.expenseService.updateExpense(updatedExpense, replicate).subscribe({
         next: (expense) => {
           this.dialogRef.close(expense);
         },
@@ -203,7 +215,8 @@ export class AddExpenseDialogComponent {
         fraction: formValue.fraction
       };
 
-      this.expenseService.addExpense(expenseData).subscribe({
+      const replicate = formValue.replicateByPeriodicity === true;
+      this.expenseService.addExpense(expenseData, replicate).subscribe({
         next: (expense) => {
           this.dialogRef.close(expense);
         },
@@ -311,5 +324,14 @@ export class AddExpenseDialogComponent {
       'QUARTA': 'Quarta'
     };
     return labels[fraction] || fraction;
+  }
+
+  /**
+   * Determines if replication is allowed based on periodicity
+   * Requirements: 1.5, 1.6
+   */
+  get isReplicationAllowed(): boolean {
+    const periodicity = this.expenseForm.get('periodicity')?.value;
+    return periodicity !== 'PUNTUAL' && periodicity !== 'ANUAL';
   }
 }

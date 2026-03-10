@@ -79,6 +79,15 @@
       </mat-form-field>
     </div>
 
+    <!-- Replication Checkbox -->
+    <div class="form-row full-width">
+      <mat-checkbox 
+        formControlName="replicateByPeriodicity"
+        [disabled]="!isReplicationAllowed">
+        Replicar segons periodicitat per a l'any en curs
+      </mat-checkbox>
+    </div>
+
     <!-- Row 5: Approximate Amount, Scheduled Date, and Tag -->
     <div class="form-row three-columns">
       <mat-form-field appearance="outline">

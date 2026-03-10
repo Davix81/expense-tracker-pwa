@@ -50,14 +50,15 @@ export class ExpenseService {
 
   /**
    * Adds a new expense with ID generation and timestamp
-   * Also generates periodic copies based on periodicity within the same year
+   * Optionally generates periodic copies based on periodicity within the same year
    * 
    * Requirements: 2.2, 2.4, 2.5, 2.6
    * 
    * @param expense Expense data without id and createdAt
+   * @param replicate When true, generates periodic copies based on periodicity
    * @returns Observable of created expense
    */
-  addExpense(expense: Omit<Expense, 'id' | 'createdAt'>): Observable<Expense> {
+  addExpense(expense: Omit<Expense, 'id' | 'createdAt'>, replicate?: boolean): Observable<Expense> {
     // Validate expense data
     const validation = this.validateExpense(expense);
     if (!validation.valid) {
@@ -71,8 +72,10 @@ export class ExpenseService {
       createdAt: new Date()
     };
 
-    // Generate periodic copies based on periodicity (within same year)
-    const allExpenses = this.generatePeriodicExpenses(newExpense);
+    // Generate periodic copies only when replicate is explicitly true
+    const allExpenses = replicate === true 
+      ? this.generatePeriodicExpenses(newExpense)
+      : [newExpense];
 
     // Get current expenses and add all new ones
     const currentExpenses = this.expensesSubject.value;
@@ -102,14 +105,15 @@ export class ExpenseService {
 
   /**
    * Updates an existing expense
-   * Also generates periodic copies based on periodicity within the same year
+   * Optionally generates periodic copies based on periodicity within the same year
    * 
    * Requirements: 2.2, 2.4, 2.5, 2.6
    * 
    * @param expense Updated expense data
+   * @param replicate When true, generates periodic copies based on periodicity
    * @returns Observable of updated expense
    */
-  updateExpense(expense: Expense): Observable<Expense> {
+  updateExpense(expense: Expense, replicate?: boolean): Observable<Expense> {
     // Validate expense data
     const validation = this.validateExpense(expense);
     if (!validation.valid) {
@@ -128,13 +132,15 @@ export class ExpenseService {
     const updatedExpenses = [...currentExpenses];
     updatedExpenses[expenseIndex] = expense;
 
-    // Generate periodic copies based on periodicity (within same year)
-    const periodicExpenses = this.generatePeriodicExpenses(expense);
-    // Remove the first one (the original) since it's already updated
-    const newPeriodicExpenses = periodicExpenses.slice(1);
-    
-    // Add new periodic expenses
-    const finalExpenses = [...updatedExpenses, ...newPeriodicExpenses];
+    // Generate periodic copies only when replicate is explicitly true
+    let finalExpenses = updatedExpenses;
+    if (replicate === true) {
+      const periodicExpenses = this.generatePeriodicExpenses(expense);
+      // Remove the first one (the original) since it's already updated
+      const newPeriodicExpenses = periodicExpenses.slice(1);
+      // Add new periodic expenses
+      finalExpenses = [...updatedExpenses, ...newPeriodicExpenses];
+    }
 
     // Persist to GitHub and reload to ensure we have the latest SHA
     return this.storage.writeExpenses(finalExpenses).pipe(
@@ -313,23 +319,64 @@ export class ExpenseService {
   }
 
   /**
+   * Checks if a duplicate expense exists based on composite key
+   * 
+   * A duplicate is defined as an expense with the same name, issuer, category,
+   * and month/year of scheduledPaymentDate.
+   * 
+   * Requirements: 3.3
+   * 
+   * @param name Expense name to check
+   * @param issuer Expense issuer to check
+   * @param category Expense category to check
+   * @param targetDate Target date to check month/year against
+   * @param existingExpenses Array of existing expenses to search
+   * @returns true if a duplicate exists, false otherwise
+   */
+  private isDuplicateExpense(
+    name: string,
+    issuer: string,
+    category: string,
+    targetDate: Date,
+    existingExpenses: Expense[]
+  ): boolean {
+    const targetMonth = targetDate.getMonth();
+    const targetYear = targetDate.getFullYear();
+
+    return existingExpenses.some(expense => {
+      const expenseDate = new Date(expense.scheduledPaymentDate);
+      return expense.name === name &&
+             expense.issuer === issuer &&
+             expense.category === category &&
+             expenseDate.getMonth() === targetMonth &&
+             expenseDate.getFullYear() === targetYear;
+    });
+  }
+
+  /**
    * Generates periodic expense copies based on periodicity within the same year
+   * Verifies duplicates before creating each copy to avoid redundant entries
+   * 
+   * Requirements: 3.1, 3.2, 3.4, 3.5, 3.6
    * 
    * @param baseExpense The base expense to duplicate
-   * @returns Array of expenses including the original and periodic copies
+   * @returns Array of expenses including the original and periodic copies (excluding duplicates)
    */
   private generatePeriodicExpenses(baseExpense: Expense): Expense[] {
     const expenses: Expense[] = [baseExpense];
-    
+
     // PUNTUAL means one-time payment (no recurrence)
     if (baseExpense.periodicity === 'PUNTUAL') {
       return expenses;
     }
-    
+
     // ANUAL means only one occurrence per year
     if (baseExpense.periodicity === 'ANUAL') {
       return expenses;
     }
+
+    // Get existing expenses to check for duplicates
+    const existingExpenses = this.expensesSubject.value;
 
     const baseDate = new Date(baseExpense.scheduledPaymentDate);
     const baseYear = baseDate.getFullYear();
@@ -339,33 +386,47 @@ export class ExpenseService {
 
     // Generate copies for remaining months in the same year
     let nextMonth = baseMonth + monthInterval;
-    
+
     while (nextMonth <= 11) { // 11 = December (0-indexed)
       const newDate = new Date(baseYear, nextMonth, baseDay);
-      
+
       // Handle month overflow (e.g., Jan 31 -> Feb 28)
       if (newDate.getMonth() !== nextMonth) {
         // Set to last day of the target month
         newDate.setDate(0);
       }
 
-      const periodicExpense: Expense = {
-        ...baseExpense,
-        id: this.generateId(),
-        scheduledPaymentDate: newDate,
-        createdAt: new Date(),
-        // Future periodic expenses should always be PENDING
-        paymentStatus: 'PENDING',
-        actualPaymentDate: null,
-        actualAmount: null
-      };
+      // Check for duplicate before creating the periodic copy
+      const isDuplicate = this.isDuplicateExpense(
+        baseExpense.name,
+        baseExpense.issuer,
+        baseExpense.category,
+        newDate,
+        existingExpenses
+      );
 
-      expenses.push(periodicExpense);
+      // Only create the copy if no duplicate exists
+      if (!isDuplicate) {
+        const periodicExpense: Expense = {
+          ...baseExpense,
+          id: this.generateId(),
+          scheduledPaymentDate: newDate,
+          createdAt: new Date(),
+          // Future periodic expenses should always be PENDING
+          paymentStatus: 'PENDING',
+          actualPaymentDate: null,
+          actualAmount: null
+        };
+
+        expenses.push(periodicExpense);
+      }
+
       nextMonth += monthInterval;
     }
 
     return expenses;
   }
+
 
   /**
    * Transforms date strings to Date objects
